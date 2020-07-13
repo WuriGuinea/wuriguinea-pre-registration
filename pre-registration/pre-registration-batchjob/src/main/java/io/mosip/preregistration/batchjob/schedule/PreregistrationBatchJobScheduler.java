@@ -28,103 +28,103 @@ import io.mosip.preregistration.core.config.LoggerConfiguration;
  *
  * @author Kishan Rathore
  * @since 1.0.0
- *
  */
 @RefreshScope
 @Component
 @EnableScheduling
 public class PreregistrationBatchJobScheduler {
 
-	private Logger LOGGER = LoggerConfiguration.logConfig(PreregistrationBatchJobScheduler.class);
+    private Logger LOGGER = LoggerConfiguration.logConfig(PreregistrationBatchJobScheduler.class);
 
-	private static final String LOGDISPLAY = "{} - {} - {}";
+    private static final String LOGDISPLAY = "{} - {} - {}";
 
-	private static final String JOB_STATUS = "Job's status";
+    private static final String JOB_STATUS = "Job's status";
 
-	@Autowired
-	private JobLauncher jobLauncher;
+    @Autowired
+    private JobLauncher jobLauncher;
 
-	@Autowired
-	private Job availabilitySyncJob;
+    @Autowired
+    private Job availabilitySyncJob;
 
-	@Autowired
-	private Job consumedStatusJob;
+    @Autowired
+    private Job consumedStatusJob;
 
-	@Autowired
-	private Job expiredStatusJob;
-	@Autowired
-	private Job reminderJob;
+    @Autowired
+    private Job expiredStatusJob;
+    @Autowired
+    private Job reminderJob;
 
 
-	@Scheduled(cron = "${preregistration.job.schedule.cron.reminderJob}")
-	public void reminderScheduler() {
+    @Scheduled(cron = "${preregistration.job.schedule.cron.reminderJob}")
+    public void reminderScheduler() {
 
-		JobParameters jobParam = new JobParametersBuilder().addLong("reminderTime", System.currentTimeMillis())
-				.toJobParameters();
-		try {
-			JobExecution jobExecution = jobLauncher.run(reminderJob, jobParam);
+        JobParameters jobParam = new JobParametersBuilder().addLong("reminderTime", System.currentTimeMillis())
+                .toJobParameters();
+        try {
+            JobExecution jobExecution = jobLauncher.run(reminderJob, jobParam);
 
-			LOGGER.info(LOGDISPLAY, JOB_STATUS, jobExecution.getId().toString(), jobExecution.getStatus().toString());
+            LOGGER.info(LOGDISPLAY, JOB_STATUS, jobExecution.getId().toString(), jobExecution.getStatus().toString());
 
-		} catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
-				| JobParametersInvalidException e) {
+        } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
+                | JobParametersInvalidException e) {
 
-			LOGGER.error(LOGDISPLAY, "Reminder job fail to execute tasks", e.getMessage(),null);
-		}
-	}
-	@Scheduled(cron = "${preregistration.job.schedule.cron.consumedStatusJob}")
-	public void consumedStatusScheduler() {
+            LOGGER.error(LOGDISPLAY, "Reminder job fail to execute tasks", e.getMessage(), null);
+        }
+    }
 
-		JobParameters jobParam = new JobParametersBuilder().addLong("updateStatusTime", System.currentTimeMillis())
-				.toJobParameters();
-		try {
-			JobExecution jobExecution = jobLauncher.run(consumedStatusJob, jobParam);
+    @Scheduled(cron = "${preregistration.job.schedule.cron.consumedStatusJob}")
+    public void consumedStatusScheduler() {
 
-			LOGGER.info(LOGDISPLAY, JOB_STATUS, jobExecution.getId().toString(), jobExecution.getStatus().toString());
+        JobParameters jobParam = new JobParametersBuilder().addLong("updateStatusTime", System.currentTimeMillis())
+                .toJobParameters();
+        try {
+            JobExecution jobExecution = jobLauncher.run(consumedStatusJob, jobParam);
 
-		} catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
-				| JobParametersInvalidException e) {
+            LOGGER.info(LOGDISPLAY, JOB_STATUS, jobExecution.getId().toString(), jobExecution.getStatus().toString());
 
-			LOGGER.error(LOGDISPLAY, "Consumed status job failed to read Processed_pre_registration_list", e.getMessage(),null);
-		}
-	}
+        } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
+                | JobParametersInvalidException e) {
 
-	@Scheduled(cron = "${preregistration.job.schedule.cron.slotavailability}")
-	public void availabilitySyncScheduler() {
+            LOGGER.error(LOGDISPLAY, "Consumed status job failed to read Processed_pre_registration_list", e.getMessage(), null);
+        }
+    }
 
-		JobParameters jobParam = new JobParametersBuilder().addLong("bookingJobTime", System.currentTimeMillis())
-				.toJobParameters();
-		try {
+    @Scheduled(cron = "${preregistration.job.schedule.cron.slotavailability}")
+    public void availabilitySyncScheduler() {
 
-			JobExecution jobExecution = jobLauncher.run(availabilitySyncJob, jobParam);
+        JobParameters jobParam = new JobParametersBuilder().addLong("bookingJobTime", System.currentTimeMillis())
+                .toJobParameters();
+        try {
 
-			LOGGER.info(LOGDISPLAY, JOB_STATUS, jobExecution.getId().toString(), jobExecution.getStatus().toString());
+            JobExecution jobExecution = jobLauncher.run(availabilitySyncJob, jobParam);
 
-		} catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
-				| JobParametersInvalidException e) {
+            LOGGER.info(LOGDISPLAY, JOB_STATUS, jobExecution.getId().toString(), jobExecution.getStatus().toString());
 
-			LOGGER.error(LOGDISPLAY, "Availability Sync Job failed to read data from master data service", e.getMessage(),null);
-		}
+        } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
+                | JobParametersInvalidException e) {
 
-	}
+            LOGGER.error(LOGDISPLAY, "Availability Sync Job failed to read data from master data service", e.getMessage(), null);
+        }
 
-	@Scheduled(cron = "${preregistration.job.schedule.cron.expiredStatusJob}")
-	public void expiredStatusScheduler() {
+    }
 
-		JobParameters jobParam = new JobParametersBuilder().addLong("expiredStatusJobTime", System.currentTimeMillis())
-				.toJobParameters();
-		try {
+    @Scheduled(cron = "${preregistration.job.schedule.cron.expiredStatusJob}")
+    public void expiredStatusScheduler() {
 
-			JobExecution jobExecution = jobLauncher.run(expiredStatusJob, jobParam);
+        JobParameters jobParam = new JobParametersBuilder().addLong("expiredStatusJobTime", System.currentTimeMillis())
+                .toJobParameters();
+        try {
 
-			LOGGER.info(LOGDISPLAY, JOB_STATUS, jobExecution.getId().toString(), jobExecution.getStatus().toString());
+            JobExecution jobExecution = jobLauncher.run(expiredStatusJob, jobParam);
 
-		} catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
-				| JobParametersInvalidException e) {
+            LOGGER.info(LOGDISPLAY, JOB_STATUS, jobExecution.getId().toString(), jobExecution.getStatus().toString());
 
-			LOGGER.error(LOGDISPLAY, "Expired Status Job failed to read data from service", e.getMessage(),null);
-		}
+        } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
+                | JobParametersInvalidException e) {
 
-	}
+            LOGGER.error(LOGDISPLAY, "Expired Status Job failed to read data from service", e.getMessage(), null);
+        }
+
+    }
 
 }

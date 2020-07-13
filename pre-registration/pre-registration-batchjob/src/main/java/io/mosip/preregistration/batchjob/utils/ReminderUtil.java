@@ -144,7 +144,7 @@ public class ReminderUtil {
 	private String remindingMessage(ReminderDTO reminderDTO) {
 		String message = "Bonjour " + reminderDTO.getAppliantLastName() + " " + "" + reminderDTO.getApplicantfirstName()
 				+ "," + "\n" + "Nous vous rappelons que vous avez rendez-vous   demain à " + reminderDTO.getSlotFrom()
-				+ " " + "au centre numero" + reminderDTO.getCenterID() + "muni de votre numero de pre-enregistrement "
+				+ " " + "au centre numero " + reminderDTO.getCenterID() + "muni de votre numero de pre-enregistrement "
 				+ reminderDTO.getPreRegId() + " et des pieces justicatives.";
 		return message;
 	}
@@ -188,5 +188,4 @@ public class ReminderUtil {
 
 		}
 	}
-
 }

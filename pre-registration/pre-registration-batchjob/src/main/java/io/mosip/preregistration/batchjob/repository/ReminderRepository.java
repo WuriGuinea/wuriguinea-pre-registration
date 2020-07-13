@@ -12,14 +12,13 @@ import io.mosip.preregistration.batchjob.entity.ReminderEntity;
 /**
  * This repository interface is used to define the JPA methods for Reminder
  * application.
- * 
- * @author CONDEIS
  *
+ * @author CONDEIS
  */
 
 @Repository("reminderRepository")
 public interface ReminderRepository extends BaseRepository<ReminderEntity, String> {
-		@Query("  FROM ReminderEntity re  WHERE re.regDate='tomorrow'")
-	public List<ReminderEntity> findAppointmentsToRemind( );
+    @Query("  FROM ReminderEntity re  WHERE re.regDate='tomorrow'")
+    public List<ReminderEntity> findAppointmentsToRemind();
 
 }
