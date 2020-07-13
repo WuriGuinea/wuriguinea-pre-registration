@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.batchjob.schedule;
 
@@ -25,7 +25,7 @@ import io.mosip.preregistration.core.config.LoggerConfiguration;
 /**
  * This class is a job scheduler of batch in which jobs are getting executed
  * based on cron expressions.
- * 
+ *
  * @author Kishan Rathore
  * @since 1.0.0
  *
@@ -52,7 +52,26 @@ public class PreregistrationBatchJobScheduler {
 
 	@Autowired
 	private Job expiredStatusJob;
+	@Autowired
+	private Job reminderJob;
 
+
+	@Scheduled(cron = "${preregistration.job.schedule.cron.reminderJob}")
+	public void reminderScheduler() {
+
+		JobParameters jobParam = new JobParametersBuilder().addLong("reminderTime", System.currentTimeMillis())
+				.toJobParameters();
+		try {
+			JobExecution jobExecution = jobLauncher.run(reminderJob, jobParam);
+
+			LOGGER.info(LOGDISPLAY, JOB_STATUS, jobExecution.getId().toString(), jobExecution.getStatus().toString());
+
+		} catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
+				| JobParametersInvalidException e) {
+
+			LOGGER.error(LOGDISPLAY, "Reminder job fail to execute tasks", e.getMessage(),null);
+		}
+	}
 	@Scheduled(cron = "${preregistration.job.schedule.cron.consumedStatusJob}")
 	public void consumedStatusScheduler() {
 

@@ -17,6 +17,7 @@ import io.mosip.preregistration.batchjob.entity.DemographicEntityConsumed;
 import io.mosip.preregistration.batchjob.entity.DocumentEntityConsumed;
 import io.mosip.preregistration.batchjob.entity.ProcessedPreRegEntity;
 import io.mosip.preregistration.batchjob.entity.RegistrationBookingEntityConsumed;
+import io.mosip.preregistration.batchjob.entity.ReminderEntity;
 import io.mosip.preregistration.batchjob.exception.NoPreIdAvailableException;
 import io.mosip.preregistration.batchjob.repository.AvailabilityRepository;
 import io.mosip.preregistration.batchjob.repository.DemographicConsumedRepository;
@@ -26,6 +27,7 @@ import io.mosip.preregistration.batchjob.repository.DocumentRespository;
 import io.mosip.preregistration.batchjob.repository.ProcessedPreIdRepository;
 import io.mosip.preregistration.batchjob.repository.RegAppointmentConsumedRepository;
 import io.mosip.preregistration.batchjob.repository.RegAppointmentRepository;
+import io.mosip.preregistration.batchjob.repository.ReminderRepository;
 import io.mosip.preregistration.core.code.StatusCodes;
 import io.mosip.preregistration.core.common.entity.DemographicEntity;
 import io.mosip.preregistration.core.common.entity.DocumentEntity;
@@ -93,6 +95,10 @@ public class BatchJpaRepositoryImpl {
 	@Qualifier("documentConsumedRepository")
 	private DocumentConsumedRepository documentConsumedRepository;
 
+	@Autowired
+	@Qualifier("reminderRepository")
+	ReminderRepository reminderRepository;
+
 	/**
 	 * @param preRegId
 	 * @return Demographic details for preregId
@@ -128,7 +134,6 @@ public class BatchJpaRepositoryImpl {
 				throw new NoPreIdAvailableException(ErrorCodes.PRG_PAM_BAT_001.getCode(),
 						ErrorMessages.NO_PRE_REGISTRATION_ID_FOUND_TO_UPDATE_STATUS.getMessage());
 			}
-
 		} catch (DataAccessLayerException e) {
 			throw new TableNotAccessibleException(ErrorCodes.PRG_PAM_BAT_006.getCode(),
 					ErrorMessages.PROCESSED_PREREG_LIST_TABLE_NOT_ACCESSIBLE.getMessage());
@@ -260,7 +265,7 @@ public class BatchJpaRepositoryImpl {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param regDate
 	 * @return list of regCenter
 	 */
@@ -276,7 +281,7 @@ public class BatchJpaRepositoryImpl {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param regDate
 	 * @param regID
 	 * @return list of date
@@ -293,7 +298,7 @@ public class BatchJpaRepositoryImpl {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param regId
 	 * @param regDate
 	 * @return number of deleted items
@@ -309,7 +314,7 @@ public class BatchJpaRepositoryImpl {
 		return deletedSlots;
 	}
 	/**
-	 * 
+	 *
 	 * @param regId
 	 * @param regDate
 	 * @return number of deleted items
@@ -326,7 +331,7 @@ public class BatchJpaRepositoryImpl {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param regDate
 	 * @param regID
 	 * @return list of AvailibityEntity
@@ -343,7 +348,7 @@ public class BatchJpaRepositoryImpl {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param regId
 	 * @param regDate
 	 * @return list of RegistrationBookingEntity
@@ -361,7 +366,7 @@ public class BatchJpaRepositoryImpl {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param regId
 	 * @param date
 	 * @return list of RegistrationBookingEntity
@@ -378,7 +383,7 @@ public class BatchJpaRepositoryImpl {
 	}
 
 	public List<RegistrationBookingEntity> findAllPreIdsBydateAndBetweenHours(String regCenterId, LocalDate date,
-			LocalTime fromTime, LocalTime toTime) {
+																			  LocalTime fromTime, LocalTime toTime) {
 		List<RegistrationBookingEntity> entityList = null;
 		try {
 			entityList = regAppointmentRepository
@@ -391,9 +396,9 @@ public class BatchJpaRepositoryImpl {
 	}
 
 	/**
-	 * 
+	 *
 	 * Aparam regId
-	 * 
+	 *
 	 * @param regDate
 	 * @return number of deleted items
 	 */
@@ -414,6 +419,11 @@ public class BatchJpaRepositoryImpl {
 	 */
 	public AvailibityEntity saveAvailability(AvailibityEntity entity) {
 		return availabilityRepository.save(entity);
+	}
+
+		public List <ReminderEntity> findAppointmentsToRemind()
+	{
+		return reminderRepository.findAppointmentsToRemind();
 	}
 
 }
