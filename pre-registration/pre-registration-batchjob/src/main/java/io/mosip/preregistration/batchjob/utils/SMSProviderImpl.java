@@ -20,7 +20,6 @@ import io.mosip.kernel.core.notification.spi.SMSServiceProvider;
 public class SMSProviderImpl implements SMSServiceProvider {
 
 	private static String indicator = "224";
-
 	private static String url = "https://mtnguineevas.com/httpsms/Send";
 	private RestTemplate restTemplate;
 	private MultiValueMap<String, String> map;

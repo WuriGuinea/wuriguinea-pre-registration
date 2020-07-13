@@ -100,10 +100,8 @@ public class ReminderUtil {
 		try {
 			JSONObject applicantDetails = new JSONObject(new String(demogEntity.getApplicantDetailJson()))
 					.getJSONObject(JSON_FIELD_IDENTITY);
-
 			String applicantfirstName = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_FIRSTNAME).get(0)))
 					.getString(JSON_FIELD_VALUE);
-
 			String appliantLastName = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_LASTNAME).get(0)))
 					.getString(JSON_FIELD_VALUE);
 			String applicantGender = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_GENDER).get(0)))
@@ -122,32 +120,24 @@ public class ReminderUtil {
 			log.debug("Error while processing applicants details", "", "", "" + e);
 
 		}
-
 		return reminderDTO;
 	}
 
 	private void sendRemindingNotifications() {
 		for (ReminderDTO remindTo : reminders) {
-
 			processNotificationSending(remindTo);
-
-			System.out.println("Sending dummy notifications to: " + remindTo.getApplicantfirstName() + " "
-					+ remindTo.getAppliantLastName() + " " + "preregID " + remindTo.getPreRegId() + ""
-					+ " for an appointement tomorrow from " + remindTo.getSlotFrom() + " to " + remindTo.getToSlot()
-					+ "at center " + remindTo.getCenterID());
 			log.info(" Sending dummy notifications to: " + remindTo.getApplicantfirstName() + " "
 					+ remindTo.getAppliantLastName() + " " + "preregID " + remindTo.getPreRegId() + ""
 					+ " for an appointement tomorrow from " + remindTo.getSlotFrom() + " to " + remindTo.getToSlot()
 					+ "at center " + remindTo.getCenterID(), "", "", " ");
-			System.out.println("                                             ----                             ");
-		}
+			}
 
 	}
 
 	private void processNotificationSending(ReminderDTO remindTo) {
 		String message = remindingMessage(remindTo);
 //		smsServiceProvider.sendSms(remindTo.getApplicantMobNum(), message);
-		System.out.println(message);
+		System.out.println(message); //for test purposes
 
 	}
 

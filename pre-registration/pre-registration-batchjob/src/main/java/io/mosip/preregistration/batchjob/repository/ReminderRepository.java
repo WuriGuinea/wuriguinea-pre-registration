@@ -19,8 +19,7 @@ import io.mosip.preregistration.batchjob.entity.ReminderEntity;
 
 @Repository("reminderRepository")
 public interface ReminderRepository extends BaseRepository<ReminderEntity, String> {
-	
-	@Query("  FROM ReminderEntity re  WHERE re.regDate='tomorrow'")
+		@Query("  FROM ReminderEntity re  WHERE re.regDate='tomorrow'")
 	public List<ReminderEntity> findAppointmentsToRemind( );
 
 }
