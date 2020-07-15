@@ -12,7 +12,7 @@ public class ReminderDTO {
     private String toSlot;
     private String applicantfirstName;
     private String appliantLastName;
-    String applicantGender;
+    private String applicantGender;
     private String applicantMobNum;
     private String applicantEmail;
     private String centerID;

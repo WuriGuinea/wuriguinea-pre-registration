@@ -46,7 +46,6 @@ import io.mosip.preregistration.core.util.AuditLogUtil;
  */
 @Component
 public class ReminderUtil {
-
 	private static String JSON_FIELD_IDENTITY = "identity";
 	private static String JSON_FIELD_FIRSTNAME = "firstName";
 	private static String JSON_FIELD_LASTNAME = "lastName";
@@ -81,7 +80,6 @@ public class ReminderUtil {
 		reminders = new ArrayList<ReminderDTO>();
 		DemographicEntity demogEntity;
 		List<ReminderEntity> toReminds = batchServiceDAO.findAppointmentsToRemind();
-
 		for (ReminderEntity reminderEntiy : toReminds) {
 			demogEntity = batchServiceDAO.getApplicantDemographicDetails(reminderEntiy.getPrereg_id());
 			ReminderDTO remindDTO = extractRemindingDetails(reminderEntiy, demogEntity);
@@ -149,7 +147,7 @@ public class ReminderUtil {
 		String message = "Bonjour " + reminderDTO.getAppliantLastName() + " " + "" + reminderDTO.getApplicantfirstName()
 				+ "," + "\n" + "Nous vous rappelons que vous avez rendez-vous   demain à " + reminderDTO.getSlotFrom()
 				+ " " + "au centre numero " + reminderDTO.getCenterID() + "muni de votre numero de pre-enregistrement "
-				+ reminderDTO.getPreRegId() + " et des pieces justicatives.";
+				+ reminderDTO.getPreRegId() + " et des pieces justificatives.";
 		return message;
 	}
 

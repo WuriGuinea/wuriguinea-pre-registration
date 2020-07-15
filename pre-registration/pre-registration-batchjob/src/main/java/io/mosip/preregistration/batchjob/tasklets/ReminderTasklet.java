@@ -39,9 +39,7 @@ public class ReminderTasklet implements Tasklet {
     public RepeatStatus execute(StepContribution contribution, ChunkContext arg1) throws Exception {
 
         try {
-
             reminderUtil.processApplicantToRemind();
-
         } catch (Exception e) {
             log.error("Reminder  ", " Tasklet ", " encountered exception ", e.getMessage());
             contribution.setExitStatus(new ExitStatus(e.getMessage()));
