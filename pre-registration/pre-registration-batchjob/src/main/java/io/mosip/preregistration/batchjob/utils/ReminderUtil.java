@@ -85,15 +85,19 @@ public class ReminderUtil {
 		for (ReminderEntity reminderEntiy : toReminds) {
 			demogEntity = batchServiceDAO.getApplicantDemographicDetails(reminderEntiy.getPrereg_id());
 			ReminderDTO remindDTO = extractRemindingDetails(reminderEntiy, demogEntity);
-			log.debug("Value extracted:", "", "", remindDTO.toString());
-			reminders.add(remindDTO);
+			log.debug("Value extracted:", "", "", ""+remindDTO);
+			handleReminderDTO(remindDTO);
 		}
 		sendRemindingNotifications();
 
 		return true;
 
 	}
-
+ private void handleReminderDTO(ReminderDTO reminderDTO)
+ {
+ 	if (reminderDTO!=null)
+ 		reminders.add(reminderDTO);
+ }
 	private ReminderDTO extractRemindingDetails(ReminderEntity remind, DemographicEntity demogEntity) {
 		ReminderDTO reminderDTO = null;
 
