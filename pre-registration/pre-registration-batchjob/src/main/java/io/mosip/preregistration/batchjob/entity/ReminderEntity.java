@@ -64,8 +64,6 @@ public class ReminderEntity implements Serializable {
 
 	@Column(name = "lang_code")
 	private String lang_code;
-	// "
-	// "booking_dtimes","appointment_date","slot_from_time","slot_to_time","lang_code","cr_by","cr_dtimes","upd_by","upd_dtimes"
 
 	public String getId() {
 		return id;
