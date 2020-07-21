@@ -16,6 +16,7 @@ import io.mosip.kernel.core.notification.spi.SMSServiceProvider;
  * @author CONDEIS
  */
 @Component
+// TODO: To be moved in Kernel Notification service ()
 public class SMSProviderImpl implements SMSServiceProvider {
 
     private static String indicator = "224";
