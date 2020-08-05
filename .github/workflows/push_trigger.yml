@@ -49,6 +49,15 @@ jobs:
           cd pre-registration
           mvn -B package -s $GITHUB_WORKSPACE/settings.xml -Dmaven.test.skip=true --file pom.xml
 
+      - name: Ready the springboot artifacts
+        run: find -name '*.jar' -executable -type f  -exec zip release.zip {} +
+
+      - name: Upload the springboot jars
+        uses: actions/upload-artifact@v1
+        with:
+          name: release
+          path: ./release.zip
+
 #  publish_to_nexus:
 #    needs: build
 #
