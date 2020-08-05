@@ -576,8 +576,7 @@ public class DemographicService implements DemographicServiceIntf {
 			} else {
 				demographicMetadata.put(nameValue, serviceUtil.getValueFromIdentity(decryptedString, nameValue));
 			}
-			demographicMetadata.put(postalCodeValue,
-					serviceUtil.getIdJSONValue(jsonObj.toJSONString(), postalCodeValue));
+			demographicMetadata.put(postalCodeValue, serviceUtil.getValueFromIdentity(decryptedString, postalCodeValue));
 			demographicMetadata.put(poaValue, documentJsonObject);
 			DemographicViewDTO viewDto = new DemographicViewDTO();
 			viewDto.setPreRegistrationId(demographicEntity.getPreRegistrationId());
