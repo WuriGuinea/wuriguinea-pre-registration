@@ -57,6 +57,14 @@ public class NotificationUtil {
 	@Value("${cancel.appoinment.template}")
 	private String cancelAppoinment;
 
+	@Value("${remind.appointment.template}")
+	private String remindAppointment;
+
+	@Value("${email.reminder.subject.template}")
+	private String emailReminderSubject;
+
+	@Value("${sms.reminder.template}")
+	private String smsReminder;
 	@Autowired
 	private TemplateUtil templateUtil;
 
@@ -108,7 +116,11 @@ public class NotificationUtil {
 		MainResponseDTO<NotificationResponseDTO> response = new MainResponseDTO<>();
 		String merseTemplate = null;
 		if (acknowledgementDTO.getIsBatch()) {
-			fileText = templateUtil.getTemplate(langCode, cancelAppoinment);
+			if (acknowledgementDTO.getIsReminderBatch()) {
+				fileText = templateUtil.getTemplate(langCode, remindAppointment);
+			} else {
+				fileText = templateUtil.getTemplate(langCode, cancelAppoinment);
+			}
 		} else {
 
 			fileText = templateUtil.getTemplate(langCode, emailAcknowledgement);
@@ -172,8 +184,15 @@ public class NotificationUtil {
 		ResponseEntity<ResponseWrapper<NotificationResponseDTO>> resp = null;
 		String mergeTemplate = null;
 		if (acknowledgementDTO.getIsBatch()) {
+							if (acknowledgementDTO.getIsRemindBatch())
+							{
+								mergeTemplate = templateUtil.templateMerge(templateUtil.getTemplate(langCode, smsReminder),
+										acknowledgementDTO);
+							}
+							
+		else{
 			mergeTemplate = templateUtil.templateMerge(templateUtil.getTemplate(langCode, cancelAppoinment),
-					acknowledgementDTO);
+					acknowledgementDTO);}
 		} else {
 			mergeTemplate = templateUtil.templateMerge(templateUtil.getTemplate(langCode, smsAcknowledgement),
 					acknowledgementDTO);
