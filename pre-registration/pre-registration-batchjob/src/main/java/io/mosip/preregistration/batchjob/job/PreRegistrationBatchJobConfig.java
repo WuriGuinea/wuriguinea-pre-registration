@@ -39,19 +39,19 @@ public class PreRegistrationBatchJobConfig {
     @Autowired
     private DataSource dataSource;
 
-    //@Autowired
+    @Autowired
     private ConsumedStatusTasklet consumedStatusTasklet;
     @Autowired
     private ReminderTasklet reminderTasklet;
 
-    //@Autowired
+    @Autowired
     private AvailabilitySyncTasklet availabilitySyncTasklet;
 
-    //@Autowired
+    @Autowired
     private ExpiredStatusTasklet expiredStatusTasklet;
 
 
-    //@Bean
+    @Bean
     public Step consumedStatusStep() {
         return stepBuilderFactory.get("consumedStatusStep").tasklet(consumedStatusTasklet).build();
     }
@@ -61,17 +61,17 @@ public class PreRegistrationBatchJobConfig {
         return stepBuilderFactory.get("reminderStep").tasklet(reminderTasklet).build();
     }
 
-    //@Bean
+    @Bean
     public Step availabilitySyncStep() {
         return stepBuilderFactory.get("availabilitySyncStep").tasklet(availabilitySyncTasklet).build();
     }
 
-    //@Bean
+    @Bean
     public Step expiredStatusStep() {
         return stepBuilderFactory.get("expiredStatusStep").tasklet(expiredStatusTasklet).build();
     }
 
-    //	@Bean
+    	@Bean
     public Job availabilitySyncJob() {
         return this.jobBuilderFactory.get("availabilitySyncJob")
                 .incrementer(new RunIdIncrementer())
@@ -79,7 +79,7 @@ public class PreRegistrationBatchJobConfig {
                 .build();
     }
 
-    //@Bean
+    @Bean
     public Job consumedStatusJob() {
         return this.jobBuilderFactory.get("consumedStatusJob")
                 .incrementer(new RunIdIncrementer())
@@ -87,7 +87,7 @@ public class PreRegistrationBatchJobConfig {
                 .build();
     }
 
-    //	@Bean
+    	@Bean
     public Job expiredStatusJob() {
         return this.jobBuilderFactory.get("expiredStatusJob")
                 .incrementer(new RunIdIncrementer())
