@@ -31,8 +31,8 @@ import io.mosip.preregistration.core.config.LoggerConfiguration;
 import io.mosip.preregistration.core.exception.RestCallException;
 
 /**
- * @author Sanober Noor
- * @since 1.0.0
+ * @author condeis
+ * @since 1.1.0
  */
 @Component
 public class NotificationUtil {
@@ -64,7 +64,7 @@ public class NotificationUtil {
 	private String emailReminderSubject;
 
 	@Value("${sms.reminder.template}")
-	private String smsReminder;
+	private String smsRemindAppointment;
 	@Autowired
 	private TemplateUtil templateUtil;
 
@@ -186,7 +186,7 @@ public class NotificationUtil {
 		if (acknowledgementDTO.getIsBatch()) {
 							if (acknowledgementDTO.getIsRemindBatch())
 							{
-								mergeTemplate = templateUtil.templateMerge(templateUtil.getTemplate(langCode, smsReminder),
+								mergeTemplate = templateUtil.templateMerge(templateUtil.getTemplate(langCode, smsRemindAppointment),
 										acknowledgementDTO);
 							}
 							
