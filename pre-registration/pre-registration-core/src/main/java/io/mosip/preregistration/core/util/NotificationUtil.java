@@ -184,7 +184,7 @@ public class NotificationUtil {
 		ResponseEntity<ResponseWrapper<NotificationResponseDTO>> resp = null;
 		String mergeTemplate = null;
 		if (acknowledgementDTO.getIsBatch()) {
-							if (acknowledgementDTO.getIsRemindBatch())
+							if (acknowledgementDTO.getIsReminderBatch())
 							{
 								mergeTemplate = templateUtil.templateMerge(templateUtil.getTemplate(langCode, smsRemindAppointment),
 										acknowledgementDTO);
