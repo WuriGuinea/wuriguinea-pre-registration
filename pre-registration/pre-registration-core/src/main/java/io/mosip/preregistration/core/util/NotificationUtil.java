@@ -57,8 +57,8 @@ public class NotificationUtil {
 	@Value("${cancel.appoinment.template}")
 	private String cancelAppoinment;
 
-	@Value("${remind.appointment.template}")
-	private String remindAppointment;
+	@Value("${email.reminder.template}")
+	private String emailRemindAppointment;
 
 	@Value("${email.reminder.subject.template}")
 	private String emailReminderSubject;
@@ -117,7 +117,7 @@ public class NotificationUtil {
 		String merseTemplate = null;
 		if (acknowledgementDTO.getIsBatch()) {
 			if (acknowledgementDTO.getIsReminderBatch()) {
-				fileText = templateUtil.getTemplate(langCode, remindAppointment);
+				fileText = templateUtil.getTemplate(langCode, emailRemindAppointment);
 			} else {
 				fileText = templateUtil.getTemplate(langCode, cancelAppoinment);
 			}
@@ -165,7 +165,10 @@ public class NotificationUtil {
 	 */
 	public String getEmailSubject(NotificationDTO acknowledgementDTO, String langCode) throws IOException {
 		log.info("sessionId", "idType", "id", "In getEmailSubject method of NotificationUtil service");
-		return templateUtil.templateMerge(templateUtil.getTemplate(langCode, emailAcknowledgementSubject),
+		String subject=emailAcknowledgementSubject;
+		 if  (acknowledgementDTO.getIsReminderBatch()!=null && acknowledgementDTO.getIsReminderBatch())//(acknowledgementDTO.getIsReminderBatch())
+			 subject=emailReminderSubject;
+		return templateUtil.templateMerge(templateUtil.getTemplate(langCode, subject),
 				acknowledgementDTO);
 	}
 
