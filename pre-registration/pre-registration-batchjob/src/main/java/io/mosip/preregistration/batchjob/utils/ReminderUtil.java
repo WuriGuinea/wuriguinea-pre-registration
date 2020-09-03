@@ -1,5 +1,7 @@
 package io.mosip.preregistration.batchjob.utils;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,42 +62,46 @@ public class ReminderUtil {
 	@Autowired
 	private BatchJpaRepositoryImpl batchServiceDAO;
 
-//	@Autowired
+	@Autowired
 	private AuditLogUtil auditLogUtil;
 
 	/** The Constant LOGGER. */
 	private Logger log = LoggerConfiguration.logConfig(ReminderUtil.class);
 
+	/**
+	 * Autowired reference for {@link #restTemplateBuilder}
+	 */
+	@Autowired
 	RestTemplate restTemplate;
 
 	@Value("${notification.url}")
 	private String notificationResourseurl;
 
+	@Value("${mosip.primary-language}")
+	String primaryLang;
 	List<ReminderDTO> reminders;
 
-	@Autowired
-	SMSServiceProvider smsServiceProvider;
-
-	public boolean processApplicantToRemind() {
+	public boolean processApplicantToRemind(HttpHeaders headers) throws JsonProcessingException {
 		reminders = new ArrayList<ReminderDTO>();
 		DemographicEntity demogEntity;
 		List<ReminderEntity> toReminds = batchServiceDAO.findAppointmentsToRemind();
 		for (ReminderEntity reminderEntiy : toReminds) {
 			demogEntity = batchServiceDAO.getApplicantDemographicDetails(reminderEntiy.getPrereg_id());
 			ReminderDTO remindDTO = extractRemindingDetails(reminderEntiy, demogEntity);
-			log.debug("Value extracted:", "", "", ""+remindDTO);
+			log.debug("Value extracted:", "", "", "" + remindDTO);
 			handleReminderDTO(remindDTO);
 		}
-		sendRemindingNotifications();
+		sendRemindingNotifications(headers);
 
 		return true;
 
 	}
- private void handleReminderDTO(ReminderDTO reminderDTO)
- {
- 	if (reminderDTO!=null)
- 		reminders.add(reminderDTO);
- }
+
+	private void handleReminderDTO(ReminderDTO reminderDTO) {
+		if (reminderDTO != null)
+			reminders.add(reminderDTO);
+	}
+
 	private ReminderDTO extractRemindingDetails(ReminderEntity remind, DemographicEntity demogEntity) {
 		ReminderDTO reminderDTO = null;
 
@@ -125,21 +131,32 @@ public class ReminderUtil {
 		return reminderDTO;
 	}
 
-	private void sendRemindingNotifications() {
+	private void sendRemindingNotifications(HttpHeaders headers) throws JsonProcessingException {
 		for (ReminderDTO remindTo : reminders) {
-			processNotificationSending(remindTo);
-			log.info(" Sending dummy notifications to: " + remindTo.getApplicantfirstName() + " "
-					+ remindTo.getAppliantLastName() + " " + "preregID " + remindTo.getPreRegId() + ""
-					+ " for an appointement tomorrow from " + remindTo.getSlotFrom() + " to " + remindTo.getToSlot()
-					+ "at center " + remindTo.getCenterID(), "", "", " ");
-			}
+			processNotificationSending(remindTo, headers);
+			System.out.println("Processing " + remindTo.getAppliantLastName());
+		}
 
 	}
 
-	private void processNotificationSending(ReminderDTO remindTo) {
+	private void processNotificationSending(ReminderDTO remindTo, HttpHeaders headers) throws JsonProcessingException {
 		String message = remindingMessage(remindTo);
-//		smsServiceProvider.sendSms(remindTo.getApplicantMobNum(), message);
-		System.out.println(message); //for test purposes
+
+		NotificationDTO notification = new NotificationDTO();
+		notification.setIsReminderBatch(true);
+		notification.setEmailID(remindTo.getApplicantEmail());
+		notification.setMobNum(remindTo.getApplicantMobNum());
+		notification.setName(remindTo.getApplicantName());
+		notification.setAppointmentDate(remindTo.getAppointementDate());
+		notification.setPreRegistrationId(remindTo.getPreRegId());
+		String time = LocalTime.parse(remindTo.getSlotFrom(), DateTimeFormatter.ofPattern("HH:mm"))
+				.format(DateTimeFormatter.ofPattern("hh:mm a"));
+		notification.setAppointmentTime(time);
+		notification.setAdditionalRecipient(false);
+		notification.setIsBatch(true);
+		log.info("sessionId", "idType", "id", "Sending reminder to"+remindTo.getApplicantName());
+		System.out.println(message);
+		emailNotification(notification, primaryLang, headers);
 
 	}
 
@@ -190,4 +207,5 @@ public class ReminderUtil {
 
 		}
 	}
+
 }
