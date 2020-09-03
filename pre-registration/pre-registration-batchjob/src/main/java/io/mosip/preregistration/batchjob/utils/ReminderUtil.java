@@ -155,7 +155,7 @@ public class ReminderUtil {
 		notification.setAdditionalRecipient(false);
 		notification.setIsBatch(true);
 		log.info("sessionId", "idType", "id", "Sending reminder to"+remindTo.getApplicantName());
-	//	System.out.println(message);
+		System.out.println(message);
 		emailNotification(notification, primaryLang, headers);
 
 	}
