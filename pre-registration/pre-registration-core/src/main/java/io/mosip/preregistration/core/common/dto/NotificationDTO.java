@@ -57,7 +57,11 @@ public class NotificationDTO implements Serializable {
 	 * batch config field
 	 */
 	private Boolean isBatch;
+	/**
+	 * remdinder batch config field
+	 */
+	private Boolean isReminderBatch;
 	
-  
+	  
 
 }

@@ -31,8 +31,8 @@ import io.mosip.preregistration.core.config.LoggerConfiguration;
 import io.mosip.preregistration.core.exception.RestCallException;
 
 /**
- * @author Sanober Noor
- * @since 1.0.0
+ * @author condeis
+ * @since 1.1.0
  */
 @Component
 public class NotificationUtil {
@@ -57,6 +57,14 @@ public class NotificationUtil {
 	@Value("${cancel.appoinment.template}")
 	private String cancelAppoinment;
 
+	@Value("${email.reminder.template}")
+	private String emailRemindAppointment;
+
+	@Value("${email.reminder.subject.template}")
+	private String emailReminderSubject;
+
+	@Value("${sms.reminder.template}")
+	private String smsRemindAppointment;
 	@Autowired
 	private TemplateUtil templateUtil;
 
@@ -108,7 +116,11 @@ public class NotificationUtil {
 		MainResponseDTO<NotificationResponseDTO> response = new MainResponseDTO<>();
 		String merseTemplate = null;
 		if (acknowledgementDTO.getIsBatch()) {
-			fileText = templateUtil.getTemplate(langCode, cancelAppoinment);
+			if (acknowledgementDTO.getIsReminderBatch()) {
+				fileText = templateUtil.getTemplate(langCode, emailRemindAppointment);
+			} else {
+				fileText = templateUtil.getTemplate(langCode, cancelAppoinment);
+			}
 		} else {
 
 			fileText = templateUtil.getTemplate(langCode, emailAcknowledgement);
@@ -153,7 +165,10 @@ public class NotificationUtil {
 	 */
 	public String getEmailSubject(NotificationDTO acknowledgementDTO, String langCode) throws IOException {
 		log.info("sessionId", "idType", "id", "In getEmailSubject method of NotificationUtil service");
-		return templateUtil.templateMerge(templateUtil.getTemplate(langCode, emailAcknowledgementSubject),
+		String subject=emailAcknowledgementSubject;
+		 if  (acknowledgementDTO.getIsReminderBatch()!=null && acknowledgementDTO.getIsReminderBatch())//(acknowledgementDTO.getIsReminderBatch())
+			 subject=emailReminderSubject;
+		return templateUtil.templateMerge(templateUtil.getTemplate(langCode, subject),
 				acknowledgementDTO);
 	}
 
@@ -172,8 +187,15 @@ public class NotificationUtil {
 		ResponseEntity<ResponseWrapper<NotificationResponseDTO>> resp = null;
 		String mergeTemplate = null;
 		if (acknowledgementDTO.getIsBatch()) {
+							if (acknowledgementDTO.getIsReminderBatch())
+							{
+								mergeTemplate = templateUtil.templateMerge(templateUtil.getTemplate(langCode, smsRemindAppointment),
+										acknowledgementDTO);
+							}
+							
+		else{
 			mergeTemplate = templateUtil.templateMerge(templateUtil.getTemplate(langCode, cancelAppoinment),
-					acknowledgementDTO);
+					acknowledgementDTO);}
 		} else {
 			mergeTemplate = templateUtil.templateMerge(templateUtil.getTemplate(langCode, smsAcknowledgement),
 					acknowledgementDTO);
