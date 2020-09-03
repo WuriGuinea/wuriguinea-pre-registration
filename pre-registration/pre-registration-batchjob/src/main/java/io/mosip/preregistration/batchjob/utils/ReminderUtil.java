@@ -62,12 +62,16 @@ public class ReminderUtil {
 	@Autowired
 	private BatchJpaRepositoryImpl batchServiceDAO;
 
-	// @Autowired
+	@Autowired
 	private AuditLogUtil auditLogUtil;
 
 	/** The Constant LOGGER. */
 	private Logger log = LoggerConfiguration.logConfig(ReminderUtil.class);
 
+	/**
+	 * Autowired reference for {@link #restTemplateBuilder}
+	 */
+	@Autowired
 	RestTemplate restTemplate;
 
 	@Value("${notification.url}")
@@ -130,10 +134,7 @@ public class ReminderUtil {
 	private void sendRemindingNotifications(HttpHeaders headers) throws JsonProcessingException {
 		for (ReminderDTO remindTo : reminders) {
 			processNotificationSending(remindTo, headers);
-			log.info(" Sending dummy notifications to: " + remindTo.getApplicantfirstName() + " "
-					+ remindTo.getAppliantLastName() + " " + "preregID " + remindTo.getPreRegId() + ""
-					+ " for an appointement tomorrow from " + remindTo.getSlotFrom() + " to " + remindTo.getToSlot()
-					+ "at center " + remindTo.getCenterID(), "", "", " ");
+			System.out.println("Processing " + remindTo.getAppliantLastName());
 		}
 
 	}
@@ -153,9 +154,9 @@ public class ReminderUtil {
 		notification.setAppointmentTime(time);
 		notification.setAdditionalRecipient(false);
 		notification.setIsBatch(true);
+		log.info("sessionId", "idType", "id", "Sending reminder to"+remindTo.getApplicantName());
+	//	System.out.println(message);
 		emailNotification(notification, primaryLang, headers);
-
-		System.out.println("---"+notification.toString());
 
 	}
 
@@ -206,7 +207,5 @@ public class ReminderUtil {
 
 		}
 	}
-
-
 
 }

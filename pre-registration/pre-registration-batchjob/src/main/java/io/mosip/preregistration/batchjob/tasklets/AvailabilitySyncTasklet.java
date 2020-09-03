@@ -2,7 +2,8 @@
 /* 
  * Copyright
  * 
- */package io.mosip.preregistration.batchjob.tasklets;
+ */
+package io.mosip.preregistration.batchjob.tasklets;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepContribution;
@@ -19,7 +20,8 @@ import io.mosip.preregistration.core.config.LoggerConfiguration;
 import io.mosip.preregistration.core.util.AuthTokenUtil;
 
 /**
- * This class is a tasklet of batch job to call master data sync API in batch service.
+ * This class is a tasklet of batch job to call master data sync API in batch
+ * service.
  * 
  * @author Kishan Rathore
  * @since 1.0.0
@@ -30,23 +32,26 @@ public class AvailabilitySyncTasklet implements Tasklet {
 
 	@Autowired
 	private AvailabilityUtil availabilityUtil;
-	
+
 	@Autowired
 	private AuthTokenUtil tokenUtil;
 
 	private Logger log = LoggerConfiguration.logConfig(AvailabilitySyncTasklet.class);
 
-	/* (non-Javadoc)
-	 * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.springframework.batch.core.StepContribution, org.springframework.batch.core.scope.context.ChunkContext)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.
+	 * springframework.batch.core.StepContribution,
+	 * org.springframework.batch.core.scope.context.ChunkContext)
 	 */
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
 		try {
-			HttpHeaders headers=tokenUtil.getTokenHeader();
-			
+			HttpHeaders headers = tokenUtil.getTokenHeader();
+
 			availabilityUtil.addAvailability(headers);
-			
 
 		} catch (Exception e) {
 			log.error("Sync master ", " Tasklet ", " encountered exception ", e.getMessage());

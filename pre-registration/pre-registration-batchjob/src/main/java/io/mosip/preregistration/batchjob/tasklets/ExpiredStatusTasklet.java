@@ -17,7 +17,8 @@ import io.mosip.preregistration.batchjob.utils.ExpiredStatusUtil;
 import io.mosip.preregistration.core.config.LoggerConfiguration;
 
 /**
- * This class is a tasklet of batch job to call expired status service in batch service.
+ * This class is a tasklet of batch job to call expired status service in batch
+ * service.
  * 
  * @author Kishan Rathore
  * @since 1.0.0
@@ -31,14 +32,17 @@ public class ExpiredStatusTasklet implements Tasklet {
 
 	private Logger log = LoggerConfiguration.logConfig(ExpiredStatusTasklet.class);
 
-	/* (non-Javadoc)
-	 * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.springframework.batch.core.StepContribution, org.springframework.batch.core.scope.context.ChunkContext)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.
+	 * springframework.batch.core.StepContribution,
+	 * org.springframework.batch.core.scope.context.ChunkContext)
 	 */
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
 		try {
-
 			expiredUtil.expireAppointments();
 
 		} catch (Exception e) {

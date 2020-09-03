@@ -18,7 +18,8 @@ import io.mosip.preregistration.batchjob.utils.ConsumedStatusUtil;
 import io.mosip.preregistration.core.config.LoggerConfiguration;
 
 /**
- * This class is a tasklet of batch job to call update status service in batch service.
+ * This class is a tasklet of batch job to call update status service in batch
+ * service.
  * 
  * @author Kishan Rathore
  * @since 1.0.0
@@ -35,14 +36,18 @@ public class ConsumedStatusTasklet implements Tasklet {
 
 	private Logger log = LoggerConfiguration.logConfig(ConsumedStatusTasklet.class);
 
-	/* (non-Javadoc)
-	 * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.springframework.batch.core.StepContribution, org.springframework.batch.core.scope.context.ChunkContext)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.
+	 * springframework.batch.core.StepContribution,
+	 * org.springframework.batch.core.scope.context.ChunkContext)
 	 */
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext arg1) throws Exception {
 
 		try {
-			
+
 			consumeJob.demographicConsumedStatus();
 
 		} catch (Exception e) {
