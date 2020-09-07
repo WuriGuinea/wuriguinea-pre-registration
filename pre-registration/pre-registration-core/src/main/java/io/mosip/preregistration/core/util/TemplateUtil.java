@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +55,13 @@ public class TemplateUtil {
 
 	@Value("${resource.template.url}")
 	private String resourceUrl;
+	
+
+	@Value("${resource.template.provided.date.format}")
+	private String providedDateFormat;
+
+	@Value("${resource.template.expected.date.format}")
+	private String expectedDateFormat;
 	/**
 	 * Autowired reference for {@link #restTemplateBuilder}
 	 */
@@ -123,10 +132,25 @@ public class TemplateUtil {
 		responseMap.put("PRID", acknowledgementDTO.getPreRegistrationId());
 		responseMap.put("Date", dateFormate.format(now));
 		responseMap.put("Time", timeFormate.format(localTime));
-		responseMap.put("Appointmentdate", acknowledgementDTO.getAppointmentDate());
+		responseMap.put("Appointmentdate", formatAppointmentDate(acknowledgementDTO.getAppointmentDate()));
 		responseMap.put("Appointmenttime", acknowledgementDTO.getAppointmentTime());
 		return responseMap;
 	}
 
-}
+	public String formatAppointmentDate(String appointmentDate) {
+		String formatted = appointmentDate;
 
+		try {
+			SimpleDateFormat provided = new SimpleDateFormat(providedDateFormat);
+			SimpleDateFormat expected = new SimpleDateFormat(expectedDateFormat);
+		 
+			Date date = provided.parse(appointmentDate);
+			formatted=expected.format(date);
+					
+		} catch (Exception e) {
+			log.error("sessionId", "idType", "Unable to format date", formatted);
+		}
+
+		return formatted;
+	}
+}
