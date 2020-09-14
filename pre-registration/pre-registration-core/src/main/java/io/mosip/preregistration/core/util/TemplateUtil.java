@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -49,11 +50,15 @@ public class TemplateUtil {
 	@Value("${resource.template.url}")
 	private String resourceUrl;
 
-	@Value("${resource.template.provided.date.format}")
-	private String providedDateFormat;
+	//@Value("${resource.template.provided.date.format}")
+	private String providedDateFormat="yyyy-MM-dd";
 
-	@Value("${resource.template.expected.date.format}")
-	private String expectedDateFormat;
+	//@Value("${resource.template.expected.date.format}")
+	private String expectedDateFormat="dd/MM/yyyy";
+	
+	private String providedTimeFormat="yyyy-MM-dd hh:mm aa";
+	
+	private String expectTimeFormat="hh:mm";
 	/**
 	 * Autowired reference for {@link #restTemplateBuilder}
 	 */
@@ -126,7 +131,7 @@ public class TemplateUtil {
 		responseMap.put("Date", dateFormate.format(now));
 		responseMap.put("Time", timeFormate.format(localTime));
 		responseMap.put("Appointmentdate", formatAppointmentDate(acknowledgementDTO.getAppointmentDate()));
-		responseMap.put("Appointmenttime", acknowledgementDTO.getAppointmentTime());
+		responseMap.put("Appointmenttime", formatAppointmentTime(acknowledgementDTO.getAppointmentDate(), acknowledgementDTO.getAppointmentTime()));
 		return responseMap;
 	}
 
@@ -135,13 +140,30 @@ public class TemplateUtil {
 
 		try {
 			SimpleDateFormat provided = new SimpleDateFormat(providedDateFormat);
-			SimpleDateFormat expected = new SimpleDateFormat(expectedDateFormat);
+			SimpleDateFormat expected = new SimpleDateFormat(expectedDateFormat,Locale.FRENCH);
 
 			Date date = provided.parse(appointmentDate);
 			formatted = expected.format(date);
 
 		} catch (Exception e) {
 			log.error("sessionId", "idType", "Unable to format date", formatted);
+		}
+
+		return formatted;
+	}
+	public String formatAppointmentTime(String appointementDate,String appointmentTime) {
+		String formatted = appointmentTime;
+
+		try {
+			
+			SimpleDateFormat provided = new SimpleDateFormat(providedTimeFormat);
+			SimpleDateFormat expected = new SimpleDateFormat(expectTimeFormat,Locale.FRENCH);
+
+			Date date = provided.parse(appointementDate+" "+appointmentTime);
+			formatted = expected.format(date);
+
+		} catch (Exception e) {
+			log.error("sessionId", "idType", "Unable to format date time", formatted);
 		}
 
 		return formatted;
