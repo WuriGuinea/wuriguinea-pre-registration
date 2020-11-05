@@ -1,4 +1,4 @@
-package io.mosip.preregistrationcontacus.preregistrationcontactusservice.models;
+package io.mosip.preregistration.contactus.models;
 
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +9,6 @@ public class ContactUsRequestModel {
     private String name;
     private String email;
     private String reason;
-    private String others;
-    private String comment;
+    private String otherReason;
+    private String message;
 }

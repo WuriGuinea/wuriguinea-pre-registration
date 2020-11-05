@@ -1,12 +1,12 @@
-POST http://localhost:8080/contact-us
+POST http://localhost:8081/contact-us
 Content-Type: application/json
 
 {
   "name" : "Mamadou Yaya DIALLO",
   "email" : "yayamombeya090@gmail.com",
   "reason" :  "DEMANDE INFOR",
-  "others" : null,
-  "comment" : "Need some information, please call me on 622315214"
+  "otherReason" : null,
+  "message" : "Need some information, please call me on 622315214"
 }
 ###
 

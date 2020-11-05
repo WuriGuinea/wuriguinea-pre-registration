@@ -15,7 +15,9 @@
     <description>This microservice api is use to get user data on contact us page on the prereg UI.</description>
 
     <properties>
+        <pre.registration.core.version>1.0.9</pre.registration.core.version>
         <java.version>1.8</java.version>
+        <swagger.version>2.9.2</swagger.version>
     </properties>
 
     <dependencies>
@@ -46,7 +48,11 @@
             <artifactId>sendgrid-java</artifactId>
             <version>4.6.7</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
