@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//TODO to be integration in the CORE
 public class MainResponseDTO<T> implements Serializable {
         private static final long serialVersionUID = 3384945682672832638L;
         @ApiModelProperty(
