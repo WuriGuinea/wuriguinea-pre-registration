@@ -104,10 +104,12 @@ public class ReminderUtil {
 
 	private ReminderDTO extractRemindingDetails(ReminderEntity remind, DemographicEntity demogEntity) {
 		ReminderDTO reminderDTO = null;
-
+ String tmp="";
 		try {
+			tmp=new String(demogEntity.getApplicantDetailJson());
 			JSONObject applicantDetails = new JSONObject(new String(demogEntity.getApplicantDetailJson()))
 					.getJSONObject(JSON_FIELD_IDENTITY);
+
 			String applicantfirstName = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_FIRSTNAME).get(0)))
 					.getString(JSON_FIELD_VALUE);
 			String appliantLastName = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_LASTNAME).get(0)))
@@ -125,7 +127,7 @@ public class ReminderUtil {
 			reminderDTO = new ReminderDTO(preRegId, appointementDate, slotFrom, toSlot, applicantfirstName,
 					appliantLastName, applicantGender, applicantMobNum, applicantEmail, centerID);
 		} catch (JSONException e) {
-			log.debug("Error while processing applicants details", "", "", "" + e);
+			log.debug("Error while processing applicants details", "", "", "" + e +"- "+tmp);
 
 		}
 		return reminderDTO;
