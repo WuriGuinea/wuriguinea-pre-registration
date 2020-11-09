@@ -1,8 +1,12 @@
 name: Release maven packages and docker upon a release
 
 on:
-  release: 
-    types: [published]
+  push:
+    branches:
+      - dev
+#on:
+#  release: 
+#    types: [published]
   
 jobs:
   build:
