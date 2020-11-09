@@ -40,7 +40,7 @@ import io.mosip.preregistration.core.common.entity.DemographicEntity;
 import io.mosip.preregistration.core.config.LoggerConfiguration;
 import io.mosip.preregistration.core.exception.NotificationException;
 import io.mosip.preregistration.core.util.AuditLogUtil;
-
+import io.mosip.preregistration.core.util.CryptoUtil;
 /**
  * 
  * @author CONDEIS
@@ -64,6 +64,9 @@ public class ReminderUtil {
 
 	@Autowired
 	private AuditLogUtil auditLogUtil;
+
+	@Autowired
+	CryptoUtil cryptoUtil;
 
 	/** The Constant LOGGER. */
 	private Logger log = LoggerConfiguration.logConfig(ReminderUtil.class);
@@ -97,6 +100,21 @@ public class ReminderUtil {
 
 	}
 
+	private String decryptApplicantDetails(DemographicEntity demographicEntity)
+
+	{
+	byte [] appDtailsbytes =	cryptoUtil
+				.decrypt(demographicEntity.getApplicantDetailJson(), demographicEntity.getEncryptedDateTime());
+
+
+		String applicantDetails = new String(appDtailsbytes);
+		log.debug("Value decrypted:", "", "", "" + applicantDetails);
+		System.out.println (" ------->"+applicantDetails);
+
+		return applicantDetails;
+	}
+
+
 	private void handleReminderDTO(ReminderDTO reminderDTO) {
 		if (reminderDTO != null)
 			reminders.add(reminderDTO);
@@ -106,7 +124,7 @@ public class ReminderUtil {
 		ReminderDTO reminderDTO = null;
  String tmp="";
 		try {
-			tmp=new String(demogEntity.getApplicantDetailJson());
+			tmp=decryptApplicantDetails(demogEntity);
 			JSONObject applicantDetails = new JSONObject(new String(demogEntity.getApplicantDetailJson()))
 					.getJSONObject(JSON_FIELD_IDENTITY);
 
