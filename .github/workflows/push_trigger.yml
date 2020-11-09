@@ -3,7 +3,7 @@ name: Build, dockerize & push images
 on:
   push:
     branches:
-      - 1.1.1
+      - dev
 
 jobs:
   build:
