@@ -14,13 +14,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
+import io.mosip.preregistration.demographic.dto.DemographicRequestDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,13 +39,18 @@ import io.mosip.preregistration.batchjob.entity.ReminderEntity;
 import io.mosip.preregistration.batchjob.exception.RestCallException;
 import io.mosip.preregistration.batchjob.model.ReminderDTO;
 import io.mosip.preregistration.batchjob.repository.utils.BatchJpaRepositoryImpl;
+import io.mosip.preregistration.core.common.dto.DemographicResponseDTO;
 import io.mosip.preregistration.core.common.dto.MainRequestDTO;
+import io.mosip.preregistration.core.common.dto.MainResponseDTO;
 import io.mosip.preregistration.core.common.dto.NotificationDTO;
 import io.mosip.preregistration.core.common.entity.DemographicEntity;
 import io.mosip.preregistration.core.config.LoggerConfiguration;
 import io.mosip.preregistration.core.exception.NotificationException;
 import io.mosip.preregistration.core.util.AuditLogUtil;
 import io.mosip.preregistration.core.util.CryptoUtil;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 /**
  * 
  * @author CONDEIS
@@ -79,6 +89,9 @@ public class ReminderUtil {
 
 	@Value("${notification.url}")
 	private String notificationResourseurl;
+	
+	@Value("${demographic.resource.url}")
+	private String demographicResourceUrl;
 
 	@Value("${mosip.primary-language}")
 	String primaryLang;
@@ -100,16 +113,10 @@ public class ReminderUtil {
 
 	}
 
-	private String decryptApplicantDetails(DemographicEntity demographicEntity)
+	private String decryptApplicantDetails(DemographicEntity demographicEntity, HttpHeaders headers)
 
-	{
-	byte [] appDtailsbytes =	cryptoUtil
-				.decrypt(demographicEntity.getApplicantDetailJson(), demographicEntity.getEncryptedDateTime());
+	{String applicantDetails =  "";
 
-
-		String applicantDetails = new String(appDtailsbytes);
-		log.debug("Value decrypted:", "", "", "" + applicantDetails);
-		System.out.println (" ------->"+applicantDetails);
 
 		return applicantDetails;
 	}
@@ -124,18 +131,25 @@ public class ReminderUtil {
 		ReminderDTO reminderDTO = null;
  String tmp="";
 		try {
-			tmp=decryptApplicantDetails(demogEntity);
-			JSONObject applicantDetails = new JSONObject(new String(demogEntity.getApplicantDetailJson()))
-					.getJSONObject(JSON_FIELD_IDENTITY);
-
-			String applicantfirstName = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_FIRSTNAME).get(0)))
-					.getString(JSON_FIELD_VALUE);
-			String appliantLastName = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_LASTNAME).get(0)))
-					.getString(JSON_FIELD_VALUE);
-			String applicantGender = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_GENDER).get(0)))
-					.getString(JSON_FIELD_VALUE);
-			String applicantMobNum = applicantDetails.getString(JSON_FIELD_PHONE);
-			String applicantEmail = applicantDetails.getString(JSON_FIELD_EMAIL);
+		tmp=decryptApplicantDetails(demogEntity, new HttpHeaders());
+//			JSONObject applicantDetails = new JSONObject(new String(demogEntity.getApplicantDetailJson()))
+//					.getJSONObject(JSON_FIELD_IDENTITY);
+//
+//			String applicantfirstName = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_FIRSTNAME).get(0)))
+//					.getString(JSON_FIELD_VALUE);
+//			String appliantLastName = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_LASTNAME).get(0)))
+//					.getString(JSON_FIELD_VALUE);
+//			String applicantGender = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_GENDER).get(0)))
+//					.getString(JSON_FIELD_VALUE);
+//			String applicantMobNum = applicantDetails.getString(JSON_FIELD_PHONE);
+//			String applicantEmail = applicantDetails.getString(JSON_FIELD_EMAIL);
+			
+			
+			String applicantfirstName = "TestName";
+			String appliantLastName =  "LastName";
+			String applicantGender = "Masculin";
+			String applicantMobNum =  "625739085";
+			String applicantEmail = "net6crash@gmail.com";
 			String preRegId = remind.getPrereg_id();
 			String centerID = remind.getRegistrationCenterId();
 			String slotFrom = "" + remind.getSlotFromTime();
@@ -144,7 +158,7 @@ public class ReminderUtil {
 
 			reminderDTO = new ReminderDTO(preRegId, appointementDate, slotFrom, toSlot, applicantfirstName,
 					appliantLastName, applicantGender, applicantMobNum, applicantEmail, centerID);
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			log.debug("Error while processing applicants details", "", "", "" + e +"- "+tmp);
 
 		}
@@ -227,5 +241,7 @@ public class ReminderUtil {
 
 		}
 	}
+
+	
 
 }
