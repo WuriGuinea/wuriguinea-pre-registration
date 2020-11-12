@@ -182,7 +182,7 @@ jobs:
           echo ${{ env.BRANCH_NAME }}
 
       - name: Package app
-          run: |
+        run: |
             cd "./${{env.SERVICE_LOCATION}}"
             mvn clean package -Dmaven.test.skip=true
 
@@ -196,7 +196,6 @@ jobs:
       - name: Push image
         run: |
           IMAGE_ID=$NAMESPACE/$SERVICE_NAME
-
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           VERSION=$BRANCH_NAME
