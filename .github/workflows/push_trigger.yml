@@ -162,6 +162,49 @@ jobs:
           docker tag $SERVICE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
+
+  docker-pre-registration-contactus:
+    needs: build
+
+    runs-on: ubuntu-latest
+    env:
+      NAMESPACE: wuriguinea
+      SERVICE_NAME: pre-registration-contactus
+      SERVICE_LOCATION: pre-registration/pre-registration-contactus-service
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup branch name
+        run: |
+          # Strip git ref prefix from version
+          echo "::set-env name=BRANCH_NAME::$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')"
+          echo ${{ env.BRANCH_NAME }}
+
+      - name: Package app
+          run: |
+            cd "./${{env.SERVICE_LOCATION}}"
+            mvn clean package -Dmaven.test.skip=true
+
+      - name: Build image
+        run: |
+          cd "./${{env.SERVICE_LOCATION}}"
+          docker build . --file Dockerfile --tag ${{ env.SERVICE_NAME }}
+      - name: Log into registry
+        run: echo "${{ secrets.release_docker_hub }}" | docker login -u ${{ secrets.actor_docker_hub }} --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_ID=$NAMESPACE/$SERVICE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=$BRANCH_NAME
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $SERVICE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
 #  publish_to_nexus:
 #    needs: build
 #
