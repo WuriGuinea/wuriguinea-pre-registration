@@ -1,13 +1,25 @@
-POST http://localhost:8081/contact-us
+POST https://guinea-sandbox.mosip.net/pre-registration-contactus/contact-us
+Content-Type: application/json
+
+{"name" : "Mamadou Yaya DIALLO", "email" : "yayamombeya090@gmail.com", "reason" :  "DEMANDE INFOR", "otherReason" : null, "message" : "Need some information, please call me on 622315214"}
+
+###
+
+curl -d '{"name" : "Mamadou Yaya DIALLO", "email" : "yayamombeya090@gmail.com", "reason" :  "DEMANDE INFOR", "otherReason" : null, "message" : "Need some information, please call me on 622315214"}' -H 'Content-Type: application/json' http://localhost:8081/contact-us
+
+
+
+
+POST https://example.com
 Content-Type: application/json
 
 {
-  "name" : "Mamadou Yaya DIALLO",
-  "email" : "yayamombeya090@gmail.com",
-  "reason" :  "DEMANDE INFOR",
-  "otherReason" : null,
-  "message" : "Need some information, please call me on 622315214"
+json
 }
+
+###
+
+
 ###
 
 #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
