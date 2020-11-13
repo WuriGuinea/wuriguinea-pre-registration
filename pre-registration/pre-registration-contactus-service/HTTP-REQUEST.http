@@ -3,7 +3,7 @@ POST http://localhost:8081/pre-registration-contactus/contact-us
 Content-Type:application/json
 emailSubject:'Reception de votre demande'
 sendGridEmailId:myaya.diallo@wuriguinee.com
-sendGridSecretKey:---Change by the given secret id----
+sendGridSecretKey:---Change by the given secret id--
 
 {
   "name" : "Mamadou Yaya DIALLO",
