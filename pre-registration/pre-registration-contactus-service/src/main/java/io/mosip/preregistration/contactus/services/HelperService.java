@@ -7,6 +7,8 @@ import io.mosip.preregistration.contactus.models.MainResponseDTO;
 import io.mosip.preregistration.contactus.models.ExceptionJSONInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +20,10 @@ public class HelperService {
     private SendGridEmailService sendGridEmailService;
 
     public MainResponseDTO<ContactUsReponseModel> contactUsValidatorAndMailSender(
-            ContactUsRequestModel request
+            ContactUsRequestModel request,
+            String sendGridSecretKey,
+            String sendGridEmailId,
+            String emailSubject
     ) {
         ContactUsReponseModel valideData = contactDataValidator(request);
 
@@ -39,7 +44,10 @@ public class HelperService {
 
         ContactUsReponseModel contactUsReponseModel = this.sendGridEmailService.sendEmailToUser(
                 request.getEmail(),
-                "Nous avons bien reçu votre demande, vous serez contacter bientôt."
+                "Nous avons bien reçu votre demande, vous serez contacter bientôt.",
+                sendGridSecretKey,
+                sendGridEmailId,
+                emailSubject
         );
 
         if (contactUsReponseModel.getErrorCode() != 202) {

@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -28,14 +25,25 @@ public class ContactUsController {
             produces = {"application/json"}
     )
     public ResponseEntity<MainResponseDTO<ContactUsReponseModel>> sendContactUsData(
+            @RequestHeader String sendGridSecretKey,
+            @RequestHeader String sendGridEmailId,
+            @RequestHeader String emailSubject,
             @RequestBody ContactUsRequestModel request
     ) {
-        log.info("Request data received from forms");
+        log.info("Request data received " + request + "\n");
+        log.info("sendGridSecretKey " + sendGridSecretKey + "\n");
+        log.info("sendGridEmailId " + sendGridEmailId + "\n");
+        log.info("emailSubject " + emailSubject + "\n");
 
         return  ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(
-                                this.helperService.contactUsValidatorAndMailSender(request)
+                                this.helperService.contactUsValidatorAndMailSender(
+                                        request,
+                                        sendGridSecretKey,
+                                        sendGridEmailId,
+                                        emailSubject
+                                )
                 );
     }
 }
