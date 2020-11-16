@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.mosip.preregistration</groupId>
+	<groupId>io.mosip.wuri.preregistration</groupId>
 	<artifactId>pre-registration-parent</artifactId>
 	<version>1.0.7</version>
 	<packaging>pom</packaging>
@@ -124,18 +124,18 @@
 		
 	</properties>
 	<modules>
-		<module>pre-registration-core</module>
-		<module>pre-registration-login-service</module>
+<!--		<module>pre-registration-core</module>-->
+<!--		<module>pre-registration-login-service</module>-->
 		<module>pre-registration-application-service-impl</module>
 		<module>pre-registration-demographic-service</module>
-		<module>pre-registration-document-service</module>
-		<module>pre-registration-booking-service</module>
-		<module>pre-registration-datasync-service</module>
-		<module>pre-registration-batchjob</module>
-		<module>pre-registration-transliteration-service</module>
-		<module>pre-registration-notification-service</module>
-		<module>pre-registration-generateqrcode-service</module>
-        <module>pre-registration-captcha-service</module>
+<!--		<module>pre-registration-document-service</module>-->
+<!--		<module>pre-registration-booking-service</module>-->
+<!--		<module>pre-registration-datasync-service</module>-->
+<!--		<module>pre-registration-batchjob</module>-->
+<!--		<module>pre-registration-transliteration-service</module>-->
+<!--		<module>pre-registration-notification-service</module>-->
+<!--		<module>pre-registration-generateqrcode-service</module>-->
+<!--        <module>pre-registration-captcha-service</module>-->
 	</modules>
 	<build>
 		<pluginManagement>
