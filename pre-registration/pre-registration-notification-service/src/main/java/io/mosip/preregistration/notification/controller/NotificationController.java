@@ -74,7 +74,7 @@ public class NotificationController {
 				"In notification controller for send notification with request notification dto  " + jsonbObject);
 		MainResponseDTO<ResponseDTO> response = notificationService.sendNotification(jsonbObject, langCode, file);
 
-		log.info("sessionID", "idType", "id", response.toString());
+		log.info("YAYA", "SORY", "id", response.toString());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}
