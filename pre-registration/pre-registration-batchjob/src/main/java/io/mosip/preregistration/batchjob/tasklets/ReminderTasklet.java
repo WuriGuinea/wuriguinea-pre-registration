@@ -52,6 +52,7 @@ public class ReminderTasklet implements Tasklet {
 		} catch (Exception e) {
 			log.error("Reminder  ", " Tasklet ", " encountered exception ", e.getMessage());
 			contribution.setExitStatus(new ExitStatus(e.getMessage()));
+			e.printStackTrace();
 		}
 		return RepeatStatus.FINISHED;
 	}
