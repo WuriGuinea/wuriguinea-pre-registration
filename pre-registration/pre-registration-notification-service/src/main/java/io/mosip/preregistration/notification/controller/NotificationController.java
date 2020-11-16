@@ -61,7 +61,7 @@ public class NotificationController {
 	 * @param file
 	 *            the file to send.
 	 * @return the response entity.
-	 */
+	 */ //prereg-notification-service/preregistration/v1/notification/notify
 	@PreAuthorize("hasAnyRole('INDIVIDUAL','PRE_REGISTRATION_ADMIN')")
 	@PostMapping(path = "/notify", consumes = {
 			"multipart/form-data" })
