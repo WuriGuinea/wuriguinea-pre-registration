@@ -177,7 +177,7 @@ public class ReminderUtil {
 	 */
 	public void emailNotification(NotificationDTO notificationDTO, String langCode, HttpHeaders headers)
 			throws JsonProcessingException {
-		String emailResourseUrl = "http://preregistration/v1/notification/notify";
+		String emailResourseUrl = "preregistration/v1/notification/notify";
 		ResponseEntity<String> resp = null;
 		MainRequestDTO<NotificationDTO> request = new MainRequestDTO<>();
 		ObjectMapper mapper = new ObjectMapper();
