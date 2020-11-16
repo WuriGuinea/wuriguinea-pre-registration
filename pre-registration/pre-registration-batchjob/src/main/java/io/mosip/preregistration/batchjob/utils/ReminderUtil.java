@@ -193,7 +193,7 @@ public class ReminderUtil {
 			HttpEntity<MultiValueMap<Object, Object>> httpEntity = new HttpEntity<>(emailMap, headers);
 			log.info("sessionId", "idType", "id",
 					"In emailNotification method of NotificationUtil service emailResourseUrl: " + emailResourseUrl);
-			resp = restTemplate.exchange(emailResourseUrl, HttpMethod.GET, null, String.class);
+			resp = restTemplate.getForEntity(emailResourseUrl, String.class);
 
 			log.info("TEST", "idType", "id",
 					resp.toString());
