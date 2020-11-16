@@ -177,7 +177,7 @@ public class ReminderUtil {
 	 */
 	public void emailNotification(NotificationDTO notificationDTO, String langCode, HttpHeaders headers)
 			throws JsonProcessingException {
-		String emailResourseUrl = "preregistration/v1/notification/notify";
+		String emailResourseUrl = notificationResourseurl + "/test";
 		ResponseEntity<String> resp = null;
 		MainRequestDTO<NotificationDTO> request = new MainRequestDTO<>();
 		ObjectMapper mapper = new ObjectMapper();
@@ -193,8 +193,12 @@ public class ReminderUtil {
 			HttpEntity<MultiValueMap<Object, Object>> httpEntity = new HttpEntity<>(emailMap, headers);
 			log.info("sessionId", "idType", "id",
 					"In emailNotification method of NotificationUtil service emailResourseUrl: " + emailResourseUrl);
-			resp = restTemplate.exchange(emailResourseUrl, HttpMethod.POST, httpEntity, String.class);
+			resp = restTemplate.exchange(emailResourseUrl, HttpMethod.GET, null, String.class);
+
+			log.info("TEST", "idType", "id",
+					resp.toString());
 			List<ServiceError> validationErrorList = ExceptionUtils.getServiceErrorList(resp.getBody());
+
 			if (validationErrorList != null && !validationErrorList.isEmpty()) {
 				throw new NotificationException(validationErrorList, null);
 			}

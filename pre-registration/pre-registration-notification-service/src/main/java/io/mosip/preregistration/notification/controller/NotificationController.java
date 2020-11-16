@@ -75,10 +75,15 @@ public class NotificationController {
 		MainResponseDTO<ResponseDTO> response = notificationService.sendNotification(jsonbObject, langCode, file);
 
 		log.info("YAYA", "SORY", "id", response.toString());
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 
 	}
-	
+
+
+	@PostMapping(path = "/test")
+	public ResponseEntity<String> test() {
+		return new ResponseEntity<>("HEY SORRY", HttpStatus.ACCEPTED);
+	}
 
 	
 	
