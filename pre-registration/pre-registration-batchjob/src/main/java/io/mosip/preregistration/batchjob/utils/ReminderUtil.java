@@ -144,9 +144,9 @@ public class ReminderUtil {
 		String message = remindingMessage(remindTo);
 		NotificationDTO notification = new NotificationDTO();
 		notification.setIsReminderBatch(true);
-		notification.setEmailID(remindTo.getApplicantEmail());
-		notification.setMobNum(remindTo.getApplicantMobNum());
-		notification.setName(remindTo.getApplicantName());
+	//	notification.setEmailID(remindTo.getApplicantEmail());
+	//	notification.setMobNum(remindTo.getApplicantMobNum());
+	//	notification.setName(remindTo.getApplicantName());
 		notification.setAppointmentDate(remindTo.getAppointementDate());
 		notification.setPreRegistrationId(remindTo.getPreRegId());
 		String time = LocalTime.parse(remindTo.getSlotFrom(), DateTimeFormatter.ofPattern("HH:mm"))
