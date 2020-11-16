@@ -228,6 +228,9 @@ public class NotificationService {
 				| JSONException | java.text.ParseException ex) {
 			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
 			log.error("sessionId", "idType", "id", "In notification service of sendNotification " + ex.getMessage());
+			System.out.println("DEBUGGING ----------------");
+				ex.printStackTrace();
+			System.out.println("DEBUGGING ----------------");
 			new NotificationExceptionCatcher().handle(ex, response);
 		} finally {
 			response.setResponsetime(validationUtil.getCurrentResponseTime());

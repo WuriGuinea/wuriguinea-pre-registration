@@ -72,7 +72,10 @@ public class NotificationController {
 			@RequestPart(value = "attachment", required = false) MultipartFile file) {
 		log.info("sessionId", "idType", "id",
 				"In notification controller for send notification with request notification dto  " + jsonbObject);
-		return new ResponseEntity<>(notificationService.sendNotification(jsonbObject, langCode, file), HttpStatus.OK);
+		MainResponseDTO<ResponseDTO> response = notificationService.sendNotification(jsonbObject, langCode, file);
+
+		log.info("sessionID", "idType", "id", response.toString());
+		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}
 	
