@@ -133,7 +133,7 @@
 <!--		<module>pre-registration-datasync-service</module>-->
 		<module>pre-registration-batchjob</module>
 <!--		<module>pre-registration-transliteration-service</module>-->
-<!--		<module>pre-registration-notification-service</module>-->
+		<module>pre-registration-notification-service</module>
 <!--		<module>pre-registration-generateqrcode-service</module>-->
 <!--        <module>pre-registration-captcha-service</module>-->
 	</modules>
