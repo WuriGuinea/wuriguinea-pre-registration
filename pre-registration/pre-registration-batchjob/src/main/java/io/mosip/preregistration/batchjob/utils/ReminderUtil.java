@@ -51,6 +51,7 @@ import io.mosip.preregistration.core.util.CryptoUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
 /**
  * 
  * @author CONDEIS
@@ -58,14 +59,6 @@ import io.swagger.annotations.ApiResponses;
  */
 @Component
 public class ReminderUtil {
-	private static String JSON_FIELD_IDENTITY = "identity";
-	private static String JSON_FIELD_FIRSTNAME = "firstName";
-	private static String JSON_FIELD_LASTNAME = "lastName";
-	private static String JSON_FIELD_GENDER = "gender";
-	private static String JSON_FIELD_EMAIL = "email";
-	private static String JSON_FIELD_PHONE = "phone";
-	private static String JSON_FIELD_VALUE = "value";
-
 	/**
 	 * Autowired reference for {@link #batchServiceDAO}
 	 */
@@ -89,9 +82,6 @@ public class ReminderUtil {
 
 	@Value("${notification.url}")
 	private String notificationResourseurl;
-	
-	@Value("${demographic.resource.url}")
-	private String demographicResourceUrl;
 
 	@Value("${mosip.primary-language}")
 	String primaryLang;
@@ -113,15 +103,6 @@ public class ReminderUtil {
 
 	}
 
-	private String decryptApplicantDetails(DemographicEntity demographicEntity, HttpHeaders headers)
-
-	{String applicantDetails =  "";
-
-
-		return applicantDetails;
-	}
-
-
 	private void handleReminderDTO(ReminderDTO reminderDTO) {
 		if (reminderDTO != null)
 			reminders.add(reminderDTO);
@@ -129,27 +110,13 @@ public class ReminderUtil {
 
 	private ReminderDTO extractRemindingDetails(ReminderEntity remind, DemographicEntity demogEntity) {
 		ReminderDTO reminderDTO = null;
- String tmp="";
+		String tmp = "";
 		try {
-		tmp=decryptApplicantDetails(demogEntity, new HttpHeaders());
-//			JSONObject applicantDetails = new JSONObject(new String(demogEntity.getApplicantDetailJson()))
-//					.getJSONObject(JSON_FIELD_IDENTITY);
-//
-//			String applicantfirstName = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_FIRSTNAME).get(0)))
-//					.getString(JSON_FIELD_VALUE);
-//			String appliantLastName = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_LASTNAME).get(0)))
-//					.getString(JSON_FIELD_VALUE);
-//			String applicantGender = ((JSONObject) (applicantDetails.getJSONArray(JSON_FIELD_GENDER).get(0)))
-//					.getString(JSON_FIELD_VALUE);
-//			String applicantMobNum = applicantDetails.getString(JSON_FIELD_PHONE);
-//			String applicantEmail = applicantDetails.getString(JSON_FIELD_EMAIL);
-			
-			
-			String applicantfirstName = "TestName";
-			String appliantLastName =  "LastName";
-			String applicantGender = "Masculin";
-			String applicantMobNum =  "625739085";
-			String applicantEmail = "net6crash@gmail.com";
+			String applicantfirstName = "UNASSIGNED";
+			String appliantLastName = "UNASSIGNED";
+			String applicantGender = "UNASSIGNED";
+			String applicantMobNum = "UNASSIGNED";
+			String applicantEmail = "UNASSIGNED";
 			String preRegId = remind.getPrereg_id();
 			String centerID = remind.getRegistrationCenterId();
 			String slotFrom = "" + remind.getSlotFromTime();
@@ -159,7 +126,7 @@ public class ReminderUtil {
 			reminderDTO = new ReminderDTO(preRegId, appointementDate, slotFrom, toSlot, applicantfirstName,
 					appliantLastName, applicantGender, applicantMobNum, applicantEmail, centerID);
 		} catch (Exception e) {
-			log.debug("Error while processing applicants details", "", "", "" + e +"- "+tmp);
+			log.debug("Error while processing applicants details", "", "", "" + e + "- " + tmp);
 
 		}
 		return reminderDTO;
@@ -175,12 +142,11 @@ public class ReminderUtil {
 
 	private void processNotificationSending(ReminderDTO remindTo, HttpHeaders headers) throws JsonProcessingException {
 		String message = remindingMessage(remindTo);
-
 		NotificationDTO notification = new NotificationDTO();
 		notification.setIsReminderBatch(true);
-		notification.setEmailID(remindTo.getApplicantEmail());
-		notification.setMobNum(remindTo.getApplicantMobNum());
-		notification.setName(remindTo.getApplicantName());
+	//	notification.setEmailID(remindTo.getApplicantEmail());
+	//	notification.setMobNum(remindTo.getApplicantMobNum());
+	//	notification.setName(remindTo.getApplicantName());
 		notification.setAppointmentDate(remindTo.getAppointementDate());
 		notification.setPreRegistrationId(remindTo.getPreRegId());
 		String time = LocalTime.parse(remindTo.getSlotFrom(), DateTimeFormatter.ofPattern("HH:mm"))
@@ -188,7 +154,7 @@ public class ReminderUtil {
 		notification.setAppointmentTime(time);
 		notification.setAdditionalRecipient(false);
 		notification.setIsBatch(true);
-		log.info("sessionId", "idType", "id", "Sending reminder to"+remindTo.getApplicantName());
+		log.info("sessionId", "idType", "id", "Sending reminder to" + remindTo.getApplicantName());
 		System.out.println(message);
 		emailNotification(notification, primaryLang, headers);
 
@@ -241,7 +207,4 @@ public class ReminderUtil {
 
 		}
 	}
-
-	
-
 }
