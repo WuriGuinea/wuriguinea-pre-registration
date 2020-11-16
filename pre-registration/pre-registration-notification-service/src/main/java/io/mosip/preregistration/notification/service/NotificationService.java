@@ -164,6 +164,8 @@ public class NotificationService {
 	 */
 	public MainResponseDTO<ResponseDTO> sendNotification(String jsonString, String langCode, MultipartFile file) {
 
+		log.info("YAYA", "SORY", "PRDY",  jsonString);
+		log.info("YAYA", "SORY", "PRDY",  langCode);
 		response = new MainResponseDTO<>();
 
 		ResponseDTO notificationResponse = new ResponseDTO();
@@ -179,6 +181,7 @@ public class NotificationService {
 			response.setId(notificationReqDTO.getId());
 			response.setVersion(notificationReqDTO.getVersion());
 			NotificationDTO notificationDto = notificationReqDTO.getRequest();
+			log.info("YAYA", "SORY", "PRDY",  response.toString());
 			if (validationUtil.requestValidator(validationUtil.prepareRequestMap(notificationReqDTO),
 					requiredRequestMap) && validationUtil.langvalidation(langCode)) {
 				MainResponseDTO<DemographicResponseDTO> demoDetail = notificationDtoValidation(notificationDto);
@@ -234,6 +237,7 @@ public class NotificationService {
 			new NotificationExceptionCatcher().handle(ex, response);
 		} finally {
 			response.setResponsetime(validationUtil.getCurrentResponseTime());
+			log.info("YAYA_NOTIFICATION", "SORY", "PRDY",  response.toString());
 			if (isSuccess) {
 				setAuditValues(EventId.PRE_411.toString(), EventName.NOTIFICATION.toString(),
 						EventType.SYSTEM.toString(),
