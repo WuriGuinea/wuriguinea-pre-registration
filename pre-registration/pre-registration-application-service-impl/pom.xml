@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>io.mosip.wuri.preregistration</groupId>
+		<groupId>io.mosip.preregistration</groupId>
 		<artifactId>pre-registration-parent</artifactId>
 		<version>1.0.7</version>
 	</parent>

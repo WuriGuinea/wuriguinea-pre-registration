@@ -568,15 +568,9 @@ public class DemographicService implements DemographicServiceIntf {
 			String nameValue = getPreregistrationIdentityJson().getIdentity().getName().getValue();
 			String poaValue = getPreregistrationIdentityJson().getIdentity().getProofOfAddress().getValue();
 			String postalCodeValue = getPreregistrationIdentityJson().getIdentity().getPostalCode().getValue();
-			if(nameValue.contains(",")){
-				String[] parts = nameValue.split(",");
-				for(int i=0; i<parts.length;i++){
-					demographicMetadata.put(parts[i], serviceUtil.getValueFromIdentity(decryptedString, parts[i]));
-				}
-			} else {
-				demographicMetadata.put(nameValue, serviceUtil.getValueFromIdentity(decryptedString, nameValue));
-			}
-			demographicMetadata.put(postalCodeValue, serviceUtil.getValueFromIdentity(decryptedString, postalCodeValue));
+			demographicMetadata.put(nameValue, serviceUtil.getValueFromIdentity(decryptedString, nameValue));
+			demographicMetadata.put(postalCodeValue,
+					serviceUtil.getIdJSONValue(jsonObj.toJSONString(), postalCodeValue));
 			demographicMetadata.put(poaValue, documentJsonObject);
 			DemographicViewDTO viewDto = new DemographicViewDTO();
 			viewDto.setPreRegistrationId(demographicEntity.getPreRegistrationId());
