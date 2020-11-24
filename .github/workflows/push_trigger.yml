@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - dev
+      - devops-debug
+      - build-test
 
 jobs:
   build:
