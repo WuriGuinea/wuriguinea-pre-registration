@@ -6,7 +6,6 @@ on:
       - dev
       - devops-debug
       - build-test
-      - dev_av_actions_*
 
 jobs:
   build:
