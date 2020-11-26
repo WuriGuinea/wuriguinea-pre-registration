@@ -138,6 +138,8 @@ public class TemplateUtil {
 	public String formatAppointmentDate(String appointmentDate) {
 		String formatted = appointmentDate;
 
+		System.out.println("********************************" + appointmentDate);
+
 		try {
 			SimpleDateFormat provided = new SimpleDateFormat(providedDateFormat);
 			SimpleDateFormat expected = new SimpleDateFormat(expectedDateFormat,Locale.FRENCH);
@@ -153,6 +155,11 @@ public class TemplateUtil {
 	}
 	public String formatAppointmentTime(String appointementDate,String appointmentTime) {
 		String formatted = appointmentTime;
+		log.info("DEBUG", "DEBUG", "appointmentDate", appointementDate);
+		log.info("DEBUG", "DEBUG", "appointmentTime", appointmentTime);
+
+		System.out.println("********************************" + appointementDate);
+		System.out.println("********************************" + appointmentTime);
 
 		try {
 			
@@ -162,7 +169,11 @@ public class TemplateUtil {
 			Date date = provided.parse(appointementDate+" "+appointmentTime);
 			formatted = expected.format(date);
 
+			System.out.println("********************************" + formatted);
+
+
 		} catch (Exception e) {
+			System.out.println("|||||||||||||||||||||||||||||||||||||" + e.getMessage());
 			log.error("sessionId", "idType", "Unable to format date time", formatted);
 		}
 
