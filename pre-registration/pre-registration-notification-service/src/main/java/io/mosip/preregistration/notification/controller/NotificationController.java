@@ -70,6 +70,24 @@ public class NotificationController {
 			@RequestPart(value = "NotificationRequestDTO", required = true) String jsonbObject,
 			@RequestPart(value = "langCode", required = true) String langCode,
 			@RequestPart(value = "attachment", required = false) MultipartFile file) {
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println(jsonbObject.toString());
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
+		System.out.println("*******************************************************************\n");
 		log.info("sessionId", "idType", "id",
 				"In notification controller for send notification with request notification dto  " + jsonbObject);
 		MainResponseDTO<ResponseDTO> response = notificationService.sendNotification(jsonbObject, langCode, file);
