@@ -30,16 +30,7 @@ jobs:
       - name: Setup branch name
         run: |
           echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
-      #    - name: Setup branch and GPG public key
-      #      run: |
-      #        # Strip git ref prefix from version
-      #        echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
-      #        echo "::set-env name=GPG_TTY::$(tty)"
-      #        echo ${{ env.GPG_TTY }}
-      #        sudo apt-get --yes install gnupg2
-      #        gpg2 --import ./.github/keys/mosipgpgkey_pub.gpg
-      #        gpg2 --quiet --batch --passphrase=${{secrets.gpg_secret}}  --allow-secret-key-import --import ./.github/keys/mosipgpgkey_sec.gpg
-
+     
       - uses: actions/cache@v1
         with:
           path: ~/.m2/repository
@@ -47,13 +38,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-${{ env.BRANCH_NAME }}
 
-      - name: Setup the settings file for jfrog server
-        run: echo "<settings>  <servers> <server> <username>${{secrets.jfrog_user}}</username> <password>${{secrets.jfrog_secret}}</password><id>central</id> </server> </servers> <profiles>   <profile>     <repositories>         <repository>         <snapshots>           <enabled>false</enabled>         </snapshots>         <id>central</id>         <name>libs-release</name>         <url>http://52.172.8.144:8040/artifactory/libs-release</url>       </repository>       <repository>         <snapshots />         <id>snapshots</id>         <name>libs-snapshot</name>         <url>http://52.172.8.144:8040/artifactory/libs-snapshot</url>       </repository>     </repositories>     <pluginRepositories>       <pluginRepository>         <snapshots>           <enabled>false</enabled>         </snapshots>         <id>central</id>         <name>libs-release</name>      <url>http://52.172.8.144:8040/artifactory/libs-release</url>      </pluginRepository>        <pluginRepository>        <snapshots />         <id>snapshots</id>          <name>libs-snapshot</name>          <url>http://52.172.8.144:8040/artifactory/libs-snapshot</url>       </pluginRepository>     </pluginRepositories> <id>artifactory</id>    </profile>  </profiles>  <activeProfiles>    <activeProfile>artifactory</activeProfile>  </activeProfiles></settings> " > $GITHUB_WORKSPACE/settings.xml
-
       - name: Build with Maven
         run: |
           cd pre-registration
-          mvn -B package -s $GITHUB_WORKSPACE/settings.xml -Dmaven.test.skip=true --file pom.xml
+          mvn -B package -Dmaven.test.skip=true --file pom.xml
 
       - name: Ready the springboot artifacts
         run: find -name '*.jar' -executable -type f  -exec zip release.zip {} +
