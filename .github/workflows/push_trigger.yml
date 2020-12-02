@@ -28,7 +28,7 @@ jobs:
           title: "Build Started"
           summary: "Hey this is a test from devops team"
           text: "Loremp ipsum"
-          theme_color: #ff0044
+          theme_color: "#ff0044"
           sections: '[{ "activityTitle": "hello world" }]'
           actions: '[{ "@type": "OpenUri", "name": "lorem ipsum", "targets": [{ "os": "default", "uri": "https://localhost" }] }]'
 
