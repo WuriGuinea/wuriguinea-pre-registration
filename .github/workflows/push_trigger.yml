@@ -25,11 +25,10 @@ jobs:
       - uses: aliencube/microsoft-teams-actions@v0.8.0
         with:
           webhook_uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-          title: "Build Started"
+          title: "BUILD $(echo ${{ github.GITHUB_RUN_ID}} )"
           summary: "Hey this is a test from devops team"
           text: "Loremp ipsum"
           theme_color: "#ff0044"
-          heroImage: "https://cdn.vox-cdn.com/thumbor/3cwDx-ClLPFo0w1Mq2Hh-ajHzVc=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/21829152/RocketLab_F9_SimonMoffatt_SamToms_LowRes4__1_.jpg"
           sections: '[{ "activityTitle": "hello world"}]'
           actions: '[{ "@type": "OpenUri", "name": "lorem ipsum", "targets": [{ "os": "default", "uri": "https://localhost" }] }]'
 
