@@ -26,6 +26,9 @@ jobs:
         with:
           github-token: ${{ github.token }}
           webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          card-layout-start: true
+          show-on-start: true
+          show-on-exit: true
 
       - name: Setup branch name
         run: |
