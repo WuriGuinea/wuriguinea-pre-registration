@@ -1,18 +1,17 @@
 package io.mosip.preregistration.contactus.controller;
 
-import io.mosip.preregistration.contactus.models.ContactUsReponseModel;
-import io.mosip.preregistration.contactus.models.ContactUsRequestModel;
-import io.mosip.preregistration.contactus.models.MainResponseDTO;
+import io.mosip.preregistration.contactus.models.*;
+import io.mosip.preregistration.contactus.services.CaptchaService;
 import io.mosip.preregistration.contactus.services.HelperService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.UUID;
 
 
 @RestController
@@ -22,6 +21,9 @@ public class ContactUsController {
 
     @Autowired
     private HelperService helperService;
+
+    @Autowired
+    private CaptchaService captchaService;
 
     @PostMapping(
             consumes = {"application/json"},
@@ -37,5 +39,27 @@ public class ContactUsController {
                 .body(
                                 this.helperService.contactUsValidatorAndMailSender(request)
                 );
+    }
+
+    @PostMapping(
+            consumes = {"application/json"},
+            produces = {"application/json"},
+            value = "/captcha"
+    )
+    public ResponseEntity<MainResponseDTO<RecaptchaResponse>> googleCaptchaVerification(
+            @RequestHeader String token
+    ) {
+        MainResponseDTO<RecaptchaResponse> mainResponseDTO = new MainResponseDTO<>();
+
+
+            mainResponseDTO.setId(UUID.randomUUID().toString());
+            mainResponseDTO.setResponsetime(new Date().toInstant().toString());
+            mainResponseDTO.setVersion("V1");
+            mainResponseDTO.setResponse(null);
+            mainResponseDTO.setResponse(captchaService.verify(token));
+
+
+
+      return  new ResponseEntity<>(mainResponseDTO, HttpStatus.ACCEPTED);
     }
 }
