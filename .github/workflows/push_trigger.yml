@@ -13,6 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: toko-bifrost/ms-teams-deploy-card@3.1.0 #  or "./" if in a local set-up
+        if: always()
+        with:
+          github-token: ${{ github.token }}
+          webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          show-on-exit: true
+
+          
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
@@ -21,19 +29,11 @@ jobs:
           server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
 
+
       - name: Setup branch name
         run: |
           echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
-      #    - name: Setup branch and GPG public key
-      #      run: |
-      #        # Strip git ref prefix from version
-      #        echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
-      #        echo "::set-env name=GPG_TTY::$(tty)"
-      #        echo ${{ env.GPG_TTY }}
-      #        sudo apt-get --yes install gnupg2
-      #        gpg2 --import ./.github/keys/mosipgpgkey_pub.gpg
-      #        gpg2 --quiet --batch --passphrase=${{secrets.gpg_secret}}  --allow-secret-key-import --import ./.github/keys/mosipgpgkey_sec.gpg
-
+     
       - uses: actions/cache@v1
         with:
           path: ~/.m2/repository
