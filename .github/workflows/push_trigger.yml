@@ -25,7 +25,7 @@ jobs:
       - uses: aliencube/microsoft-teams-actions@v0.8.0
         with:
           webhook_uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-          title: BUILD $GITHUB_RUN_NUMBER (commit $GITHUB_SHA)
+          title: BUILD ${{env.GITHUB_RUN_NUMBER}} (commit ${{env.GITHUB_SHA}})
           summary: "Hey this is a test from devops team"
           text: "Loremp ipsum"
           theme_color: "#ff0044"
