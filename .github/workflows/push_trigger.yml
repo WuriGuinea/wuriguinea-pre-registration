@@ -21,7 +21,7 @@ jobs:
           server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-      - if: always()
+
       # this is the new step
       - uses: toko-bifrost/ms-teams-deploy-card@3.1.0 #  or "./" if in a local set-up
         with:
