@@ -154,6 +154,10 @@ public class ReminderUtil {
 		notification.setAppointmentTime(time);
 		notification.setAdditionalRecipient(false);
 		notification.setIsBatch(true);
+		//added
+		notification.setName("ABOU TEST");
+		notification.setMobNum("625739085");
+		notification.setEmailID("net6crash@gmail.com");
 		log.info("sessionId", "idType", "id", "Sending reminder to" + remindTo.getApplicantName());
 		System.out.println(message);
 		emailNotification(notification, primaryLang, headers);
