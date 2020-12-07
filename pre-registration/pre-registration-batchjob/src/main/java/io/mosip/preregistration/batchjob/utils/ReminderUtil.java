@@ -193,6 +193,8 @@ public class ReminderUtil {
 			HttpEntity<MultiValueMap<Object, Object>> httpEntity = new HttpEntity<>(emailMap, headers);
 			log.info("sessionId", "idType", "id",
 					"In emailNotification method of NotificationUtil service emailResourseUrl: " + emailResourseUrl);
+
+			System.out.prinln("------------------------------"+httpEntity);
 			resp = restTemplate.exchange(emailResourseUrl, HttpMethod.POST, httpEntity, String.class);
 			List<ServiceError> validationErrorList = ExceptionUtils.getServiceErrorList(resp.getBody());
 			if (validationErrorList != null && !validationErrorList.isEmpty()) {
