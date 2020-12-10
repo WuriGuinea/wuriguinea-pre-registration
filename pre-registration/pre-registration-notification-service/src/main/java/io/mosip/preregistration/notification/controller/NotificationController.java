@@ -5,11 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.mosip.kernel.core.logger.spi.Logger;
@@ -85,16 +81,15 @@ public class NotificationController {
 	@PreAuthorize("hasAnyRole('INDIVIDUAL','PRE_REGISTRATION_ADMIN')")
 	@PostMapping(
 			value = "/notify/rest",
-			consumes = {"application/json"}
+			consumes = {"application/json"},
+			produces = {"application/json"}
 	)
-	@ApiOperation(value = "Trigger notification")
 	public ResponseEntity<MainResponseDTO<ResponseDTO>> sendNotificationAsJson(
-			@RequestPart(value = "NotificationRequestDTO", required = true) JsonString jsonbObject,
-			@RequestPart(value = "langCode", required = true) String langCode
+			@RequestBody JsonString jsonbObject
 	) {
 		log.info("sessionId", "idType", "id",
 				"------ CUSTO notification controller for send notification with request notification dto  " + jsonbObject);
-		MainResponseDTO<ResponseDTO> response = notificationService.sendNotification(jsonbObject.getValue(), langCode, null);
+		MainResponseDTO<ResponseDTO> response = notificationService.sendNotification(jsonbObject.getValue(), jsonbObject.getLangCode(), null);
 
 		log.info("YAYA", "SORY", "id", response.toString());
 		System.out.println(response.toString());
