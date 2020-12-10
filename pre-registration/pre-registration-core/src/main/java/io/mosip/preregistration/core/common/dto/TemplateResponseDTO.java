@@ -1,31 +1,32 @@
 package io.mosip.preregistration.core.common.dto;
 
 import lombok.Data;
+
 @Data
 public class TemplateResponseDTO {
-	private String id;
+    private String id;
 
-	private String name;
+    private String name;
 
-	private String description;
+    private String description;
 
-	private String fileFormatCode;
+    private String fileFormatCode;
 
-	private String model;
+    private String model;
 
-	private String fileText;
-
-	
-	private String moduleId;
-
-	
-	private String moduleName;
-
-	private String templateTypeCode;
+    private String fileText;
 
 
-	private String langCode;
+    private String moduleId;
 
-	private Boolean isActive;
+
+    private String moduleName;
+
+    private String templateTypeCode;
+
+
+    private String langCode;
+
+    private Boolean isActive;
 
 }

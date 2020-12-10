@@ -2,57 +2,69 @@ package io.mosip.preregistration.core.code;
 
 /**
  * This enum is used to define the constants for audit logging.
- * 
+ *
  * @author Jagadishwari S
  * @since 1.0.0
  */
 public enum AuditLogVariables {
-	/** The application id. */
-	MOSIP_1,
+    /**
+     * The application id.
+     */
+    MOSIP_1,
 
-	/** The application name. */
-	PREREGISTRATION,
+    /**
+     * The application name.
+     */
+    PREREGISTRATION,
 
-	/** No id provided *. */
-	NO_ID,
+    /**
+     * No id provided *.
+     */
+    NO_ID,
 
-	/** The list of registration id's. */
-	MULTIPLE_ID,
+    /**
+     * The list of registration id's.
+     */
+    MULTIPLE_ID,
 
-	/** The reference id type. */
-	PRE_REGISTRATION_ID,
+    /**
+     * The reference id type.
+     */
+    PRE_REGISTRATION_ID,
 
-	/** The created by and session userId. */
-	SYSTEM,
+    /**
+     * The created by and session userId.
+     */
+    SYSTEM,
 
-	DEMOGRAPHY_SERVICE,
+    DEMOGRAPHY_SERVICE,
 
-	DEM,
+    DEM,
 
-	DOCUMENT_SERVICE,
+    DOCUMENT_SERVICE,
 
-	DOC,
+    DOC,
 
-	DATASYNC_SERVICE,
+    DATASYNC_SERVICE,
 
-	DAT,
-	BAT,
+    DAT,
+    BAT,
 
-	REVERSE_DATASYNC_SERVICE,
+    REVERSE_DATASYNC_SERVICE,
 
-	REV,
+    REV,
 
-	BOOKING_SERVICE, 
-	BOOK,
-	NOTIFICATION_SERVICE,
-	
-	NOTIFY,
-	
-	AUTHENTICATION_SERVICE,
-	
-	AUTHENTICATION,
-	
-	CONSUMED_BATCH_SERVICE,
-	
-	EXPIRED_BATCH_SERVICE
+    BOOKING_SERVICE,
+    BOOK,
+    NOTIFICATION_SERVICE,
+
+    NOTIFY,
+
+    AUTHENTICATION_SERVICE,
+
+    AUTHENTICATION,
+
+    CONSUMED_BATCH_SERVICE,
+
+    EXPIRED_BATCH_SERVICE
 }

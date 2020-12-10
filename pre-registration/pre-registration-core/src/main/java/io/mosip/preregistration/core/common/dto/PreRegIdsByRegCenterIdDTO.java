@@ -14,22 +14,22 @@ import lombok.ToString;
 @Setter
 @ToString
 public class PreRegIdsByRegCenterIdDTO implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8012017032440020062L;
-	/**
-	 * registration Center Id
-	 */
-	@JsonProperty("registartion_center_id")
-	@ApiModelProperty(value = "Registartion Center ID", position = 1)
-	private String registrationCenterId;
-	
-	
-	/**
-	 * pre-registration id
-	 */
-	@JsonProperty("pre_registration_ids")
-	@ApiModelProperty(value = "List of Pre-Registartion IDs", position = 2)
-	private List<String> preRegistrationIds;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -8012017032440020062L;
+    /**
+     * registration Center Id
+     */
+    @JsonProperty("registartion_center_id")
+    @ApiModelProperty(value = "Registartion Center ID", position = 1)
+    private String registrationCenterId;
+
+
+    /**
+     * pre-registration id
+     */
+    @JsonProperty("pre_registration_ids")
+    @ApiModelProperty(value = "List of Pre-Registartion IDs", position = 2)
+    private List<String> preRegistrationIds;
 }

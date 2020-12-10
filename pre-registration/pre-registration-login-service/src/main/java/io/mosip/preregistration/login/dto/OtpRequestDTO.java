@@ -8,5 +8,5 @@ import lombok.ToString;
 @Setter
 @ToString
 public class OtpRequestDTO {
-	private String userId;
+    private String userId;
 }

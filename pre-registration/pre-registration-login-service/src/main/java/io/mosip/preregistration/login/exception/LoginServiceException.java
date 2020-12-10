@@ -9,26 +9,26 @@ import io.mosip.preregistration.core.common.dto.MainResponseDTO;
 
 public class LoginServiceException extends BaseUncheckedException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private List<ServiceError> validationErrorList;
-	
-	private MainResponseDTO<?> mainResposneDTO;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public List<ServiceError> getValidationErrorList() {
-		return validationErrorList;
-	}
+    private List<ServiceError> validationErrorList;
 
-	public LoginServiceException(List<ServiceError> validationErrorList,MainResponseDTO<?> response) {
-		this.validationErrorList = validationErrorList;
-		this.mainResposneDTO=response;
-	}
+    private MainResponseDTO<?> mainResposneDTO;
 
-	public MainResponseDTO<?> getMainResposneDTO() {
-		return mainResposneDTO;
-	}	
-	
+    public List<ServiceError> getValidationErrorList() {
+        return validationErrorList;
+    }
+
+    public LoginServiceException(List<ServiceError> validationErrorList, MainResponseDTO<?> response) {
+        this.validationErrorList = validationErrorList;
+        this.mainResposneDTO = response;
+    }
+
+    public MainResponseDTO<?> getMainResposneDTO() {
+        return mainResposneDTO;
+    }
+
 }

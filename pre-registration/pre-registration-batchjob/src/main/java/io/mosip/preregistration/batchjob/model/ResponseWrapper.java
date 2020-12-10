@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.batchjob.model;
 
@@ -18,24 +18,23 @@ import io.mosip.kernel.core.exception.ServiceError;
 import lombok.Data;
 
 /**
- * This is a ResponseWrapper class used in Rest call to kernel authmanager. 
- * 
- * @author Kishan Rathore
- * @since 1.0.0
+ * This is a ResponseWrapper class used in Rest call to kernel authmanager.
  *
  * @param <T>
+ * @author Kishan Rathore
+ * @since 1.0.0
  */
 @Data
 public class ResponseWrapper<T> {
-	private String id;
-	private String version;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-	private LocalDateTime responsetime = LocalDateTime.now(ZoneId.of("UTC"));
-	private Object metadata;
-	@NotNull
-	@Valid
-	private T response;
+    private String id;
+    private String version;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime responsetime = LocalDateTime.now(ZoneId.of("UTC"));
+    private Object metadata;
+    @NotNull
+    @Valid
+    private T response;
 
-	private List<ServiceError> errors = new ArrayList<>();
+    private List<ServiceError> errors = new ArrayList<>();
 
 }

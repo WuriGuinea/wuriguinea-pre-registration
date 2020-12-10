@@ -23,66 +23,66 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Raj Jha
- * 
  * @since 1.0.0
- *
  */
 @Configuration
 @ConfigurationProperties("mosip.preregistration.login")
 public class Config {
 
-	/** The id. */
-	private Map<String, String> id;
-	
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the id
-	 */
-	public void setId(Map<String, String> id) {
-		this.id = id;
-	}
-	
+    /**
+     * The id.
+     */
+    private Map<String, String> id;
 
-	/**
-	 * Id.
-	 *
-	 * @return the map
-	 */
-	@Bean
-	public Map<String, String> ic() {
-		return Collections.unmodifiableMap(id);
-	}
+    /**
+     * Sets the id.
+     *
+     * @param id the id
+     */
+    public void setId(Map<String, String> id) {
+        this.id = id;
+    }
 
-	@Bean
-	public FilterRegistrationBean<Filter> registerCORSFilterBean() {
-		FilterRegistrationBean<Filter> corsBean = new FilterRegistrationBean<>();
-		corsBean.setFilter(registerCORSFilter());
-		corsBean.setOrder(0);
-		return corsBean;
-	}
 
-	@Bean
-	public Filter registerCORSFilter() {
-		return new CorsFilter();
-	}
+    /**
+     * Id.
+     *
+     * @return the map
+     */
+    @Bean
+    public Map<String, String> ic() {
+        return Collections.unmodifiableMap(id);
+    }
 
-	@Bean
-	public RestTemplate restTemplateConfig()
-			throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
-		
-			TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+    @Bean
+    public FilterRegistrationBean<Filter> registerCORSFilterBean() {
+        FilterRegistrationBean<Filter> corsBean = new FilterRegistrationBean<>();
+        corsBean.setFilter(registerCORSFilter());
+        corsBean.setOrder(0);
+        return corsBean;
+    }
 
-			SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
-					.loadTrustMaterial(null, acceptingTrustStrategy).build();
+    @Bean
+    public Filter registerCORSFilter() {
+        return new CorsFilter();
+    }
 
-			SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+    @Bean
+    public RestTemplate restTemplateConfig()
+            throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 
-			CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
-			HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
-			requestFactory.setHttpClient(httpClient);
-			return new RestTemplate(requestFactory);
-	}
+        SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
+                .loadTrustMaterial(null, acceptingTrustStrategy).build();
+
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+
+        requestFactory.setHttpClient(httpClient);
+        return new RestTemplate(requestFactory);
+    }
 
 }

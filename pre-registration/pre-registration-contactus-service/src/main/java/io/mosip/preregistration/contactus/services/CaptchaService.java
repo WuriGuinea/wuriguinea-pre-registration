@@ -26,16 +26,16 @@ public class CaptchaService {
     public String recaptchaVerifyUrl;
 
     public RecaptchaResponse verify(String response) {
-        MultiValueMap<String, String> param= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> param = new LinkedMultiValueMap<>();
         param.add("secret", recaptchaSecret);
         param.add("response", response);
 
         try {
             return this.restTemplate.postForObject(recaptchaVerifyUrl, param, RecaptchaResponse.class);
-        }catch(RestClientException e){
+        } catch (RestClientException e) {
             System.out.print(e.getMessage());
         }
 
-       return null;
+        return null;
     }
 }

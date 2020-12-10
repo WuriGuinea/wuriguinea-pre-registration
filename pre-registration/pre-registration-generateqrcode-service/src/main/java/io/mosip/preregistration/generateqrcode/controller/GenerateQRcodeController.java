@@ -28,6 +28,7 @@ import springfox.documentation.annotations.ApiIgnore;
 /**
  * This class provides  API's to generate the QR code operations on
  * pre-registration.
+ *
  * @author Sanober Noor
  * @since 1.0.0
  */
@@ -36,40 +37,42 @@ import springfox.documentation.annotations.ApiIgnore;
 @CrossOrigin("*")
 public class GenerateQRcodeController {
 
-	private Logger log = LoggerConfiguration.logConfig(GenerateQRcodeController.class);
-	
-	@Autowired
-	private RequestValidator requestValidator;
-	
-	/** The Constant for GET UPDATED DATE TIME application. */
-	private static final String QRCODE = "generate";
-	
-	/**
-	 * Inits the binder.
-	 *
-	 * @param binder the binder
-	 */
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		binder.addValidators(requestValidator);
-	}
-	
-	@Autowired
-	private GenerateQRcodeService service;
-	
-	/**
-	 * @param data pass the data for generating qr code
-	 * @param errors 
-	 * @return QRCodeResponseDTO the response entity
-	 */
-	@PreAuthorize("hasAnyRole('INDIVIDUAL')")
-	@PostMapping(path="/generate" ,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<MainResponseDTO<QRCodeResponseDTO>> generateQRCode(@Validated @RequestBody MainRequestDTO<String> data,@ApiIgnore Errors errors) {
-		log.info("sessionId", "idType", "id",
-				"In generateQRCode controller for generateQRCode generation with request " + data);
-		requestValidator.validateId(QRCODE, data.getId(), errors);
-		DataValidationUtil.validate(errors,QRCODE);
-		return  new ResponseEntity<>(service.generateQRCode(data),HttpStatus.OK);
-		
-	}
+    private Logger log = LoggerConfiguration.logConfig(GenerateQRcodeController.class);
+
+    @Autowired
+    private RequestValidator requestValidator;
+
+    /**
+     * The Constant for GET UPDATED DATE TIME application.
+     */
+    private static final String QRCODE = "generate";
+
+    /**
+     * Inits the binder.
+     *
+     * @param binder the binder
+     */
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.addValidators(requestValidator);
+    }
+
+    @Autowired
+    private GenerateQRcodeService service;
+
+    /**
+     * @param data   pass the data for generating qr code
+     * @param errors
+     * @return QRCodeResponseDTO the response entity
+     */
+    @PreAuthorize("hasAnyRole('INDIVIDUAL')")
+    @PostMapping(path = "/generate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MainResponseDTO<QRCodeResponseDTO>> generateQRCode(@Validated @RequestBody MainRequestDTO<String> data, @ApiIgnore Errors errors) {
+        log.info("sessionId", "idType", "id",
+                "In generateQRCode controller for generateQRCode generation with request " + data);
+        requestValidator.validateId(QRCODE, data.getId(), errors);
+        DataValidationUtil.validate(errors, QRCODE);
+        return new ResponseEntity<>(service.generateQRCode(data), HttpStatus.OK);
+
+    }
 }

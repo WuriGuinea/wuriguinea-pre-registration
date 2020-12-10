@@ -26,75 +26,74 @@ import io.mosip.preregistration.core.util.RequestValidator;
 
 /**
  * CryptoUtil Test
- * 
- * @version 1.0.0
- * @author M1043226
  *
+ * @author M1043226
+ * @version 1.0.0
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CryptoUtilTest {
 
-	@Autowired
-	CryptoUtil crypto;
-	
-	@MockBean
-	private RequestValidator validator;
+    @Autowired
+    CryptoUtil crypto;
 
-	@MockBean(name="restTemplate")
-	RestTemplate restTemplate;
-	
-	@Value("${cryptoResource.url}")
-	public String cryptoResourceUrl;
+    @MockBean
+    private RequestValidator validator;
 
-	@Test
-	public void encryptSuccessTest() {
-		CryptoManagerResponseDTO cryptoRes = new CryptoManagerResponseDTO();
-		cryptoRes.setData("fuyftwfd");
-		ResponseWrapper<CryptoManagerResponseDTO> resEntity=new ResponseWrapper<>();
-		resEntity.setResponse(cryptoRes);
-		ResponseEntity<ResponseWrapper<CryptoManagerResponseDTO>> res = new ResponseEntity<>(resEntity, HttpStatus.OK);
-		Mockito.when(restTemplate.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.POST), Mockito.any(),
-				Mockito.eq(new ParameterizedTypeReference<ResponseWrapper<CryptoManagerResponseDTO>>() {
-				}))).thenReturn(res);
-		assertNotNull(crypto.encrypt("hello".getBytes(), LocalDateTime.now()));
+    @MockBean(name = "restTemplate")
+    RestTemplate restTemplate;
 
-	}
-	
+    @Value("${cryptoResource.url}")
+    public String cryptoResourceUrl;
 
-	@Test(expected=HttpClientErrorException.class)
-	public void encryptFailedExceptionTest() {
-		HttpClientErrorException ex = new HttpClientErrorException(HttpStatus.OK);
-		Mockito.when(restTemplate.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.POST), Mockito.any(),
-				Mockito.eq(new ParameterizedTypeReference<ResponseWrapper<CryptoManagerResponseDTO>>() {
-				}))).thenThrow(ex);
-		crypto.encrypt("hello".getBytes(), LocalDateTime.now());
+    @Test
+    public void encryptSuccessTest() {
+        CryptoManagerResponseDTO cryptoRes = new CryptoManagerResponseDTO();
+        cryptoRes.setData("fuyftwfd");
+        ResponseWrapper<CryptoManagerResponseDTO> resEntity = new ResponseWrapper<>();
+        resEntity.setResponse(cryptoRes);
+        ResponseEntity<ResponseWrapper<CryptoManagerResponseDTO>> res = new ResponseEntity<>(resEntity, HttpStatus.OK);
+        Mockito.when(restTemplate.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.POST), Mockito.any(),
+                Mockito.eq(new ParameterizedTypeReference<ResponseWrapper<CryptoManagerResponseDTO>>() {
+                }))).thenReturn(res);
+        assertNotNull(crypto.encrypt("hello".getBytes(), LocalDateTime.now()));
 
-	}
-	
-	@Test
-	public void decryptSuccessTest() {
-		CryptoManagerResponseDTO cryptoRes1 = new CryptoManagerResponseDTO();
-		cryptoRes1.setData(
-				"fGKe7i36VWALNj889wy1DTU4PII_J3IlQuC-CEtj_HWakHf3NNIHdTK8pP33uhH-lstOZM35dnC9-piqby3eiB9msEMHgItzzK2pKRSTqz-q0e7521hHGV_J9yKQxLSuRunE6rukY4gwkq7l3Q-jLl7cAE29Pz4ReYCLExDDQ7Wcq03xp_cabJ2pYbRsSYvF4bKLkS8BAyDhZo1Nk5sd5012Hv-khB7ePKxkGlDCVhgyS0PCT80f75ADSCsCfSrnKNqjOA_gjWvc_Oips9uddaD0o2NPpHqDYJa6hg3Z4KzgIwZ4dd62VwO8aInITItLwB1wQtGcK9gDaPqZ1s21oCNLRVlfU1BMSVRURVIj3co-62Kc0b3NUwB4n01-3ZxwmLehGpPFOPi1XNRK1Sw");
-		ResponseWrapper<CryptoManagerResponseDTO> resEntity=new ResponseWrapper<>();
-		resEntity.setResponse(cryptoRes1);
-		ResponseEntity<ResponseWrapper<CryptoManagerResponseDTO>> res = new ResponseEntity<>(resEntity, HttpStatus.OK);
-		Mockito.when(restTemplate.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.POST), Mockito.any(),
-				Mockito.eq(new ParameterizedTypeReference<ResponseWrapper<CryptoManagerResponseDTO>>() {
-				}))).thenReturn(res);
-		assertNotNull(crypto.decrypt("hello".getBytes(),LocalDateTime.now()));
+    }
 
-	}
 
-	@Test(expected=HttpClientErrorException.class)
-	public void decryptFailedExceptionTest() {
-		HttpClientErrorException ex = new HttpClientErrorException(HttpStatus.OK);
-		Mockito.when(restTemplate.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.POST), Mockito.any(),
-				Mockito.eq(new ParameterizedTypeReference<ResponseWrapper<CryptoManagerResponseDTO>>() {
-				}))).thenThrow(ex);
-		crypto.decrypt("hello".getBytes(),LocalDateTime.now());
+    @Test(expected = HttpClientErrorException.class)
+    public void encryptFailedExceptionTest() {
+        HttpClientErrorException ex = new HttpClientErrorException(HttpStatus.OK);
+        Mockito.when(restTemplate.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.POST), Mockito.any(),
+                Mockito.eq(new ParameterizedTypeReference<ResponseWrapper<CryptoManagerResponseDTO>>() {
+                }))).thenThrow(ex);
+        crypto.encrypt("hello".getBytes(), LocalDateTime.now());
 
-	}
+    }
+
+    @Test
+    public void decryptSuccessTest() {
+        CryptoManagerResponseDTO cryptoRes1 = new CryptoManagerResponseDTO();
+        cryptoRes1.setData(
+                "fGKe7i36VWALNj889wy1DTU4PII_J3IlQuC-CEtj_HWakHf3NNIHdTK8pP33uhH-lstOZM35dnC9-piqby3eiB9msEMHgItzzK2pKRSTqz-q0e7521hHGV_J9yKQxLSuRunE6rukY4gwkq7l3Q-jLl7cAE29Pz4ReYCLExDDQ7Wcq03xp_cabJ2pYbRsSYvF4bKLkS8BAyDhZo1Nk5sd5012Hv-khB7ePKxkGlDCVhgyS0PCT80f75ADSCsCfSrnKNqjOA_gjWvc_Oips9uddaD0o2NPpHqDYJa6hg3Z4KzgIwZ4dd62VwO8aInITItLwB1wQtGcK9gDaPqZ1s21oCNLRVlfU1BMSVRURVIj3co-62Kc0b3NUwB4n01-3ZxwmLehGpPFOPi1XNRK1Sw");
+        ResponseWrapper<CryptoManagerResponseDTO> resEntity = new ResponseWrapper<>();
+        resEntity.setResponse(cryptoRes1);
+        ResponseEntity<ResponseWrapper<CryptoManagerResponseDTO>> res = new ResponseEntity<>(resEntity, HttpStatus.OK);
+        Mockito.when(restTemplate.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.POST), Mockito.any(),
+                Mockito.eq(new ParameterizedTypeReference<ResponseWrapper<CryptoManagerResponseDTO>>() {
+                }))).thenReturn(res);
+        assertNotNull(crypto.decrypt("hello".getBytes(), LocalDateTime.now()));
+
+    }
+
+    @Test(expected = HttpClientErrorException.class)
+    public void decryptFailedExceptionTest() {
+        HttpClientErrorException ex = new HttpClientErrorException(HttpStatus.OK);
+        Mockito.when(restTemplate.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.POST), Mockito.any(),
+                Mockito.eq(new ParameterizedTypeReference<ResponseWrapper<CryptoManagerResponseDTO>>() {
+                }))).thenThrow(ex);
+        crypto.decrypt("hello".getBytes(), LocalDateTime.now());
+
+    }
 
 }

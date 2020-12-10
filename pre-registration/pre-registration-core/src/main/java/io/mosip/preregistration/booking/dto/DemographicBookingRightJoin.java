@@ -14,26 +14,36 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DemographicBookingRightJoin implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6964396778095509912L;
 
-	/** Status of the preid */
-	private String statusCode;
-	
-	/** Registration center id. */
-	private String registrationCenterId;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -6964396778095509912L;
 
-	/** Slot from time. */
-	private LocalTime slotFromTime;
+    /**
+     * Status of the preid
+     */
+    private String statusCode;
 
-	/** Slot to time. */
-	private LocalTime slotToTime;
+    /**
+     * Registration center id.
+     */
+    private String registrationCenterId;
 
-	/** Appointment date. */
-	private LocalDate regDate;
+    /**
+     * Slot from time.
+     */
+    private LocalTime slotFromTime;
+
+    /**
+     * Slot to time.
+     */
+    private LocalTime slotToTime;
+
+    /**
+     * Appointment date.
+     */
+    private LocalDate regDate;
 
 
 }

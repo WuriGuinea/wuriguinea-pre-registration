@@ -7,6 +7,7 @@ import io.mosip.preregistration.contactus.models.MainResponseDTO;
 import io.mosip.preregistration.contactus.models.ExceptionJSONInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,7 +73,7 @@ public class HelperService {
     }
 
     public ContactUsReponseModel responseBuilder(int status, String desc) {
-      return   ContactUsReponseModel
+        return ContactUsReponseModel
                 .builder()
                 .errorCode(status)
                 .description(desc)

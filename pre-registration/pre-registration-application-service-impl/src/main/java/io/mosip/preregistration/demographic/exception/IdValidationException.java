@@ -8,29 +8,29 @@ import io.mosip.preregistration.core.common.dto.MainResponseDTO;
 
 public class IdValidationException extends BaseUncheckedException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private List<String> errorMessagesList;
-	
-	
-	private MainResponseDTO<?> mainResposneDTO;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public List<String> getErrorMessageList() {
-		return errorMessagesList;
-	}
+    private List<String> errorMessagesList;
 
-	public IdValidationException(String errorCode,List<String> errrorList,MainResponseDTO<?> response) {
-		super(errorCode, null);
-		this.errorMessagesList = errrorList;
-		this.mainResposneDTO=response;
-	}
 
-	public MainResponseDTO<?> getMainResposneDTO() {
-		return mainResposneDTO;
-	}	
-	
+    private MainResponseDTO<?> mainResposneDTO;
+
+    public List<String> getErrorMessageList() {
+        return errorMessagesList;
+    }
+
+    public IdValidationException(String errorCode, List<String> errrorList, MainResponseDTO<?> response) {
+        super(errorCode, null);
+        this.errorMessagesList = errrorList;
+        this.mainResposneDTO = response;
+    }
+
+    public MainResponseDTO<?> getMainResposneDTO() {
+        return mainResposneDTO;
+    }
+
 
 }

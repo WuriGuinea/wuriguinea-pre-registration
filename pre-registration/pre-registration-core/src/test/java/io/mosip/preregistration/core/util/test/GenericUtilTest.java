@@ -9,22 +9,22 @@ import io.mosip.preregistration.core.util.GenericUtil;
 
 /**
  * GenericUtil Test
- * 
- * @version 1.0.0
- * @author M1043226
  *
+ * @author M1043226
+ * @version 1.0.0
  */
 
 public class GenericUtilTest {
 
-	@Autowired
-	GenericUtil genericUtil;
-	
-	private static String dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-	@Test
-	public void getCurrentResponseTimeTest() {
-		String time=GenericUtil.getCurrentResponseTime();
-		assertNotNull(time);
-	}
+    @Autowired
+    GenericUtil genericUtil;
+
+    private static String dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
+    @Test
+    public void getCurrentResponseTimeTest() {
+        String time = GenericUtil.getCurrentResponseTime();
+        assertNotNull(time);
+    }
 
 }

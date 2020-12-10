@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthNResponse implements Serializable  {
-	private String message;
-	private String status;
+public class AuthNResponse implements Serializable {
+    private String message;
+    private String status;
 }

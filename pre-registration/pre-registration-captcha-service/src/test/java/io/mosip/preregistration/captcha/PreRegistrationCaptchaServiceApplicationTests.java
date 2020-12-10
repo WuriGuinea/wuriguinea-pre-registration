@@ -6,8 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class PreRegistrationCaptchaServiceApplicationTests {
 
-	@Test
-	void validateCaptchaTest() {
-	}
+    @Test
+    void validateCaptchaTest() {
+    }
 
 }

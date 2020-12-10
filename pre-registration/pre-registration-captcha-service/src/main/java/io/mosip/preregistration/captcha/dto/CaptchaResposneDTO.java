@@ -9,15 +9,15 @@ import lombok.Data;
 @Data
 public class CaptchaResposneDTO implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	@JsonProperty("success")
-	private boolean success;
-	
-	@JsonProperty("message")
-	private String message;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    @JsonProperty("success")
+    private boolean success;
+
+    @JsonProperty("message")
+    private String message;
 
 }

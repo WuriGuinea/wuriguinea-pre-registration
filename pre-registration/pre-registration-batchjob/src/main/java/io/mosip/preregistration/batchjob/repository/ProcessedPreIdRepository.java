@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.batchjob.repository;
 
@@ -15,16 +15,16 @@ import io.mosip.preregistration.batchjob.entity.ProcessedPreRegEntity;
 
 /**
  * @author Kishan Rathore
- *@since 1.0.0
- *
+ * @since 1.0.0
  */
 @Repository("processedPreIdRepository")
-public interface ProcessedPreIdRepository extends BaseRepository<ProcessedPreRegEntity, String>{
-	
-	List<ProcessedPreRegEntity> findBystatusComments(String statusComment);
-	
-	ProcessedPreRegEntity findBypreRegistrationId(String preRegId);
-	@Modifying
-	@Transactional
-	int deleteBypreRegistrationId(String preRegId);
+public interface ProcessedPreIdRepository extends BaseRepository<ProcessedPreRegEntity, String> {
+
+    List<ProcessedPreRegEntity> findBystatusComments(String statusComment);
+
+    ProcessedPreRegEntity findBypreRegistrationId(String preRegId);
+
+    @Modifying
+    @Transactional
+    int deleteBypreRegistrationId(String preRegId);
 }

@@ -14,9 +14,9 @@ import lombok.ToString;
 @ToString
 public class DateTimeDto {
 
-	private String date;
+    private String date;
 
-	private boolean isHoliday;
+    private boolean isHoliday;
 
-	private List<SlotDto> timeSlots;
+    private List<SlotDto> timeSlots;
 }

@@ -6,6 +6,6 @@ import io.mosip.kernel.core.dataaccess.spi.repository.BaseRepository;
 import io.mosip.preregistration.batchjob.entity.DemographicEntityConsumed;
 
 @Repository("demographicConsumedRepository")
-public interface DemographicConsumedRepository extends BaseRepository<DemographicEntityConsumed, String>{
+public interface DemographicConsumedRepository extends BaseRepository<DemographicEntityConsumed, String> {
 
 }

@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.batchjob.tasklets;
 
@@ -18,35 +18,34 @@ import io.mosip.preregistration.core.config.LoggerConfiguration;
 
 /**
  * This class is a tasklet of batch job to call expired status service in batch service.
- * 
+ *
  * @author Kishan Rathore
  * @since 1.0.0
- *
  */
 @Component
 public class ExpiredStatusTasklet implements Tasklet {
 
-	@Autowired
-	private ExpiredStatusUtil expiredUtil;
+    @Autowired
+    private ExpiredStatusUtil expiredUtil;
 
-	private Logger log = LoggerConfiguration.logConfig(ExpiredStatusTasklet.class);
+    private Logger log = LoggerConfiguration.logConfig(ExpiredStatusTasklet.class);
 
-	/* (non-Javadoc)
-	 * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.springframework.batch.core.StepContribution, org.springframework.batch.core.scope.context.ChunkContext)
-	 */
-	@Override
-	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+    /* (non-Javadoc)
+     * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.springframework.batch.core.StepContribution, org.springframework.batch.core.scope.context.ChunkContext)
+     */
+    @Override
+    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
-		try {
+        try {
 
-			expiredUtil.expireAppointments();
+            expiredUtil.expireAppointments();
 
-		} catch (Exception e) {
-			log.error("Expired Status ", " Tasklet ", " encountered exception ", e.getMessage());
-			contribution.setExitStatus(new ExitStatus(e.getMessage()));
-		}
+        } catch (Exception e) {
+            log.error("Expired Status ", " Tasklet ", " encountered exception ", e.getMessage());
+            contribution.setExitStatus(new ExitStatus(e.getMessage()));
+        }
 
-		return RepeatStatus.FINISHED;
-	}
+        return RepeatStatus.FINISHED;
+    }
 
 }

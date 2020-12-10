@@ -36,93 +36,94 @@ import io.mosip.preregistration.generateqrcode.dto.QRCodeResponseDTO;
 import io.mosip.preregistration.generateqrcode.exception.IllegalParamException;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { GenerateQRcodeApplicationTests.class })
+@SpringBootTest(classes = {GenerateQRcodeApplicationTests.class})
 
 public class GenerateQRcodeServiceTest {
 
-	@Autowired
-	private GenerateQRcodeService service;
+    @Autowired
+    private GenerateQRcodeService service;
 
-	@Autowired
-	private ValidationUtil serviceUtil;
+    @Autowired
+    private ValidationUtil serviceUtil;
 
-	@Autowired
-	private ObjectMapper mapper;
+    @Autowired
+    private ObjectMapper mapper;
 
-	@MockBean
-	private QrCodeGenerator<QrVersion> qrCodeGenerator;
+    @MockBean
+    private QrCodeGenerator<QrVersion> qrCodeGenerator;
 
-	@Value("${mosip.utc-datetime-pattern}")
-	private String utcDateTimePattern;
+    @Value("${mosip.utc-datetime-pattern}")
+    private String utcDateTimePattern;
 
-	private NotificationDTO notificationDTO;
-	boolean requestValidatorFlag = false;
-	MainResponseDTO<NotificationDTO> responseDTO = new MainResponseDTO<>();
-	MainResponseDTO<QRCodeResponseDTO> qrCodeResponseDTO = new MainResponseDTO<>();
-	NotificationResponseDTO notificationResponseDTO = new NotificationResponseDTO();
-	MainRequestDTO<String> qrcodedto = new MainRequestDTO<>();
+    private NotificationDTO notificationDTO;
+    boolean requestValidatorFlag = false;
+    MainResponseDTO<NotificationDTO> responseDTO = new MainResponseDTO<>();
+    MainResponseDTO<QRCodeResponseDTO> qrCodeResponseDTO = new MainResponseDTO<>();
+    NotificationResponseDTO notificationResponseDTO = new NotificationResponseDTO();
+    MainRequestDTO<String> qrcodedto = new MainRequestDTO<>();
 
-	@Before
-	public void beforeSet() throws ParseException, JsonProcessingException, org.json.simple.parser.ParseException {
-		qrcodedto.setId("mosip.pre-registration.qrcode.generate");
-		qrcodedto.setVersion("1.0");
-		notificationDTO = new NotificationDTO();
-		notificationDTO.setName("sanober Noor");
-		notificationDTO.setPreRegistrationId("1234567890");
-		notificationDTO.setMobNum("1234567890");
-		notificationDTO.setEmailID("sanober.noor2@mindtree.com");
-		notificationDTO.setAppointmentDate("2019-01-22");
-		notificationDTO.setAppointmentTime("22:57");
-		
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-		mapper.setDateFormat(df);
-		mapper.setTimeZone(TimeZone.getDefault());
-		String jsonString = mapper.writeValueAsString(notificationDTO);		
-		qrcodedto.setRequest(jsonString);
-		qrcodedto.setRequesttime(new Timestamp(System.currentTimeMillis()));
-		responseDTO = new MainResponseDTO<>();
-		responseDTO.setResponse(notificationDTO);
-		responseDTO.setResponsetime(serviceUtil.getCurrentResponseTime());
+    @Before
+    public void beforeSet() throws ParseException, JsonProcessingException, org.json.simple.parser.ParseException {
+        qrcodedto.setId("mosip.pre-registration.qrcode.generate");
+        qrcodedto.setVersion("1.0");
+        notificationDTO = new NotificationDTO();
+        notificationDTO.setName("sanober Noor");
+        notificationDTO.setPreRegistrationId("1234567890");
+        notificationDTO.setMobNum("1234567890");
+        notificationDTO.setEmailID("sanober.noor2@mindtree.com");
+        notificationDTO.setAppointmentDate("2019-01-22");
+        notificationDTO.setAppointmentTime("22:57");
 
-		notificationResponseDTO.setMessage("Notification send successfully");
-		notificationResponseDTO.setStatus("True");
-	}
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        mapper.setDateFormat(df);
+        mapper.setTimeZone(TimeZone.getDefault());
+        String jsonString = mapper.writeValueAsString(notificationDTO);
+        qrcodedto.setRequest(jsonString);
+        qrcodedto.setRequesttime(new Timestamp(System.currentTimeMillis()));
+        responseDTO = new MainResponseDTO<>();
+        responseDTO.setResponse(notificationDTO);
+        responseDTO.setResponsetime(serviceUtil.getCurrentResponseTime());
 
-	@Test
-	public void generateQRCodeSuccessTest() throws QrcodeGenerationException, java.io.IOException {
-		String stringjson = mapper.writeValueAsString(qrcodedto);
-		byte[] qrCode = null;
+        notificationResponseDTO.setMessage("Notification send successfully");
+        notificationResponseDTO.setStatus("True");
+    }
 
-		QRCodeResponseDTO responsedto = new QRCodeResponseDTO();
-		responsedto.setQrcode(qrCode);
-		qrCodeResponseDTO.setResponse(responsedto);
-		qrCodeResponseDTO.setResponsetime(serviceUtil.getCurrentResponseTime());
-		Mockito.when(qrCodeGenerator.generateQrCode(stringjson, QrVersion.V25)).thenReturn(qrCode);
-		MainResponseDTO<QRCodeResponseDTO> response = service.generateQRCode(qrcodedto);
+    @Test
+    public void generateQRCodeSuccessTest() throws QrcodeGenerationException, java.io.IOException {
+        String stringjson = mapper.writeValueAsString(qrcodedto);
+        byte[] qrCode = null;
 
-		assertEquals(qrCodeResponseDTO.getResponse().getQrcode(), response.getResponse().getQrcode());
-	}
+        QRCodeResponseDTO responsedto = new QRCodeResponseDTO();
+        responsedto.setQrcode(qrCode);
+        qrCodeResponseDTO.setResponse(responsedto);
+        qrCodeResponseDTO.setResponsetime(serviceUtil.getCurrentResponseTime());
+        Mockito.when(qrCodeGenerator.generateQrCode(stringjson, QrVersion.V25)).thenReturn(qrCode);
+        MainResponseDTO<QRCodeResponseDTO> response = service.generateQRCode(qrcodedto);
 
-	@Test(expected = InvalidRequestException.class)
-	public void generateQRCodeExceptionTest() throws java.io.IOException, QrcodeGenerationException {
-		String stringjson = mapper.writeValueAsString(qrcodedto);
-		notificationDTO = new NotificationDTO();
-		qrcodedto.setRequest(null);
-		byte[] qrCode = null;
+        assertEquals(qrCodeResponseDTO.getResponse().getQrcode(), response.getResponse().getQrcode());
+    }
 
-		QRCodeResponseDTO responsedto = new QRCodeResponseDTO();
-		responsedto.setQrcode(qrCode);
-		Mockito.when(qrCodeGenerator.generateQrCode(stringjson, QrVersion.V25)).thenReturn(qrCode);
-		service.generateQRCode(qrcodedto);
+    @Test(expected = InvalidRequestException.class)
+    public void generateQRCodeExceptionTest() throws java.io.IOException, QrcodeGenerationException {
+        String stringjson = mapper.writeValueAsString(qrcodedto);
+        notificationDTO = new NotificationDTO();
+        qrcodedto.setRequest(null);
+        byte[] qrCode = null;
 
-		 assertEquals(ErrorMessages.INVALID_REQUEST_BODY.getMessage(), qrCodeResponseDTO.getResponse());
+        QRCodeResponseDTO responsedto = new QRCodeResponseDTO();
+        responsedto.setQrcode(qrCode);
+        Mockito.when(qrCodeGenerator.generateQrCode(stringjson, QrVersion.V25)).thenReturn(qrCode);
+        service.generateQRCode(qrcodedto);
 
-	}
-	@Test(expected = IllegalParamException.class)
-	public void generateQRCodeFailureTest() throws java.io.IOException, QrcodeGenerationException {
+        assertEquals(ErrorMessages.INVALID_REQUEST_BODY.getMessage(), qrCodeResponseDTO.getResponse());
 
-		Mockito.when(qrCodeGenerator.generateQrCode(null, QrVersion.V25)).thenThrow(QrcodeGenerationException.class);
-		service.generateQRCode(null);
+    }
 
-	}
+    @Test(expected = IllegalParamException.class)
+    public void generateQRCodeFailureTest() throws java.io.IOException, QrcodeGenerationException {
+
+        Mockito.when(qrCodeGenerator.generateQrCode(null, QrVersion.V25)).thenThrow(QrcodeGenerationException.class);
+        service.generateQRCode(null);
+
+    }
 }

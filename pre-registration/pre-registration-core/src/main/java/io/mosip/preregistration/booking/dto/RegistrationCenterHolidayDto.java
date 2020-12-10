@@ -12,6 +12,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class RegistrationCenterHolidayDto {
-	private RegistrationCenterDto registrationCenter;
-	private List<HolidayDto> holidays;
+    private RegistrationCenterDto registrationCenter;
+    private List<HolidayDto> holidays;
 }

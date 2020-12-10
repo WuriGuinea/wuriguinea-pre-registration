@@ -11,21 +11,21 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PreRegIdsByRegCenterIdResponseDTO implements Serializable  {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8225498964365164064L;
-	/**
-	 * registration Center Id
-	 */
-	@JsonProperty("registration_center_id")
-	@ApiModelProperty(value = "Registration Center ID", position = 1)
-	private String registrationCenterId;
-	/**
-	 * pre-registration id
-	 */
-	@JsonProperty("pre_registration_ids")
-	@ApiModelProperty(value = "List of Pre-Registartion IDs", position = 2)
-	private List<String> preRegistrationIds;
+public class PreRegIdsByRegCenterIdResponseDTO implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 8225498964365164064L;
+    /**
+     * registration Center Id
+     */
+    @JsonProperty("registration_center_id")
+    @ApiModelProperty(value = "Registration Center ID", position = 1)
+    private String registrationCenterId;
+    /**
+     * pre-registration id
+     */
+    @JsonProperty("pre_registration_ids")
+    @ApiModelProperty(value = "List of Pre-Registartion IDs", position = 2)
+    private List<String> preRegistrationIds;
 }

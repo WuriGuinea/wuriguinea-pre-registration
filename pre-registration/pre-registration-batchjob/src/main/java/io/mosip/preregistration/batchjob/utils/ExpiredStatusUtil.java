@@ -28,113 +28,114 @@ import io.mosip.preregistration.core.util.GenericUtil;
 /**
  * @author Kishan Rathore
  * @since 1.0.0
- *
  */
 @Component
 public class ExpiredStatusUtil {
 
-	/** The Constant LOGGER. */
-	private Logger log = LoggerConfiguration.logConfig(ExpiredStatusUtil.class);
+    /**
+     * The Constant LOGGER.
+     */
+    private Logger log = LoggerConfiguration.logConfig(ExpiredStatusUtil.class);
 
-	@Value("${version}")
-	String versionUrl;
+    @Value("${version}")
+    String versionUrl;
 
-	@Value("${mosip.preregistration.batchjob.service.expired.id}")
-	String idUrl;
+    @Value("${mosip.preregistration.batchjob.service.expired.id}")
+    String idUrl;
 
-	@Autowired
-	private BatchJpaRepositoryImpl batchServiceDAO;
+    @Autowired
+    private BatchJpaRepositoryImpl batchServiceDAO;
 
-	@Autowired
-	AuditLogUtil auditLogUtil;
+    @Autowired
+    AuditLogUtil auditLogUtil;
 
-	@Autowired
-	private AuthTokenUtil tokenUtil;
-	
-	@Value("${mosip.batch.token.authmanager.userName}")
-	private String auditUsername;
+    @Autowired
+    private AuthTokenUtil tokenUtil;
 
-	@Value("${mosip.batch.token.authmanager.appId}")
-	private String auditUserId;
+    @Value("${mosip.batch.token.authmanager.userName}")
+    private String auditUsername;
 
-	/**
-	 * @return Response dto
-	 */
+    @Value("${mosip.batch.token.authmanager.appId}")
+    private String auditUserId;
 
-	public MainResponseDTO<String> expireAppointments() {
+    /**
+     * @return Response dto
+     */
 
-		HttpHeaders headers = tokenUtil.getTokenHeader();
+    public MainResponseDTO<String> expireAppointments() {
 
-		MainResponseDTO<String> response = new MainResponseDTO<>();
-		response.setId(idUrl);
-		response.setVersion(versionUrl);
-		boolean isSaveSuccess = false;
-		List<RegistrationBookingEntity> bookedPreIdList = null;
+        HttpHeaders headers = tokenUtil.getTokenHeader();
 
-		try {
-			bookedPreIdList = batchServiceDAO.getAllOldDateBooking();
+        MainResponseDTO<String> response = new MainResponseDTO<>();
+        response.setId(idUrl);
+        response.setVersion(versionUrl);
+        boolean isSaveSuccess = false;
+        List<RegistrationBookingEntity> bookedPreIdList = null;
 
-			bookedPreIdList.forEach(iterate -> {
-				String preRegId = iterate.getDemographicEntity().getPreRegistrationId();
-				if (iterate.getDemographicEntity() != null) {
+        try {
+            bookedPreIdList = batchServiceDAO.getAllOldDateBooking();
 
-					if (iterate.getDemographicEntity().getStatusCode().equals(StatusCodes.BOOKED.getCode())) {
-						iterate.getDemographicEntity().setStatusCode(StatusCodes.EXPIRED.getCode());
-						iterate.getDemographicEntity().setUpdatedBy(auditUserId);
-						iterate.getDemographicEntity().setUpdateDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
-						batchServiceDAO.updateApplicantDemographic(iterate.getDemographicEntity());
-					}
-					log.info("sessionId", "idType", "id",
-							"Update the status successfully into Registration Appointment table and Demographic table for Pre-RegistrationId: "
-									+ preRegId);
-				}
-			});
-			isSaveSuccess = true;
+            bookedPreIdList.forEach(iterate -> {
+                String preRegId = iterate.getDemographicEntity().getPreRegistrationId();
+                if (iterate.getDemographicEntity() != null) {
 
-		} catch (Exception e) {
-			new BatchServiceExceptionCatcher().handle(e);
-		} finally {
-			if (isSaveSuccess) {
-				setAuditValues(EventId.PRE_413.toString(), EventName.EXPIREDSTATUS.toString(),
-						EventType.BUSINESS.toString(),
-						"Updated the expired status & the expired PreRegistration ids successfully saved in the database",
-						AuditLogVariables.PRE_REGISTRATION_ID.toString(), auditUserId,
-						auditUsername, null, headers);
-			} else {
-				setAuditValues(EventId.PRE_405.toString(), EventName.EXCEPTION.toString(), EventType.SYSTEM.toString(),
-						"Expired status failed to update", AuditLogVariables.NO_ID.toString(),
-						auditUserId, auditUsername, null, headers);
-			}
-		}
-		response.setResponsetime(GenericUtil.getCurrentResponseTime());
-		response.setResponse("Registration appointment status updated to expired successfully");
-		return response;
-	}
+                    if (iterate.getDemographicEntity().getStatusCode().equals(StatusCodes.BOOKED.getCode())) {
+                        iterate.getDemographicEntity().setStatusCode(StatusCodes.EXPIRED.getCode());
+                        iterate.getDemographicEntity().setUpdatedBy(auditUserId);
+                        iterate.getDemographicEntity().setUpdateDateTime(DateUtils.parseDateToLocalDateTime(new Date()));
+                        batchServiceDAO.updateApplicantDemographic(iterate.getDemographicEntity());
+                    }
+                    log.info("sessionId", "idType", "id",
+                            "Update the status successfully into Registration Appointment table and Demographic table for Pre-RegistrationId: "
+                                    + preRegId);
+                }
+            });
+            isSaveSuccess = true;
 
-	/**
-	 * This method is used to audit all the consumed status events
-	 * 
-	 * @param eventId
-	 * @param eventName
-	 * @param eventType
-	 * @param description
-	 * @param idType
-	 */
-	public void setAuditValues(String eventId, String eventName, String eventType, String description, String idType,
-			String userId, String userName, String refId, HttpHeaders headers) {
-		AuditRequestDto auditRequestDto = new AuditRequestDto();
-		auditRequestDto.setEventId(eventId);
-		auditRequestDto.setEventName(eventName);
-		auditRequestDto.setEventType(eventType);
-		auditRequestDto.setSessionUserId(userId);
-		auditRequestDto.setSessionUserName(userName);
-		auditRequestDto.setDescription(description);
-		auditRequestDto.setIdType(idType);
-		auditRequestDto.setId(refId);
-		auditRequestDto.setModuleId(AuditLogVariables.BAT.toString());
-		auditRequestDto.setModuleName(AuditLogVariables.EXPIRED_BATCH_SERVICE.toString());
+        } catch (Exception e) {
+            new BatchServiceExceptionCatcher().handle(e);
+        } finally {
+            if (isSaveSuccess) {
+                setAuditValues(EventId.PRE_413.toString(), EventName.EXPIREDSTATUS.toString(),
+                        EventType.BUSINESS.toString(),
+                        "Updated the expired status & the expired PreRegistration ids successfully saved in the database",
+                        AuditLogVariables.PRE_REGISTRATION_ID.toString(), auditUserId,
+                        auditUsername, null, headers);
+            } else {
+                setAuditValues(EventId.PRE_405.toString(), EventName.EXCEPTION.toString(), EventType.SYSTEM.toString(),
+                        "Expired status failed to update", AuditLogVariables.NO_ID.toString(),
+                        auditUserId, auditUsername, null, headers);
+            }
+        }
+        response.setResponsetime(GenericUtil.getCurrentResponseTime());
+        response.setResponse("Registration appointment status updated to expired successfully");
+        return response;
+    }
 
-		auditLogUtil.saveAuditDetails(auditRequestDto, headers);
-	}
+    /**
+     * This method is used to audit all the consumed status events
+     *
+     * @param eventId
+     * @param eventName
+     * @param eventType
+     * @param description
+     * @param idType
+     */
+    public void setAuditValues(String eventId, String eventName, String eventType, String description, String idType,
+                               String userId, String userName, String refId, HttpHeaders headers) {
+        AuditRequestDto auditRequestDto = new AuditRequestDto();
+        auditRequestDto.setEventId(eventId);
+        auditRequestDto.setEventName(eventName);
+        auditRequestDto.setEventType(eventType);
+        auditRequestDto.setSessionUserId(userId);
+        auditRequestDto.setSessionUserName(userName);
+        auditRequestDto.setDescription(description);
+        auditRequestDto.setIdType(idType);
+        auditRequestDto.setId(refId);
+        auditRequestDto.setModuleId(AuditLogVariables.BAT.toString());
+        auditRequestDto.setModuleName(AuditLogVariables.EXPIRED_BATCH_SERVICE.toString());
+
+        auditLogUtil.saveAuditDetails(auditRequestDto, headers);
+    }
 
 }

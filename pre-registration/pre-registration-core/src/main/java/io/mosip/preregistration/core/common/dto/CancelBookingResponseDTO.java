@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CancelBookingResponseDTO {
-	private String transactionId;
-	private String message;
+    private String transactionId;
+    private String message;
 }

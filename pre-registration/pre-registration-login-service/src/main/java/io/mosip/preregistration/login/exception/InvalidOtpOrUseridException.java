@@ -9,36 +9,36 @@ import lombok.Setter;
 @Setter
 public class InvalidOtpOrUseridException extends BaseUncheckedException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private MainResponseDTO<?> mainResponseDto;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public InvalidOtpOrUseridException() {
-		super();
-		
-	}
+    private MainResponseDTO<?> mainResponseDto;
 
-	public InvalidOtpOrUseridException(String errorCode, String errorMessage, Throwable rootCause,MainResponseDTO<?> response) {
-		super(errorCode, errorMessage, rootCause);
-		this.mainResponseDto=response;
-		
-	}
+    public InvalidOtpOrUseridException() {
+        super();
 
-	public InvalidOtpOrUseridException(String errorCode, String errorMessage,MainResponseDTO<?> response) {
-		super(errorCode, errorMessage);
-		this.mainResponseDto=response;
-		
-	}
+    }
 
-	public InvalidOtpOrUseridException(String errorMessage,MainResponseDTO<?> response) {
-		super(errorMessage);
-		this.mainResponseDto=response;
-		
-	}
-	
-	
+    public InvalidOtpOrUseridException(String errorCode, String errorMessage, Throwable rootCause, MainResponseDTO<?> response) {
+        super(errorCode, errorMessage, rootCause);
+        this.mainResponseDto = response;
+
+    }
+
+    public InvalidOtpOrUseridException(String errorCode, String errorMessage, MainResponseDTO<?> response) {
+        super(errorCode, errorMessage);
+        this.mainResponseDto = response;
+
+    }
+
+    public InvalidOtpOrUseridException(String errorMessage, MainResponseDTO<?> response) {
+        super(errorMessage);
+        this.mainResponseDto = response;
+
+    }
+
+
 }
 

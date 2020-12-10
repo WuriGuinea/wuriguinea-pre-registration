@@ -1,8 +1,9 @@
 
-/* 
+/*
  * Copyright
- * 
- */package io.mosip.preregistration.batchjob.tasklets;
+ *
+ */
+package io.mosip.preregistration.batchjob.tasklets;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepContribution;
@@ -20,40 +21,39 @@ import io.mosip.preregistration.core.util.AuthTokenUtil;
 
 /**
  * This class is a tasklet of batch job to call master data sync API in batch service.
- * 
+ *
  * @author Kishan Rathore
  * @since 1.0.0
- *
  */
 @Component
 public class AvailabilitySyncTasklet implements Tasklet {
 
-	@Autowired
-	private AvailabilityUtil availabilityUtil;
-	
-	@Autowired
-	private AuthTokenUtil tokenUtil;
+    @Autowired
+    private AvailabilityUtil availabilityUtil;
 
-	private Logger log = LoggerConfiguration.logConfig(AvailabilitySyncTasklet.class);
+    @Autowired
+    private AuthTokenUtil tokenUtil;
 
-	/* (non-Javadoc)
-	 * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.springframework.batch.core.StepContribution, org.springframework.batch.core.scope.context.ChunkContext)
-	 */
-	@Override
-	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+    private Logger log = LoggerConfiguration.logConfig(AvailabilitySyncTasklet.class);
 
-		try {
-			HttpHeaders headers=tokenUtil.getTokenHeader();
-			
-			availabilityUtil.addAvailability(headers);
-			
+    /* (non-Javadoc)
+     * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.springframework.batch.core.StepContribution, org.springframework.batch.core.scope.context.ChunkContext)
+     */
+    @Override
+    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
-		} catch (Exception e) {
-			log.error("Sync master ", " Tasklet ", " encountered exception ", e.getMessage());
-			contribution.setExitStatus(new ExitStatus(e.getMessage()));
-		}
+        try {
+            HttpHeaders headers = tokenUtil.getTokenHeader();
 
-		return RepeatStatus.FINISHED;
-	}
+            availabilityUtil.addAvailability(headers);
+
+
+        } catch (Exception e) {
+            log.error("Sync master ", " Tasklet ", " encountered exception ", e.getMessage());
+            contribution.setExitStatus(new ExitStatus(e.getMessage()));
+        }
+
+        return RepeatStatus.FINISHED;
+    }
 
 }

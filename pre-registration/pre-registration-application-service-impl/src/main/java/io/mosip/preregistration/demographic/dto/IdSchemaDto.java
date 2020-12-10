@@ -10,9 +10,9 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class IdSchemaDto {
-	
-	private String id;
-	private double idVersion;
-	private String schemaJson;
-	private LocalDateTime effectiveFrom;
+
+    private String id;
+    private double idVersion;
+    private String schemaJson;
+    private LocalDateTime effectiveFrom;
 }

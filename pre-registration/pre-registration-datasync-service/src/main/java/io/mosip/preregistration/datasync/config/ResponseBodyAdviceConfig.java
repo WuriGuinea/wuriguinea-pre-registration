@@ -22,34 +22,34 @@ import io.mosip.preregistration.datasync.exception.ParseResponseException;
 @RestControllerAdvice
 public class ResponseBodyAdviceConfig implements ResponseBodyAdvice<MainResponseDTO<?>> {
 
-	@Autowired
-	private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-	@Autowired
-	SignatureUtil signatureUtil;
-	
-	@Override
-	public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-		return returnType.hasMethodAnnotation(ResponseFilter.class);
-	}
+    @Autowired
+    SignatureUtil signatureUtil;
 
-	@Override
-	public MainResponseDTO<?> beforeBodyWrite(MainResponseDTO<?> body, MethodParameter returnType,
-			MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType,
-			ServerHttpRequest request, ServerHttpResponse response) {
-		if (body != null) {
-			try {
-				String timestamp = DateUtils.getUTCCurrentDateTimeString();
-				body.setResponsetime(timestamp); 
-				SignatureResponse cryptoManagerResponseDto = signatureUtil
-						.sign(objectMapper.writeValueAsString(body));
-				response.getHeaders().add("Response-Signature", cryptoManagerResponseDto.getData());
-			} catch (JsonProcessingException e) {
-				throw new ParseResponseException(ErrorCodes.PRG_DATA_SYNC_017.toString(),
-						ErrorMessages.ERROR_WHILE_PARSING.getMessage(),body);
-			}
-		}
-		return body;
-	}
+    @Override
+    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+        return returnType.hasMethodAnnotation(ResponseFilter.class);
+    }
+
+    @Override
+    public MainResponseDTO<?> beforeBodyWrite(MainResponseDTO<?> body, MethodParameter returnType,
+                                              MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType,
+                                              ServerHttpRequest request, ServerHttpResponse response) {
+        if (body != null) {
+            try {
+                String timestamp = DateUtils.getUTCCurrentDateTimeString();
+                body.setResponsetime(timestamp);
+                SignatureResponse cryptoManagerResponseDto = signatureUtil
+                        .sign(objectMapper.writeValueAsString(body));
+                response.getHeaders().add("Response-Signature", cryptoManagerResponseDto.getData());
+            } catch (JsonProcessingException e) {
+                throw new ParseResponseException(ErrorCodes.PRG_DATA_SYNC_017.toString(),
+                        ErrorMessages.ERROR_WHILE_PARSING.getMessage(), body);
+            }
+        }
+        return body;
+    }
 
 }

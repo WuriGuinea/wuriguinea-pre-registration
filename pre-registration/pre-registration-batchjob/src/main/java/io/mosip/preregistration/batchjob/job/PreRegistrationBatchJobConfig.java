@@ -71,7 +71,7 @@ public class PreRegistrationBatchJobConfig {
         return stepBuilderFactory.get("expiredStatusStep").tasklet(expiredStatusTasklet).build();
     }
 
-    	@Bean
+    @Bean
     public Job availabilitySyncJob() {
         return this.jobBuilderFactory.get("availabilitySyncJob")
                 .incrementer(new RunIdIncrementer())
@@ -87,7 +87,7 @@ public class PreRegistrationBatchJobConfig {
                 .build();
     }
 
-    	@Bean
+    @Bean
     public Job expiredStatusJob() {
         return this.jobBuilderFactory.get("expiredStatusJob")
                 .incrementer(new RunIdIncrementer())

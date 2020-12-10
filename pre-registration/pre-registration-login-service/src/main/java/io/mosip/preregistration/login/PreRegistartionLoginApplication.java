@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages="io.mosip.*")
+@ComponentScan(basePackages = "io.mosip.*")
 public class PreRegistartionLoginApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(PreRegistartionLoginApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PreRegistartionLoginApplication.class, args);
+    }
 }

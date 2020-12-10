@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PridFetchResponseDto {
 
-	String prid;
+    String prid;
 }

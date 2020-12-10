@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CryptoManagerResponseDTO {
-	
-	private String data;
+
+    private String data;
 }

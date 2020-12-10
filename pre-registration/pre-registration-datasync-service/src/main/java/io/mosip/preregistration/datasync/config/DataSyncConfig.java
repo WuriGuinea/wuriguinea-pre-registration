@@ -20,89 +20,92 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Config for Data sync
- * 
- * @author M1046129 - Jagadishwari
  *
+ * @author M1046129 - Jagadishwari
  */
 @Configuration
 @EnableSwagger2
 @ConfigurationProperties("mosip")
 public class DataSyncConfig {
 
-	/** The id. */
-	private Map<String, String> id;
-	
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the id
-	 */
-	public void setId(Map<String, String> id) {
-		this.id = id;
-	}
-	
+    /**
+     * The id.
+     */
+    private Map<String, String> id;
 
-	/**
-	 * Id.
-	 *
-	 * @return the map
-	 */
-	@Bean
-	public Map<String, String> ic() {
-		return Collections.unmodifiableMap(id);
-	}
-	/**
-	 * @return docket
-	 */
-	
-	@Value("${application.env.local:false}")
-	private Boolean localEnv;
-
-	@Value("${swagger.base-url:#{null}}")
-	private String swaggerBaseUrl;
-
-	@Value("${server.port:9094}")
-	private int serverPort;
-
-	String proto = "http";
-	String host = "localhost";
-	int port = -1;
-	String hostWithPort = "localhost:9094";
-	@Bean
-	public Docket api() {
-		
-		boolean swaggerBaseUrlSet = false;
-		if (!localEnv && swaggerBaseUrl != null && !swaggerBaseUrl.isEmpty()) {
-			try {
-				proto = new URL(swaggerBaseUrl).getProtocol();
-				host = new URL(swaggerBaseUrl).getHost();
-				port = new URL(swaggerBaseUrl).getPort();
-				if (port == -1) {
-					hostWithPort = host;
-				} else {
-					hostWithPort = host + ":" + port;
-				} 
-				swaggerBaseUrlSet = true;
-			} catch (MalformedURLException e) {
-				System.err.println("SwaggerUrlException: " + e);
-			}
-		}
-
-		Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName("Pre-Registration-Datasync").select()
-				.apis(RequestHandlerSelectors.any()).paths(PathSelectors.regex("(?!/(error).*).*")).build();
+    /**
+     * Sets the id.
+     *
+     * @param id the id
+     */
+    public void setId(Map<String, String> id) {
+        this.id = id;
+    }
 
 
-		if (swaggerBaseUrlSet) {
-			docket.protocols(protocols()).host(hostWithPort);
-			System.out.println("\nSwagger Base URL: " + proto + "://" + hostWithPort + "\n");
-		}
-		return docket;
-	}
-	
-	private Set<String> protocols() {
-		Set<String> protocols = new HashSet<>();
-		protocols.add(proto);
-		return protocols;
-	}
+    /**
+     * Id.
+     *
+     * @return the map
+     */
+    @Bean
+    public Map<String, String> ic() {
+        return Collections.unmodifiableMap(id);
+    }
+
+    /**
+     * @return docket
+     */
+
+    @Value("${application.env.local:false}")
+    private Boolean localEnv;
+
+    @Value("${swagger.base-url:#{null}}")
+    private String swaggerBaseUrl;
+
+    @Value("${server.port:9094}")
+    private int serverPort;
+
+    String proto = "http";
+    String host = "localhost";
+    int port = -1;
+    String hostWithPort = "localhost:9094";
+
+    @Bean
+    public Docket api() {
+
+        boolean swaggerBaseUrlSet = false;
+        if (!localEnv && swaggerBaseUrl != null && !swaggerBaseUrl.isEmpty()) {
+            try {
+                proto = new URL(swaggerBaseUrl).getProtocol();
+                host = new URL(swaggerBaseUrl).getHost();
+                port = new URL(swaggerBaseUrl).getPort();
+                if (port == -1) {
+                    hostWithPort = host;
+                } else {
+                    hostWithPort = host + ":" + port;
+                }
+                swaggerBaseUrlSet = true;
+            } catch (MalformedURLException e) {
+                System.err.println("SwaggerUrlException: " + e);
+            }
+        }
+
+        Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName("Pre-Registration-Datasync").select()
+                .apis(RequestHandlerSelectors.any()).paths(PathSelectors.regex("(?!/(error).*).*")).build();
+
+
+        if (swaggerBaseUrlSet) {
+            docket.protocols(protocols()).host(hostWithPort);
+            System.out.println("\nSwagger Base URL: " + proto + "://" + hostWithPort + "\n");
+        }
+        return docket;
+    }
+
+    private Set<String> protocols() {
+        Set<String> protocols = new HashSet<>();
+        protocols.add(proto);
+        return protocols;
+    }
 
 }

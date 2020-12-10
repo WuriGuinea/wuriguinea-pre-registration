@@ -8,16 +8,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WorkingDaysDto {
-	
-	private String name;
-	
-	private String dayCode;
-	
-	private String languagecode;
-	
-	private boolean isWorking;
-	
-	private boolean isActive;
-	
+
+    private String name;
+
+    private String dayCode;
+
+    private String languagecode;
+
+    private boolean isWorking;
+
+    private boolean isActive;
+
 
 }

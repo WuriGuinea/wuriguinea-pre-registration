@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.booking.exception.util;
 
@@ -73,397 +73,399 @@ import io.mosip.preregistration.core.util.GenericUtil;
 
 /**
  * Exception Handler for Booking application.
- * 
+ *
  * @author Kishan Rathore
  * @author Jagadishwari
  * @since 1.0.0
- *
  */
 @RestControllerAdvice
 public class BookingExceptionHandler {
 
-	/** The Environment. */
-	@Autowired
-	protected Environment env;
+    /**
+     * The Environment.
+     */
+    @Autowired
+    protected Environment env;
 
-	/** The id. */
-	@Resource
-	protected Map<String, String> id;
+    /**
+     * The id.
+     */
+    @Resource
+    protected Map<String, String> id;
 
-	@Value("${mosip.utc-datetime-pattern}")
-	private String utcDateTimePattern;
+    @Value("${mosip.utc-datetime-pattern}")
+    private String utcDateTimePattern;
 
-	@Value("${version}")
-	String versionUrl;
+    @Value("${version}")
+    String versionUrl;
 
-	@Value("${mosip.preregistration.booking.exception.id}")
-	String idUrl;
+    @Value("${mosip.preregistration.booking.exception.id}")
+    String idUrl;
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(DemographicStatusUpdationException.class)
-	public ResponseEntity<MainResponseDTO<?>> updateStatusException(final DemographicStatusUpdationException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(DemographicStatusUpdationException.class)
+    public ResponseEntity<MainResponseDTO<?>> updateStatusException(final DemographicStatusUpdationException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(AvailabilityTableNotAccessableException.class)
-	public ResponseEntity<MainResponseDTO<?>> availabilityTableNotAccessableException(
-			final AvailabilityTableNotAccessableException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(AvailabilityTableNotAccessableException.class)
+    public ResponseEntity<MainResponseDTO<?>> availabilityTableNotAccessableException(
+            final AvailabilityTableNotAccessableException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(DemographicGetStatusException.class)
-	public ResponseEntity<MainResponseDTO<?>> getStatusException(final DemographicGetStatusException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(DemographicGetStatusException.class)
+    public ResponseEntity<MainResponseDTO<?>> getStatusException(final DemographicGetStatusException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(MasterDataNotAvailableException.class)
-	public ResponseEntity<MainResponseDTO<?>> masterDataNotAvailableException(final MasterDataNotAvailableException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(MasterDataNotAvailableException.class)
+    public ResponseEntity<MainResponseDTO<?>> masterDataNotAvailableException(final MasterDataNotAvailableException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(RestCallException.class)
-	public ResponseEntity<MainResponseDTO<?>> databaseerror(final RestCallException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(RestCallException.class)
+    public ResponseEntity<MainResponseDTO<?>> databaseerror(final RestCallException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(BookingTimeSlotNotSeletectedException.class)
-	public ResponseEntity<MainResponseDTO<?>> timeSlotNotSelected(final BookingTimeSlotNotSeletectedException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(BookingTimeSlotNotSeletectedException.class)
+    public ResponseEntity<MainResponseDTO<?>> timeSlotNotSelected(final BookingTimeSlotNotSeletectedException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(AppointmentCannotBeBookedException.class)
-	public ResponseEntity<MainResponseDTO<?>> timeSlotNotSelected(final AppointmentCannotBeBookedException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(AppointmentCannotBeBookedException.class)
+    public ResponseEntity<MainResponseDTO<?>> timeSlotNotSelected(final AppointmentCannotBeBookedException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
 
-	}
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(BookingPreIdNotFoundException.class)
-	public ResponseEntity<MainResponseDTO<?>> preIdNotFound(final BookingPreIdNotFoundException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(BookingPreIdNotFoundException.class)
+    public ResponseEntity<MainResponseDTO<?>> preIdNotFound(final BookingPreIdNotFoundException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(BookingRegistrationCenterIdNotFoundException.class)
-	public ResponseEntity<MainResponseDTO<?>> regCenterNotFound(final BookingRegistrationCenterIdNotFoundException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(BookingRegistrationCenterIdNotFoundException.class)
+    public ResponseEntity<MainResponseDTO<?>> regCenterNotFound(final BookingRegistrationCenterIdNotFoundException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(InvalidDateTimeFormatException.class)
-	public ResponseEntity<MainResponseDTO<?>> invalidDateTimeException(final InvalidDateTimeFormatException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(InvalidDateTimeFormatException.class)
+    public ResponseEntity<MainResponseDTO<?>> invalidDateTimeException(final InvalidDateTimeFormatException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(BookingTimeSlotAlreadyBooked.class)
-	public ResponseEntity<MainResponseDTO<?>> timeSlotAlreadyBooked(final BookingTimeSlotAlreadyBooked e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(BookingTimeSlotAlreadyBooked.class)
+    public ResponseEntity<MainResponseDTO<?>> timeSlotAlreadyBooked(final BookingTimeSlotAlreadyBooked e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(BookingDateNotSeletectedException.class)
-	public ResponseEntity<MainResponseDTO<?>> bookingDateNotSelected(final BookingDateNotSeletectedException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(BookingDateNotSeletectedException.class)
+    public ResponseEntity<MainResponseDTO<?>> bookingDateNotSelected(final BookingDateNotSeletectedException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(InvalidRequestParameterException.class)
-	public ResponseEntity<MainResponseDTO<?>> bookingDateNotSelected(final InvalidRequestParameterException e) {
-		MainResponseDTO<?> errorRes = e.getMainResponseDto();
-		errorRes.setId(id.get(e.getOperation()));
-		errorRes.setVersion(env.getProperty("version"));
-		errorRes.setErrors(e.getExptionList());
-		errorRes.setResponsetime(GenericUtil.getCurrentResponseTime());
-		return new ResponseEntity<>(errorRes, HttpStatus.OK);
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(InvalidRequestParameterException.class)
+    public ResponseEntity<MainResponseDTO<?>> bookingDateNotSelected(final InvalidRequestParameterException e) {
+        MainResponseDTO<?> errorRes = e.getMainResponseDto();
+        errorRes.setId(id.get(e.getOperation()));
+        errorRes.setVersion(env.getProperty("version"));
+        errorRes.setErrors(e.getExptionList());
+        errorRes.setResponsetime(GenericUtil.getCurrentResponseTime());
+        return new ResponseEntity<>(errorRes, HttpStatus.OK);
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(BookingDataNotFoundException.class)
-	public ResponseEntity<MainResponseDTO<?>> bookingDataNotFound(final BookingDataNotFoundException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(BookingDataNotFoundException.class)
+    public ResponseEntity<MainResponseDTO<?>> bookingDataNotFound(final BookingDataNotFoundException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(RecordNotFoundException.class)
-	public ResponseEntity<MainResponseDTO<?>> recordNotFound(final RecordNotFoundException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(RecordNotFoundException.class)
+    public ResponseEntity<MainResponseDTO<?>> recordNotFound(final RecordNotFoundException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(AppointmentAlreadyCanceledException.class)
-	public ResponseEntity<MainResponseDTO<?>> appointmentAlreadyCanceledException(
-			final AppointmentAlreadyCanceledException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(AppointmentAlreadyCanceledException.class)
+    public ResponseEntity<MainResponseDTO<?>> appointmentAlreadyCanceledException(
+            final AppointmentAlreadyCanceledException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
-	@ExceptionHandler(AppointmentCannotBeCanceledException.class)
-	public ResponseEntity<MainResponseDTO<?>> appointmentCanNotCanceledException(
-			final AppointmentCannotBeCanceledException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
+    @ExceptionHandler(AppointmentCannotBeCanceledException.class)
+    public ResponseEntity<MainResponseDTO<?>> appointmentCanNotCanceledException(
+            final AppointmentCannotBeCanceledException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
 
-	@ExceptionHandler(CancelAppointmentFailedException.class)
-	public ResponseEntity<MainResponseDTO<?>> appointmentCancelFailedException(
-			final CancelAppointmentFailedException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    @ExceptionHandler(CancelAppointmentFailedException.class)
+    public ResponseEntity<MainResponseDTO<?>> appointmentCancelFailedException(
+            final CancelAppointmentFailedException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
 
-	@ExceptionHandler(AppointmentReBookingFailedException.class)
-	public ResponseEntity<MainResponseDTO<?>> appointmentReBookingFailedException(
-			final AppointmentReBookingFailedException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    @ExceptionHandler(AppointmentReBookingFailedException.class)
+    public ResponseEntity<MainResponseDTO<?>> appointmentReBookingFailedException(
+            final AppointmentReBookingFailedException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
 
-	@ExceptionHandler(DocumentNotFoundException.class)
-	public ResponseEntity<MainResponseDTO<?>> documentNotFound(final DocumentNotFoundException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    @ExceptionHandler(DocumentNotFoundException.class)
+    public ResponseEntity<MainResponseDTO<?>> documentNotFound(final DocumentNotFoundException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
 
-	@ExceptionHandler(AvailablityNotFoundException.class)
-	public ResponseEntity<MainResponseDTO<?>> availablityNotFound(final AvailablityNotFoundException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    @ExceptionHandler(AvailablityNotFoundException.class)
+    public ResponseEntity<MainResponseDTO<?>> availablityNotFound(final AvailablityNotFoundException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
 
-	@ExceptionHandler(TableNotAccessibleException.class)
+    @ExceptionHandler(TableNotAccessibleException.class)
 
-	public ResponseEntity<MainResponseDTO<?>> tablenotAccessible(final TableNotAccessibleException e) {
-		return GenericUtil.errorResponse(e, e.getMainResposneDTO());
-	}
+    public ResponseEntity<MainResponseDTO<?>> tablenotAccessible(final TableNotAccessibleException e) {
+        return GenericUtil.errorResponse(e, e.getMainResposneDTO());
+    }
 
-	/**
-	 * @param e
-	 * @param request
-	 * @return error response
-	 */
+    /**
+     * @param e
+     * @param request
+     * @return error response
+     */
 
-	@ExceptionHandler(AppointmentBookingFailedException.class)
-	public ResponseEntity<MainResponseDTO<?>> appointmentBookingFailed(final AppointmentBookingFailedException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
-	}
+    @ExceptionHandler(AppointmentBookingFailedException.class)
+    public ResponseEntity<MainResponseDTO<?>> appointmentBookingFailed(final AppointmentBookingFailedException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    }
 
-	@ExceptionHandler(TimeSpanException.class)
-	public ResponseEntity<MainResponseDTO<?>> timeSpanException(final TimeSpanException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    @ExceptionHandler(TimeSpanException.class)
+    public ResponseEntity<MainResponseDTO<?>> timeSpanException(final TimeSpanException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
 
-	}
+    }
 
-	@ExceptionHandler(RecordFailedToDeleteException.class)
-	public ResponseEntity<MainResponseDTO<?>> recordFailedToDeleteException(final RecordFailedToDeleteException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    @ExceptionHandler(RecordFailedToDeleteException.class)
+    public ResponseEntity<MainResponseDTO<?>> recordFailedToDeleteException(final RecordFailedToDeleteException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
 
-	}
+    }
 
-	@ExceptionHandler(OperationNotAllowedException.class)
-	public ResponseEntity<MainResponseDTO<?>> operationNotAllowedException(final OperationNotAllowedException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    @ExceptionHandler(OperationNotAllowedException.class)
+    public ResponseEntity<MainResponseDTO<?>> operationNotAllowedException(final OperationNotAllowedException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
 
-	}
+    }
 
-	@ExceptionHandler(JsonException.class)
-	public ResponseEntity<MainResponseDTO<?>> jsonException(final JsonException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDTO());
+    @ExceptionHandler(JsonException.class)
+    public ResponseEntity<MainResponseDTO<?>> jsonException(final JsonException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDTO());
 
-	}
+    }
 
-	@ExceptionHandler(ParseException.class)
-	public ResponseEntity<MainResponseDTO<?>> parseException(final ParseException e) {
-		ExceptionJSONInfoDTO errorDetails = new ExceptionJSONInfoDTO(e.getErrorCode(), e.getErrorText());
-		MainResponseDTO<?> errorRes = new MainResponseDTO<>();
-		List<ExceptionJSONInfoDTO> errorList = new ArrayList<>();
-		errorList.add(errorDetails);
-		errorRes.setErrors(errorList);
-		errorRes.setId(idUrl);
-		errorRes.setVersion(versionUrl);
-		errorRes.setResponsetime(DateUtils.formatDate(new Date(), utcDateTimePattern));
+    @ExceptionHandler(ParseException.class)
+    public ResponseEntity<MainResponseDTO<?>> parseException(final ParseException e) {
+        ExceptionJSONInfoDTO errorDetails = new ExceptionJSONInfoDTO(e.getErrorCode(), e.getErrorText());
+        MainResponseDTO<?> errorRes = new MainResponseDTO<>();
+        List<ExceptionJSONInfoDTO> errorList = new ArrayList<>();
+        errorList.add(errorDetails);
+        errorRes.setErrors(errorList);
+        errorRes.setId(idUrl);
+        errorRes.setVersion(versionUrl);
+        errorRes.setResponsetime(DateUtils.formatDate(new Date(), utcDateTimePattern));
 
-		return new ResponseEntity<>(errorRes, HttpStatus.OK);
+        return new ResponseEntity<>(errorRes, HttpStatus.OK);
 
-	}
+    }
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ResponseWrapper<ServiceError>> methodArgumentNotValidException(
-			final HttpServletRequest httpServletRequest, final MethodArgumentNotValidException e) throws IOException {
-		ResponseWrapper<ServiceError> errorResponse = setErrors(httpServletRequest);
-		final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
-		fieldErrors.forEach(x -> {
-			ServiceError error = new ServiceError(
-					io.mosip.preregistration.core.errorcodes.ErrorCodes.PRG_CORE_REQ_015.getCode(),
-					x.getField() + ": " + x.getDefaultMessage());
-			errorResponse.getErrors().add(error);
-		});
-		return new ResponseEntity<>(errorResponse, HttpStatus.OK);
-	}
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ResponseWrapper<ServiceError>> methodArgumentNotValidException(
+            final HttpServletRequest httpServletRequest, final MethodArgumentNotValidException e) throws IOException {
+        ResponseWrapper<ServiceError> errorResponse = setErrors(httpServletRequest);
+        final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        fieldErrors.forEach(x -> {
+            ServiceError error = new ServiceError(
+                    io.mosip.preregistration.core.errorcodes.ErrorCodes.PRG_CORE_REQ_015.getCode(),
+                    x.getField() + ": " + x.getDefaultMessage());
+            errorResponse.getErrors().add(error);
+        });
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+    }
 
-	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<ResponseWrapper<ServiceError>> onHttpMessageNotReadable(
-			final HttpServletRequest httpServletRequest, final HttpMessageNotReadableException e) throws IOException {
-		ResponseWrapper<ServiceError> errorResponse = setErrors(httpServletRequest);
-		ServiceError error = new ServiceError(
-				io.mosip.preregistration.core.errorcodes.ErrorCodes.PRG_CORE_REQ_015.getCode(), e.getMessage());
-		errorResponse.getErrors().add(error);
-		return new ResponseEntity<>(errorResponse, HttpStatus.OK);
-	}
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ResponseWrapper<ServiceError>> onHttpMessageNotReadable(
+            final HttpServletRequest httpServletRequest, final HttpMessageNotReadableException e) throws IOException {
+        ResponseWrapper<ServiceError> errorResponse = setErrors(httpServletRequest);
+        ServiceError error = new ServiceError(
+                io.mosip.preregistration.core.errorcodes.ErrorCodes.PRG_CORE_REQ_015.getCode(), e.getMessage());
+        errorResponse.getErrors().add(error);
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+    }
 
-	@ExceptionHandler(value = { Exception.class, RuntimeException.class })
-	public ResponseEntity<ResponseWrapper<ServiceError>> defaultErrorHandler(
-			final HttpServletRequest httpServletRequest, Exception e) throws IOException {
-		ResponseWrapper<ServiceError> errorResponse = setErrors(httpServletRequest);
-		ServiceError error = new ServiceError(
-				io.mosip.preregistration.core.errorcodes.ErrorCodes.PRG_CORE_REQ_016.getCode(), e.getMessage());
-		errorResponse.getErrors().add(error);
-		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+    @ExceptionHandler(value = {Exception.class, RuntimeException.class})
+    public ResponseEntity<ResponseWrapper<ServiceError>> defaultErrorHandler(
+            final HttpServletRequest httpServletRequest, Exception e) throws IOException {
+        ResponseWrapper<ServiceError> errorResponse = setErrors(httpServletRequest);
+        ServiceError error = new ServiceError(
+                io.mosip.preregistration.core.errorcodes.ErrorCodes.PRG_CORE_REQ_016.getCode(), e.getMessage());
+        errorResponse.getErrors().add(error);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-	@Autowired
-	private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-	private ResponseWrapper<ServiceError> setErrors(HttpServletRequest httpServletRequest) throws IOException {
-		ResponseWrapper<ServiceError> responseWrapper = new ResponseWrapper<>();
-		responseWrapper.setResponsetime(LocalDateTime.now(ZoneId.of("UTC")));
-		String requestBody = null;
-		if (httpServletRequest instanceof ContentCachingRequestWrapper) {
-			requestBody = new String(((ContentCachingRequestWrapper) httpServletRequest).getContentAsByteArray());
-		}
-		if (EmptyCheckUtils.isNullEmpty(requestBody)) {
-			return responseWrapper;
-		}
-		objectMapper.registerModule(new JavaTimeModule());
-		JsonNode reqNode = objectMapper.readTree(requestBody);
-		responseWrapper.setId(reqNode.path("id").asText());
-		responseWrapper.setVersion(reqNode.path("version").asText());
-		return responseWrapper;
-	}
+    private ResponseWrapper<ServiceError> setErrors(HttpServletRequest httpServletRequest) throws IOException {
+        ResponseWrapper<ServiceError> responseWrapper = new ResponseWrapper<>();
+        responseWrapper.setResponsetime(LocalDateTime.now(ZoneId.of("UTC")));
+        String requestBody = null;
+        if (httpServletRequest instanceof ContentCachingRequestWrapper) {
+            requestBody = new String(((ContentCachingRequestWrapper) httpServletRequest).getContentAsByteArray());
+        }
+        if (EmptyCheckUtils.isNullEmpty(requestBody)) {
+            return responseWrapper;
+        }
+        objectMapper.registerModule(new JavaTimeModule());
+        JsonNode reqNode = objectMapper.readTree(requestBody);
+        responseWrapper.setId(reqNode.path("id").asText());
+        responseWrapper.setVersion(reqNode.path("version").asText());
+        return responseWrapper;
+    }
 
-	@ExceptionHandler(NotificationException.class)
-	public ResponseEntity<MainResponseDTO<?>> authServiceException(final NotificationException e, WebRequest request) {
-		List<ExceptionJSONInfoDTO> errorList = new ArrayList<>();
-		e.getValidationErrorList().stream().forEach(serviceError -> errorList
-				.add(new ExceptionJSONInfoDTO(serviceError.getErrorCode(), serviceError.getMessage())));
-		MainResponseDTO<?> errorRes = e.getMainResposneDTO();
-		errorRes.setErrors(errorList);
-		errorRes.setResponsetime(GenericUtil.getCurrentResponseTime());
-		return new ResponseEntity<>(errorRes, HttpStatus.OK);
-	}
+    @ExceptionHandler(NotificationException.class)
+    public ResponseEntity<MainResponseDTO<?>> authServiceException(final NotificationException e, WebRequest request) {
+        List<ExceptionJSONInfoDTO> errorList = new ArrayList<>();
+        e.getValidationErrorList().stream().forEach(serviceError -> errorList
+                .add(new ExceptionJSONInfoDTO(serviceError.getErrorCode(), serviceError.getMessage())));
+        MainResponseDTO<?> errorRes = e.getMainResposneDTO();
+        errorRes.setErrors(errorList);
+        errorRes.setResponsetime(GenericUtil.getCurrentResponseTime());
+        return new ResponseEntity<>(errorRes, HttpStatus.OK);
+    }
 
-	@ExceptionHandler(PreRegistrationException.class)
-	public ResponseEntity<MainResponseDTO<?>> commonException(final PreRegistrationException e) {
-		return GenericUtil.errorResponse(e, e.getMainresponseDTO());
-	}
-	
-	/**
-	 * 
-	 * @param e
-	 * @return
-	 */
-	@ExceptionHandler(InvalidRequestException.class)
-	public ResponseEntity<MainResponseDTO<?>> invalidRequestException(final InvalidRequestException e) {
-		return GenericUtil.errorResponse(e, e.getMainResponseDto());
-	}
+    @ExceptionHandler(PreRegistrationException.class)
+    public ResponseEntity<MainResponseDTO<?>> commonException(final PreRegistrationException e) {
+        return GenericUtil.errorResponse(e, e.getMainresponseDTO());
+    }
+
+    /**
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<MainResponseDTO<?>> invalidRequestException(final InvalidRequestException e) {
+        return GenericUtil.errorResponse(e, e.getMainResponseDto());
+    }
 
 }

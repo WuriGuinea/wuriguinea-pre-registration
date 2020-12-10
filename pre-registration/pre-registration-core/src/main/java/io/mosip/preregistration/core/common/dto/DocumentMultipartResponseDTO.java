@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.core.common.dto;
 
@@ -13,7 +13,7 @@ import lombok.ToString;
 
 /**
  * This DTO class is used to define the response values when document details are fetched.
- * 
+ *
  * @author Kishan Rathore
  * @since 1.0.0
  */
@@ -23,34 +23,36 @@ import lombok.ToString;
 @ToString
 public class DocumentMultipartResponseDTO implements Serializable {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 7070542323407937205L;
-	
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 7070542323407937205L;
 
-	/**
-	 * Document Name
-	 */
-	private String docName;
-	
-	/**
-	 * Document Id
-	 */
-	private String documentId;
-	
-	/**
-	 * Document category
-	 */
-	private String docCatCode;
 
-	/**
-	 * Document Type
-	 */
-	private String docTypCode;
-	
-	/**
-	 * Language Code
-	 */
-	private String langCode;
-	
+    /**
+     * Document Name
+     */
+    private String docName;
+
+    /**
+     * Document Id
+     */
+    private String documentId;
+
+    /**
+     * Document category
+     */
+    private String docCatCode;
+
+    /**
+     * Document Type
+     */
+    private String docTypCode;
+
+    /**
+     * Language Code
+     */
+    private String langCode;
+
 
 }

@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 
 /**
  * The Audit Request class with required fields to be captured and recorded
- * 
+ *
  * @author Jagadishwari S
  * @since 1.0.0
- *
  */
 
 @Data
@@ -24,65 +23,65 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuditRequestDto {
 
-	@NotNull
-	@Size(min = 1, max = 64)
-	private String eventId;
+    @NotNull
+    @Size(min = 1, max = 64)
+    private String eventId;
 
-	@NotNull
-	@Size(min = 1, max = 128)
-	private String eventName;
+    @NotNull
+    @Size(min = 1, max = 128)
+    private String eventName;
 
-	@NotNull
-	@Size(min = 1, max = 64)
-	private String eventType;
+    @NotNull
+    @Size(min = 1, max = 64)
+    private String eventType;
 
-	@NotNull
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-	private LocalDateTime actionTimeStamp;
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime actionTimeStamp;
 
-	@NotNull
-	@Size(min = 1, max = 128)
-	private String hostName;
+    @NotNull
+    @Size(min = 1, max = 128)
+    private String hostName;
 
-	@NotNull
-	@Size(min = 1, max = 16)
-	private String hostIp;
+    @NotNull
+    @Size(min = 1, max = 16)
+    private String hostIp;
 
-	@NotNull
-	@Size(min = 1, max = 64)
-	private String applicationId;
+    @NotNull
+    @Size(min = 1, max = 64)
+    private String applicationId;
 
-	@NotNull
-	@Size(min = 1, max = 128)
-	private String applicationName;
+    @NotNull
+    @Size(min = 1, max = 128)
+    private String applicationName;
 
-	@NotNull
-	@Size(min = 1, max = 64)
-	private String sessionUserId;
+    @NotNull
+    @Size(min = 1, max = 64)
+    private String sessionUserId;
 
-	@Size(min = 1, max = 128)
-	private String sessionUserName;
+    @Size(min = 1, max = 128)
+    private String sessionUserName;
 
-	@NotNull
-	@Size(min = 1, max = 64)
+    @NotNull
+    @Size(min = 1, max = 64)
 
-	private String id;
-	@NotNull
-	@Size(min = 1, max = 64)
-	private String idType;
+    private String id;
+    @NotNull
+    @Size(min = 1, max = 64)
+    private String idType;
 
-	@NotNull
-	@Size(min = 1, max = 255)
-	private String createdBy;
+    @NotNull
+    @Size(min = 1, max = 255)
+    private String createdBy;
 
-	@Size(max = 128)
-	private String moduleName;
+    @Size(max = 128)
+    private String moduleName;
 
-	@Size(max = 64)
-	private String moduleId;
+    @Size(max = 64)
+    private String moduleId;
 
-	@Size(max = 2048)
-	private String description;
-	
+    @Size(max = 2048)
+    private String description;
+
 
 }

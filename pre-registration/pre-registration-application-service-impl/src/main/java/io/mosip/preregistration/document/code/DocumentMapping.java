@@ -6,33 +6,33 @@ import java.util.stream.Collectors;
 
 public enum DocumentMapping {
 
-	POA("proofOfAddress", "POA"),
+    POA("proofOfAddress", "POA"),
 
-	POI("proofOfIdentity", "POI"),
+    POI("proofOfIdentity", "POI"),
 
-	POR("proofOfRelationship", "POR"),
+    POR("proofOfRelationship", "POR"),
 
-	POE("proofOfException", "POE");
+    POE("proofOfException", "POE");
 
-	private final String attributeName;
+    private final String attributeName;
 
-	private final String code;
+    private final String code;
 
-	DocumentMapping(String attributeName, String code) {
-		this.attributeName = attributeName;
-		this.code = code;
-	}
+    DocumentMapping(String attributeName, String code) {
+        this.attributeName = attributeName;
+        this.code = code;
+    }
 
-	public String getAttributeName() {
-		return attributeName;
-	}
+    public String getAttributeName() {
+        return attributeName;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public static Map<String, String> getAllMapping() {
-		return Arrays.stream(values()).parallel()
-				.collect(Collectors.toMap(DocumentMapping::getCode, DocumentMapping::getAttributeName));
-	}
+    public static Map<String, String> getAllMapping() {
+        return Arrays.stream(values()).parallel()
+                .collect(Collectors.toMap(DocumentMapping::getCode, DocumentMapping::getAttributeName));
+    }
 }

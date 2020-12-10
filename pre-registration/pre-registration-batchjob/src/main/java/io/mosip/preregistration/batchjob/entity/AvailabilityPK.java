@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.batchjob.entity;
 
@@ -16,33 +16,39 @@ import lombok.Setter;
 
 /**
  * This entity class defines the database table details for Booking application.
- * 
+ *
  * @author Kishan Rathore
  * @author Jagadishwari
  * @author Ravi C. Balaji
  * @since 1.0.0
- *
  */
 @Embeddable
 @Getter
 @Setter
-public class AvailabilityPK implements Serializable{
-	
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -4022968783477038513L;
-	
-	/** Registration_Center_Id. */
-	@Column(name = "regcntr_id")
-	private String regcntrId;
-	
-	/** Availability_Date. */
-	@Column(name = "availability_date")
-	private LocalDate regDate;
-	
-	/**Slot_From_Time. */
-	@Column(name = "slot_from_time")
-	private LocalTime fromTime;
-	
-	
+public class AvailabilityPK implements Serializable {
+
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = -4022968783477038513L;
+
+    /**
+     * Registration_Center_Id.
+     */
+    @Column(name = "regcntr_id")
+    private String regcntrId;
+
+    /**
+     * Availability_Date.
+     */
+    @Column(name = "availability_date")
+    private LocalDate regDate;
+
+    /**
+     * Slot_From_Time.
+     */
+    @Column(name = "slot_from_time")
+    private LocalTime fromTime;
+
 
 }

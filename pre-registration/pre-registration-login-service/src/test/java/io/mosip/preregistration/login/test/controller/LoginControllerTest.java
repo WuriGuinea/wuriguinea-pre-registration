@@ -45,118 +45,117 @@ import io.mosip.preregistration.login.util.LoginCommonUtil;
 import net.minidev.json.parser.ParseException;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { PreRegistartionLoginApplication.class })
+@SpringBootTest(classes = {PreRegistartionLoginApplication.class})
 @AutoConfigureMockMvc
 public class LoginControllerTest {
 
-	@Autowired
-	private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-	@MockBean
-	private LoginService loginService;
+    @MockBean
+    private LoginService loginService;
 
-	@MockBean
-	private LoginCommonUtil loginCommonUtil;
+    @MockBean
+    private LoginCommonUtil loginCommonUtil;
 
-	@Mock
-	private RequestValidator loginValidator;
+    @Mock
+    private RequestValidator loginValidator;
 
-	@Autowired
-	private LoginController controller;
+    @Autowired
+    private LoginController controller;
 
-	private AuthNResponse authNResposne;
-	
-	@Mock
-	private HttpServletResponse res;
+    private AuthNResponse authNResposne;
 
-	private MainResponseDTO<ResponseEntity<String>> serviceResponse;
-	
-	private MainRequestDTO<Object> loginRequest =new MainRequestDTO<>();
+    @Mock
+    private HttpServletResponse res;
 
-	private ResponseEntity<String> responseEntity;
+    private MainResponseDTO<ResponseEntity<String>> serviceResponse;
+
+    private MainRequestDTO<Object> loginRequest = new MainRequestDTO<>();
+
+    private ResponseEntity<String> responseEntity;
 
 
+    @Before
+    public void setup() throws URISyntaxException, FileNotFoundException, ParseException {
+        loginRequest.setId("mosip.pre-registration.login.sendotp");
+        loginRequest.setVersion("v1");
+        loginRequest.setRequesttime(new Date());
+        ReflectionTestUtils.setField(controller, "loginValidator", loginValidator);
+    }
 
-	@Before
-	public void setup() throws URISyntaxException, FileNotFoundException, ParseException {
-		loginRequest.setId("mosip.pre-registration.login.sendotp");
-		loginRequest.setVersion("v1");
-		loginRequest.setRequesttime(new Date());
-		ReflectionTestUtils.setField(controller, "loginValidator", loginValidator);
-	}
-	
-	/**
-	 * Test init binder.
-	 */
-	@Test
-	public void testInitBinder() {
-		controller.initBinder(Mockito.mock(WebDataBinder.class));
-	}
+    /**
+     * Test init binder.
+     */
+    @Test
+    public void testInitBinder() {
+        controller.initBinder(Mockito.mock(WebDataBinder.class));
+    }
 
-	@Test
-	public void sendOtpTest() throws Exception {
-		MainResponseDTO<AuthNResponse> mainResponseDTO = new MainResponseDTO<>();
-		Mockito.when(loginService.sendOTP(Mockito.any())).thenReturn(mainResponseDTO);
-		MainRequestDTO<OtpRequestDTO> userOtpRequest= new MainRequestDTO<>();
-		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(userOtpRequest, "MainRequestDTO<OtpRequestDTO>");
-		ResponseEntity<MainResponseDTO<AuthNResponse>> responseEntity = controller.sendOTP(userOtpRequest, errors);
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-	}
+    @Test
+    public void sendOtpTest() throws Exception {
+        MainResponseDTO<AuthNResponse> mainResponseDTO = new MainResponseDTO<>();
+        Mockito.when(loginService.sendOTP(Mockito.any())).thenReturn(mainResponseDTO);
+        MainRequestDTO<OtpRequestDTO> userOtpRequest = new MainRequestDTO<>();
+        BeanPropertyBindingResult errors = new BeanPropertyBindingResult(userOtpRequest, "MainRequestDTO<OtpRequestDTO>");
+        ResponseEntity<MainResponseDTO<AuthNResponse>> responseEntity = controller.sendOTP(userOtpRequest, errors);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
 
-	@Mock
-	private ResponseWrapper responseWrapped;
+    @Mock
+    private ResponseWrapper responseWrapped;
 
-	@Test
-	public void validateWithUseridOtpTest() throws Exception {
-		MainRequestDTO<User> userIdOtpRequest= new MainRequestDTO<>();
-		loginRequest.setId("mosip.pre-registration.login.useridotp");
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Set-Cookie", "AuthToken=MOSIP");
-		authNResposne = new AuthNResponse("success", "success");
-		responseEntity = new ResponseEntity<String>("Validation Successful", headers, HttpStatus.OK);
-		serviceResponse = new MainResponseDTO<>();
-		serviceResponse.setId("id");
-		serviceResponse.setResponse(responseEntity);
-		serviceResponse.setResponsetime("responseTime");
-		Mockito.when(loginCommonUtil.requestBodyExchange(Mockito.any())).thenReturn(responseWrapped);
-		Mockito.when(loginCommonUtil.requestBodyExchangeObject(Mockito.any(), Mockito.any())).thenReturn(authNResposne);
-		//Mockito.when(loginCommonUtil.getConfig(Mockito.anyString())).thenReturn("mosip.io");
-		Mockito.when(loginService.validateWithUserIdOtp(Mockito.any())).thenReturn(serviceResponse);
-		
-		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(userIdOtpRequest, "MainRequestDTO<User>");
-		ResponseEntity<MainResponseDTO<AuthNResponse>> responseEntity = controller.validateWithUserIdOtp(userIdOtpRequest, errors, res);
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    @Test
+    public void validateWithUseridOtpTest() throws Exception {
+        MainRequestDTO<User> userIdOtpRequest = new MainRequestDTO<>();
+        loginRequest.setId("mosip.pre-registration.login.useridotp");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Set-Cookie", "AuthToken=MOSIP");
+        authNResposne = new AuthNResponse("success", "success");
+        responseEntity = new ResponseEntity<String>("Validation Successful", headers, HttpStatus.OK);
+        serviceResponse = new MainResponseDTO<>();
+        serviceResponse.setId("id");
+        serviceResponse.setResponse(responseEntity);
+        serviceResponse.setResponsetime("responseTime");
+        Mockito.when(loginCommonUtil.requestBodyExchange(Mockito.any())).thenReturn(responseWrapped);
+        Mockito.when(loginCommonUtil.requestBodyExchangeObject(Mockito.any(), Mockito.any())).thenReturn(authNResposne);
+        //Mockito.when(loginCommonUtil.getConfig(Mockito.anyString())).thenReturn("mosip.io");
+        Mockito.when(loginService.validateWithUserIdOtp(Mockito.any())).thenReturn(serviceResponse);
 
-	}
+        BeanPropertyBindingResult errors = new BeanPropertyBindingResult(userIdOtpRequest, "MainRequestDTO<User>");
+        ResponseEntity<MainResponseDTO<AuthNResponse>> responseEntity = controller.validateWithUserIdOtp(userIdOtpRequest, errors, res);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-	@Test
-	public void invalidateTokenTest() throws Exception {
-		MainResponseDTO<AuthNResponse> serviceResponse = new MainResponseDTO<>();
-		Mockito.when(loginService.invalidateToken(Mockito.any())).thenReturn(serviceResponse);
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/invalidateToken")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).characterEncoding("UTF-8")
-				.accept(MediaType.APPLICATION_JSON_VALUE).content(loginRequest.toString());
-		mockMvc.perform(requestBuilder).andExpect(status().isOk());
-	}
+    }
 
-	@Test
-	public void getConfigTest() throws Exception {
-		MainResponseDTO<Map<String, String>> mainResponseDTO = new MainResponseDTO<>();
-		Mockito.when(loginService.getConfig()).thenReturn(mainResponseDTO);
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/config")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).characterEncoding("UTF-8")
-				.accept(MediaType.APPLICATION_JSON_VALUE);
-		mockMvc.perform(requestBuilder).andExpect(status().isOk());
-	}
+    @Test
+    public void invalidateTokenTest() throws Exception {
+        MainResponseDTO<AuthNResponse> serviceResponse = new MainResponseDTO<>();
+        Mockito.when(loginService.invalidateToken(Mockito.any())).thenReturn(serviceResponse);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/invalidateToken")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON_VALUE).content(loginRequest.toString());
+        mockMvc.perform(requestBuilder).andExpect(status().isOk());
+    }
 
-	@Test
-	public void refreshConfigTest() throws Exception {
-		MainResponseDTO<String> mainResponseDTO = new MainResponseDTO<>();
-		Mockito.when(loginService.refreshConfig()).thenReturn(mainResponseDTO);
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/refreshconfig")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).characterEncoding("UTF-8")
-				.accept(MediaType.APPLICATION_JSON_VALUE);
-		mockMvc.perform(requestBuilder).andExpect(status().isOk());
-	}
+    @Test
+    public void getConfigTest() throws Exception {
+        MainResponseDTO<Map<String, String>> mainResponseDTO = new MainResponseDTO<>();
+        Mockito.when(loginService.getConfig()).thenReturn(mainResponseDTO);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/config")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON_VALUE);
+        mockMvc.perform(requestBuilder).andExpect(status().isOk());
+    }
+
+    @Test
+    public void refreshConfigTest() throws Exception {
+        MainResponseDTO<String> mainResponseDTO = new MainResponseDTO<>();
+        Mockito.when(loginService.refreshConfig()).thenReturn(mainResponseDTO);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/refreshconfig")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON_VALUE);
+        mockMvc.perform(requestBuilder).andExpect(status().isOk());
+    }
 
 }

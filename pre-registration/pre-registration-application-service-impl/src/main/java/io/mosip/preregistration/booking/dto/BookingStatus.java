@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingStatus {
-	
-	List<BookingStatusDTO> bookingStatusResponse;
+
+    List<BookingStatusDTO> bookingStatusResponse;
 
 }

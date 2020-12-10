@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.demographic.service.util;
 
@@ -81,7 +81,7 @@ import io.mosip.preregistration.demographic.exception.system.SystemIllegalArgume
 
 /**
  * This class provides the utility methods for DemographicService
- * 
+ *
  * @author Ravi C Balaji
  * @author Sanober Noor
  * @since 1.0.0
@@ -89,527 +89,523 @@ import io.mosip.preregistration.demographic.exception.system.SystemIllegalArgume
 @Component
 public class DemographicServiceUtil {
 
-	@Value("${mosip.utc-datetime-pattern}")
-	private String utcDateTimePattern;
+    @Value("${mosip.utc-datetime-pattern}")
+    private String utcDateTimePattern;
 
-	/**
-	 * Environment instance
-	 */
-	@Autowired
-	private Environment env;
+    /**
+     * Environment instance
+     */
+    @Autowired
+    private Environment env;
 
-	@Autowired
-	private RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
-	@Value("${clientId}")
-	private String clientId;
+    @Value("${clientId}")
+    private String clientId;
 
-	@Value("${secretKey}")
-	private String secretKey;
+    @Value("${secretKey}")
+    private String secretKey;
 
-	@Value("${mosip.io.prid.url}")
-	private String pridURl;
+    @Value("${mosip.io.prid.url}")
+    private String pridURl;
 
-	@Value("${preregistartion.config.identityjson}")
-	private String preregistrationIdJson;
+    @Value("${preregistartion.config.identityjson}")
+    private String preregistrationIdJson;
 
-	@Value("${sendOtp.resource.url}")
-	private String sendOtpResourceUrl;
+    @Value("${sendOtp.resource.url}")
+    private String sendOtpResourceUrl;
 
-	@Value("${mosip.preregistration.id-schema}")
-	private String idSchemaConfig;
+    @Value("${mosip.preregistration.id-schema}")
+    private String idSchemaConfig;
 
-	@Value("${appId}")
-	private String appId;
+    @Value("${appId}")
+    private String appId;
 
-	@Autowired
-	private ObjectMapper objectMapper;
-	/**
-	 * Logger instance
-	 */
-	private Logger log = LoggerConfiguration.logConfig(DemographicServiceUtil.class);
+    @Autowired
+    private ObjectMapper objectMapper;
+    /**
+     * Logger instance
+     */
+    private Logger log = LoggerConfiguration.logConfig(DemographicServiceUtil.class);
 
-	@Autowired
-	CryptoUtil cryptoUtil;
+    @Autowired
+    CryptoUtil cryptoUtil;
 
-	/**
-	 * This setter method is used to assign the initial demographic entity values to
-	 * the createDTO
-	 * 
-	 * @param demographicEntity pass the demographicEntity
-	 * @return createDTO with the values
-	 */
-	public DemographicResponseDTO setterForCreateDTO(DemographicEntity demographicEntity) {
-		log.info("sessionId", "idType", "id", "In setterForCreateDTO method of pre-registration service util");
-		JSONParser jsonParser = new JSONParser();
-		DemographicResponseDTO createDto = new DemographicResponseDTO();
-		try {
-			createDto.setPreRegistrationId(demographicEntity.getPreRegistrationId());
-			createDto.setDemographicDetails((JSONObject) jsonParser.parse(new String(cryptoUtil
-					.decrypt(demographicEntity.getApplicantDetailJson(), demographicEntity.getEncryptedDateTime()))));
-			createDto.setStatusCode(demographicEntity.getStatusCode());
-			createDto.setLangCode(demographicEntity.getLangCode());
-			createDto.setCreatedBy(demographicEntity.getCreatedBy());
-			createDto.setCreatedDateTime(getLocalDateString(demographicEntity.getCreateDateTime()));
-			createDto.setUpdatedBy(demographicEntity.getUpdatedBy());
-			createDto.setUpdatedDateTime(getLocalDateString(demographicEntity.getUpdateDateTime()));
-		} catch (ParseException ex) {
-			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
-			log.error("sessionId", "idType", "id",
-					"In setterForCreateDTO method of pre-registration service- " + ex.getMessage());
-			throw new JsonParseException(ErrorCodes.PRG_PAM_APP_007.getCode(),
-					ErrorMessages.JSON_PARSING_FAILED.getMessage(), ex.getCause());
-		} catch (EncryptionFailedException ex) {
-			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
-			log.error("sessionId", "idType", "id",
-					"In setterForCreateDTO method of pre-registration service- " + ex.getMessage());
-			throw ex;
-		}
-		return createDto;
-	}
+    /**
+     * This setter method is used to assign the initial demographic entity values to
+     * the createDTO
+     *
+     * @param demographicEntity pass the demographicEntity
+     * @return createDTO with the values
+     */
+    public DemographicResponseDTO setterForCreateDTO(DemographicEntity demographicEntity) {
+        log.info("sessionId", "idType", "id", "In setterForCreateDTO method of pre-registration service util");
+        JSONParser jsonParser = new JSONParser();
+        DemographicResponseDTO createDto = new DemographicResponseDTO();
+        try {
+            createDto.setPreRegistrationId(demographicEntity.getPreRegistrationId());
+            createDto.setDemographicDetails((JSONObject) jsonParser.parse(new String(cryptoUtil
+                    .decrypt(demographicEntity.getApplicantDetailJson(), demographicEntity.getEncryptedDateTime()))));
+            createDto.setStatusCode(demographicEntity.getStatusCode());
+            createDto.setLangCode(demographicEntity.getLangCode());
+            createDto.setCreatedBy(demographicEntity.getCreatedBy());
+            createDto.setCreatedDateTime(getLocalDateString(demographicEntity.getCreateDateTime()));
+            createDto.setUpdatedBy(demographicEntity.getUpdatedBy());
+            createDto.setUpdatedDateTime(getLocalDateString(demographicEntity.getUpdateDateTime()));
+        } catch (ParseException ex) {
+            log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
+            log.error("sessionId", "idType", "id",
+                    "In setterForCreateDTO method of pre-registration service- " + ex.getMessage());
+            throw new JsonParseException(ErrorCodes.PRG_PAM_APP_007.getCode(),
+                    ErrorMessages.JSON_PARSING_FAILED.getMessage(), ex.getCause());
+        } catch (EncryptionFailedException ex) {
+            log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
+            log.error("sessionId", "idType", "id",
+                    "In setterForCreateDTO method of pre-registration service- " + ex.getMessage());
+            throw ex;
+        }
+        return createDto;
+    }
 
-	/**
-	 * This setter method is used to assign the initial demographic entity values to
-	 * the createDTO
-	 * 
-	 * @param demographicEntity pass the demographicEntity
-	 * @return createDTO with the values
-	 */
-	public DemographicCreateResponseDTO setterForCreatePreRegistration(DemographicEntity demographicEntity,
-			JSONObject requestJson) {
-		log.info("sessionId", "idType", "id", "In setterForCreateDTO method of pre-registration service util");
-		DemographicCreateResponseDTO createDto = new DemographicCreateResponseDTO();
-		try {
-			createDto.setPreRegistrationId(demographicEntity.getPreRegistrationId());
-			createDto.setDemographicDetails(requestJson);
-			createDto.setStatusCode(demographicEntity.getStatusCode());
-			createDto.setLangCode(demographicEntity.getLangCode());
-			createDto.setCreatedDateTime(getLocalDateString(demographicEntity.getCreateDateTime()));
-		} catch (EncryptionFailedException ex) {
-			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
-			log.error("sessionId", "idType", "id",
-					"In setterForCreateDTO method of pre-registration service- " + ex.getMessage());
-			throw ex;
-		}
-		return createDto;
-	}
+    /**
+     * This setter method is used to assign the initial demographic entity values to
+     * the createDTO
+     *
+     * @param demographicEntity pass the demographicEntity
+     * @return createDTO with the values
+     */
+    public DemographicCreateResponseDTO setterForCreatePreRegistration(DemographicEntity demographicEntity,
+                                                                       JSONObject requestJson) {
+        log.info("sessionId", "idType", "id", "In setterForCreateDTO method of pre-registration service util");
+        DemographicCreateResponseDTO createDto = new DemographicCreateResponseDTO();
+        try {
+            createDto.setPreRegistrationId(demographicEntity.getPreRegistrationId());
+            createDto.setDemographicDetails(requestJson);
+            createDto.setStatusCode(demographicEntity.getStatusCode());
+            createDto.setLangCode(demographicEntity.getLangCode());
+            createDto.setCreatedDateTime(getLocalDateString(demographicEntity.getCreateDateTime()));
+        } catch (EncryptionFailedException ex) {
+            log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
+            log.error("sessionId", "idType", "id",
+                    "In setterForCreateDTO method of pre-registration service- " + ex.getMessage());
+            throw ex;
+        }
+        return createDto;
+    }
 
-	/**
-	 * This setter method is used to assign the initial demographic entity values to
-	 * the createDTO
-	 * 
-	 * @param demographicEntity pass the demographicEntity
-	 * @return createDTO with the values
-	 */
-	public DemographicUpdateResponseDTO setterForUpdatePreRegistration(DemographicEntity demographicEntity) {
-		log.info("sessionId", "idType", "id", "In setterForCreateDTO method of pre-registration service util");
-		JSONParser jsonParser = new JSONParser();
-		DemographicUpdateResponseDTO createDto = new DemographicUpdateResponseDTO();
-		try {
-			createDto.setPreRegistrationId(demographicEntity.getPreRegistrationId());
-			createDto.setDemographicDetails((JSONObject) jsonParser.parse(new String(cryptoUtil
-					.decrypt(demographicEntity.getApplicantDetailJson(), demographicEntity.getEncryptedDateTime()))));
-			createDto.setStatusCode(demographicEntity.getStatusCode());
-			createDto.setLangCode(demographicEntity.getLangCode());
-			createDto.setUpdatedDateTime(getLocalDateString(demographicEntity.getCreateDateTime()));
-		} catch (ParseException ex) {
-			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
-			log.error("sessionId", "idType", "id",
-					"In setterForCreateDTO method of pre-registration service- " + ex.getMessage());
-			throw new JsonParseException(ErrorCodes.PRG_PAM_APP_007.getCode(),
-					ErrorMessages.JSON_PARSING_FAILED.getMessage(), ex.getCause());
-		} catch (EncryptionFailedException ex) {
-			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
-			log.error("sessionId", "idType", "id",
-					"In setterForCreateDTO method of pre-registration service- " + ex.getMessage());
-			throw ex;
-		}
-		return createDto;
-	}
+    /**
+     * This setter method is used to assign the initial demographic entity values to
+     * the createDTO
+     *
+     * @param demographicEntity pass the demographicEntity
+     * @return createDTO with the values
+     */
+    public DemographicUpdateResponseDTO setterForUpdatePreRegistration(DemographicEntity demographicEntity) {
+        log.info("sessionId", "idType", "id", "In setterForCreateDTO method of pre-registration service util");
+        JSONParser jsonParser = new JSONParser();
+        DemographicUpdateResponseDTO createDto = new DemographicUpdateResponseDTO();
+        try {
+            createDto.setPreRegistrationId(demographicEntity.getPreRegistrationId());
+            createDto.setDemographicDetails((JSONObject) jsonParser.parse(new String(cryptoUtil
+                    .decrypt(demographicEntity.getApplicantDetailJson(), demographicEntity.getEncryptedDateTime()))));
+            createDto.setStatusCode(demographicEntity.getStatusCode());
+            createDto.setLangCode(demographicEntity.getLangCode());
+            createDto.setUpdatedDateTime(getLocalDateString(demographicEntity.getCreateDateTime()));
+        } catch (ParseException ex) {
+            log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
+            log.error("sessionId", "idType", "id",
+                    "In setterForCreateDTO method of pre-registration service- " + ex.getMessage());
+            throw new JsonParseException(ErrorCodes.PRG_PAM_APP_007.getCode(),
+                    ErrorMessages.JSON_PARSING_FAILED.getMessage(), ex.getCause());
+        } catch (EncryptionFailedException ex) {
+            log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
+            log.error("sessionId", "idType", "id",
+                    "In setterForCreateDTO method of pre-registration service- " + ex.getMessage());
+            throw ex;
+        }
+        return createDto;
+    }
 
-	/**
-	 * This method is used to set the values from the request to the
-	 * demographicEntity entity fields.
-	 * 
-	 * @param demographicRequest pass demographicRequest
-	 * @param requestId          pass requestId
-	 * @param entityType         pass entityType
-	 * @return demographic entity with values
-	 */
-	public DemographicEntity prepareDemographicEntityForCreate(DemographicRequestDTO demographicRequest,
-			String statuscode, String userId, String preRegistrationId) {
-		log.info("sessionId", "idType", "id", "In prepareDemographicEntity method of pre-registration service util");
-		DemographicEntity demographicEntity = new DemographicEntity();
-		demographicEntity.setPreRegistrationId(preRegistrationId);
-		LocalDateTime encryptionDateTime = DateUtils.getUTCCurrentDateTime();
-		log.info("sessionId", "idType", "id", "Encryption start time : " + DateUtils.getUTCCurrentDateTimeString());
-		byte[] encryptedDemographicDetails = cryptoUtil
-				.encrypt(demographicRequest.getDemographicDetails().toJSONString().getBytes(), encryptionDateTime);
-		log.info("sessionId", "idType", "id", "Encryption end time : " + DateUtils.getUTCCurrentDateTimeString());
-		demographicEntity.setApplicantDetailJson(encryptedDemographicDetails);
-		demographicEntity.setLangCode(demographicRequest.getLangCode());
-		demographicEntity.setCrAppuserId(userId);
-		demographicEntity.setCreatedBy(userId);
-		demographicEntity.setCreateDateTime(LocalDateTime.now(ZoneId.of("UTC")));
-		demographicEntity.setStatusCode(statuscode);
-		log.info("sessionId", "idType", "id", "Hashing start time : " + DateUtils.getUTCCurrentDateTimeString());
-		demographicEntity.setDemogDetailHash(HashUtill.hashUtill(demographicEntity.getApplicantDetailJson()));
-		log.info("sessionId", "idType", "id", "Hashing end time : " + DateUtils.getUTCCurrentDateTimeString());
-		demographicEntity.setUpdatedBy(userId);
-		demographicEntity.setUpdateDateTime(LocalDateTime.now(ZoneId.of("UTC")));
-		demographicEntity.setEncryptedDateTime(encryptionDateTime);
-		return demographicEntity;
-	}
+    /**
+     * This method is used to set the values from the request to the
+     * demographicEntity entity fields.
+     *
+     * @param demographicRequest pass demographicRequest
+     * @param requestId          pass requestId
+     * @param entityType         pass entityType
+     * @return demographic entity with values
+     */
+    public DemographicEntity prepareDemographicEntityForCreate(DemographicRequestDTO demographicRequest,
+                                                               String statuscode, String userId, String preRegistrationId) {
+        log.info("sessionId", "idType", "id", "In prepareDemographicEntity method of pre-registration service util");
+        DemographicEntity demographicEntity = new DemographicEntity();
+        demographicEntity.setPreRegistrationId(preRegistrationId);
+        LocalDateTime encryptionDateTime = DateUtils.getUTCCurrentDateTime();
+        log.info("sessionId", "idType", "id", "Encryption start time : " + DateUtils.getUTCCurrentDateTimeString());
+        byte[] encryptedDemographicDetails = cryptoUtil
+                .encrypt(demographicRequest.getDemographicDetails().toJSONString().getBytes(), encryptionDateTime);
+        log.info("sessionId", "idType", "id", "Encryption end time : " + DateUtils.getUTCCurrentDateTimeString());
+        demographicEntity.setApplicantDetailJson(encryptedDemographicDetails);
+        demographicEntity.setLangCode(demographicRequest.getLangCode());
+        demographicEntity.setCrAppuserId(userId);
+        demographicEntity.setCreatedBy(userId);
+        demographicEntity.setCreateDateTime(LocalDateTime.now(ZoneId.of("UTC")));
+        demographicEntity.setStatusCode(statuscode);
+        log.info("sessionId", "idType", "id", "Hashing start time : " + DateUtils.getUTCCurrentDateTimeString());
+        demographicEntity.setDemogDetailHash(HashUtill.hashUtill(demographicEntity.getApplicantDetailJson()));
+        log.info("sessionId", "idType", "id", "Hashing end time : " + DateUtils.getUTCCurrentDateTimeString());
+        demographicEntity.setUpdatedBy(userId);
+        demographicEntity.setUpdateDateTime(LocalDateTime.now(ZoneId.of("UTC")));
+        demographicEntity.setEncryptedDateTime(encryptionDateTime);
+        return demographicEntity;
+    }
 
-	/**
-	 * This method is used to set the values from the request to the
-	 * demographicEntity entity fields.
-	 * 
-	 * @param demographicRequest pass demographicRequest
-	 * @param requestId          pass requestId
-	 * @param entityType         pass entityType
-	 * @return demographic entity with values
-	 */
-	public DemographicEntity prepareDemographicEntityForUpdate(DemographicEntity demographicEntity,
-			DemographicRequestDTO demographicRequest, String statuscode, String userId, String preRegistrationId)
-			throws EncryptionFailedException {
-		log.info("sessionId", "idType", "id", "In prepareDemographicEntity method of pre-registration service util");
-		demographicEntity.setPreRegistrationId(preRegistrationId);
-		LocalDateTime encryptionDateTime = DateUtils.getUTCCurrentDateTime();
-		log.info("sessionId", "idType", "id", "Encryption start time : " + DateUtils.getUTCCurrentDateTimeString());
-		byte[] encryptedDemographicDetails = cryptoUtil
-				.encrypt(demographicRequest.getDemographicDetails().toJSONString().getBytes(), encryptionDateTime);
-		log.info("sessionId", "idType", "id", "Encryption end time : " + DateUtils.getUTCCurrentDateTimeString());
-		demographicEntity.setApplicantDetailJson(encryptedDemographicDetails);
-		demographicEntity.setLangCode(demographicRequest.getLangCode());
-		demographicEntity.setStatusCode(statuscode);
-		log.info("sessionId", "idType", "id", "Hashing start time : " + DateUtils.getUTCCurrentDateTimeString());
-		demographicEntity.setDemogDetailHash(HashUtill.hashUtill(demographicEntity.getApplicantDetailJson()));
-		log.info("sessionId", "idType", "id", "Hashing end time : " + DateUtils.getUTCCurrentDateTimeString());
-		demographicEntity.setUpdateDateTime(LocalDateTime.now(ZoneId.of("UTC")));
-		demographicEntity.setEncryptedDateTime(encryptionDateTime);
-		return demographicEntity;
-	}
+    /**
+     * This method is used to set the values from the request to the
+     * demographicEntity entity fields.
+     *
+     * @param demographicRequest pass demographicRequest
+     * @param requestId          pass requestId
+     * @param entityType         pass entityType
+     * @return demographic entity with values
+     */
+    public DemographicEntity prepareDemographicEntityForUpdate(DemographicEntity demographicEntity,
+                                                               DemographicRequestDTO demographicRequest, String statuscode, String userId, String preRegistrationId)
+            throws EncryptionFailedException {
+        log.info("sessionId", "idType", "id", "In prepareDemographicEntity method of pre-registration service util");
+        demographicEntity.setPreRegistrationId(preRegistrationId);
+        LocalDateTime encryptionDateTime = DateUtils.getUTCCurrentDateTime();
+        log.info("sessionId", "idType", "id", "Encryption start time : " + DateUtils.getUTCCurrentDateTimeString());
+        byte[] encryptedDemographicDetails = cryptoUtil
+                .encrypt(demographicRequest.getDemographicDetails().toJSONString().getBytes(), encryptionDateTime);
+        log.info("sessionId", "idType", "id", "Encryption end time : " + DateUtils.getUTCCurrentDateTimeString());
+        demographicEntity.setApplicantDetailJson(encryptedDemographicDetails);
+        demographicEntity.setLangCode(demographicRequest.getLangCode());
+        demographicEntity.setStatusCode(statuscode);
+        log.info("sessionId", "idType", "id", "Hashing start time : " + DateUtils.getUTCCurrentDateTimeString());
+        demographicEntity.setDemogDetailHash(HashUtill.hashUtill(demographicEntity.getApplicantDetailJson()));
+        log.info("sessionId", "idType", "id", "Hashing end time : " + DateUtils.getUTCCurrentDateTimeString());
+        demographicEntity.setUpdateDateTime(LocalDateTime.now(ZoneId.of("UTC")));
+        demographicEntity.setEncryptedDateTime(encryptionDateTime);
+        return demographicEntity;
+    }
 
-	/**
-	 * This method is used to add the initial request values into a map for input
-	 * validations.
-	 *
-	 * @param demographicRequestDTO pass demographicRequestDTO
-	 * @return a map for request input validation
-	 */
+    /**
+     * This method is used to add the initial request values into a map for input
+     * validations.
+     *
+     * @param demographicRequestDTO pass demographicRequestDTO
+     * @return a map for request input validation
+     */
 
-	public Map<String, String> prepareRequestMap(MainRequestDTO<?> requestDto) {
-		log.info("sessionId", "idType", "id", "In prepareRequestMap method of Login Service Util");
-		Map<String, String> requestMap = new HashMap<>();
-		requestMap.put("id", requestDto.getId());
-		requestMap.put("version", requestDto.getVersion());
-		if (!(requestDto.getRequesttime() == null || requestDto.getRequesttime().toString().isEmpty())) {
-			LocalDate date = requestDto.getRequesttime().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
-			requestMap.put("requesttime", date.toString());
-		} else {
-			requestMap.put("requesttime", null);
-		}
-		requestMap.put("request", requestDto.getRequest().toString());
-		return requestMap;
-	}
+    public Map<String, String> prepareRequestMap(MainRequestDTO<?> requestDto) {
+        log.info("sessionId", "idType", "id", "In prepareRequestMap method of Login Service Util");
+        Map<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", requestDto.getId());
+        requestMap.put("version", requestDto.getVersion());
+        if (!(requestDto.getRequesttime() == null || requestDto.getRequesttime().toString().isEmpty())) {
+            LocalDate date = requestDto.getRequesttime().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
+            requestMap.put("requesttime", date.toString());
+        } else {
+            requestMap.put("requesttime", null);
+        }
+        requestMap.put("request", requestDto.getRequest().toString());
+        return requestMap;
+    }
 
-	/**
-	 * This method is used to set the JSON values to RequestCodes constants.
-	 * 
-	 * @param demographicData pass demographicData
-	 * @param identityKey     pass identityKey
-	 * @return values from JSON based on key
-	 * 
-	 * @throws ParseException On json Parsing Failed
-	 * @throws                org.json.simple.parser.ParseException
-	 * 
-	 */
-	public JSONArray getValueFromIdentity(byte[] demographicData, String identityKey)
-			throws ParseException, org.json.simple.parser.ParseException {
-		log.info("sessionId", "idType", "id", "In getValueFromIdentity method of pre-registration service util ");
-		JSONParser jsonParser = new JSONParser();
-		JSONObject jsonObj = (JSONObject) jsonParser.parse(new String(demographicData));
-		JSONObject identityObj = (JSONObject) jsonObj.get(RequestCodes.IDENTITY.getCode());
-		return (JSONArray) identityObj.get(identityKey);
-	}
+    /**
+     * This method is used to set the JSON values to RequestCodes constants.
+     *
+     * @param demographicData pass demographicData
+     * @param identityKey     pass identityKey
+     * @return values from JSON based on key
+     * @throws ParseException                        On json Parsing Failed
+     * @throws org.json.simple.parser.ParseException
+     */
+    public JSONArray getValueFromIdentity(byte[] demographicData, String identityKey)
+            throws ParseException, org.json.simple.parser.ParseException {
+        log.info("sessionId", "idType", "id", "In getValueFromIdentity method of pre-registration service util ");
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObj = (JSONObject) jsonParser.parse(new String(demographicData));
+        JSONObject identityObj = (JSONObject) jsonObj.get(RequestCodes.IDENTITY.getCode());
+        return (JSONArray) identityObj.get(identityKey);
+    }
 
-	/**
-	 * This method is used to set the JSON values to RequestCodes constants.
-	 * 
-	 * @param demographicData pass demographicData
-	 * @param identityKey     pass postalcode
-	 * @return values from JSON
-	 * 
-	 * @throws ParseException On json Parsing Failed
-	 * @throws                org.json.simple.parser.ParseException
-	 * 
-	 */
+    /**
+     * This method is used to set the JSON values to RequestCodes constants.
+     *
+     * @param demographicData pass demographicData
+     * @param identityKey     pass postalcode
+     * @return values from JSON
+     * @throws ParseException                        On json Parsing Failed
+     * @throws org.json.simple.parser.ParseException
+     */
 
-	public String getIdJSONValue(String demographicData, String value) throws ParseException {
-		log.info("sessionId", "idType", "id",
-				"In getValueFromIdentity method of pe-registration service util to get getIdJSONValue ");
+    public String getIdJSONValue(String demographicData, String value) throws ParseException {
+        log.info("sessionId", "idType", "id",
+                "In getValueFromIdentity method of pe-registration service util to get getIdJSONValue ");
 
-		JSONParser jsonParser = new JSONParser();
-		JSONObject jsonObj = (JSONObject) jsonParser.parse(demographicData);
-		JSONObject identityObj = (JSONObject) jsonObj.get(RequestCodes.IDENTITY.getCode());
-		if (identityObj.get(value) != null)
-			return identityObj.get(value).toString();
-		return "";
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObj = (JSONObject) jsonParser.parse(demographicData);
+        JSONObject identityObj = (JSONObject) jsonObj.get(RequestCodes.IDENTITY.getCode());
+        if (identityObj.get(value) != null)
+            return identityObj.get(value).toString();
+        return "";
 
-	}
+    }
 
-	/**
-	 * This method is used as Null checker for different input keys.
-	 *
-	 * @param key pass the key
-	 * @return true if key not null and return false if key is null.
-	 */
-	public boolean isNull(Object key) {
-		if (key instanceof String) {
-			if (key.equals(""))
-				return true;
-		} else if (key instanceof List<?>) {
-			if (((List<?>) key).isEmpty())
-				return true;
-		} else {
-			if (key == null)
-				return true;
-		}
-		return false;
+    /**
+     * This method is used as Null checker for different input keys.
+     *
+     * @param key pass the key
+     * @return true if key not null and return false if key is null.
+     */
+    public boolean isNull(Object key) {
+        if (key instanceof String) {
+            if (key.equals(""))
+                return true;
+        } else if (key instanceof List<?>) {
+            if (((List<?>) key).isEmpty())
+                return true;
+        } else {
+            if (key == null)
+                return true;
+        }
+        return false;
 
-	}
+    }
 
-	/**
-	 * This method is used to validate Pending_Appointment and Booked status codes.
-	 * 
-	 * @param statusCode pass statusCode
-	 * @return true or false
-	 */
-	public boolean checkStatusForDeletion(String statusCode) {
-		log.info("sessionId", "idType", "id", "In checkStatusForDeletion method of pre-registration service util ");
-		if (statusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
-				|| statusCode.equals(StatusCodes.BOOKED.getCode())) {
-			return true;
-		} else {
-			throw new OperationNotAllowedException(ErrorCodes.PRG_PAM_APP_003.getCode(),
-					ErrorMessages.DELETE_OPERATION_NOT_ALLOWED.getMessage());
-		}
-	}
+    /**
+     * This method is used to validate Pending_Appointment and Booked status codes.
+     *
+     * @param statusCode pass statusCode
+     * @return true or false
+     */
+    public boolean checkStatusForDeletion(String statusCode) {
+        log.info("sessionId", "idType", "id", "In checkStatusForDeletion method of pre-registration service util ");
+        if (statusCode.equals(StatusCodes.PENDING_APPOINTMENT.getCode())
+                || statusCode.equals(StatusCodes.BOOKED.getCode())) {
+            return true;
+        } else {
+            throw new OperationNotAllowedException(ErrorCodes.PRG_PAM_APP_003.getCode(),
+                    ErrorMessages.DELETE_OPERATION_NOT_ALLOWED.getMessage());
+        }
+    }
 
-	public String getCurrentResponseTime() {
-		return DateUtils.formatDate(new Date(System.currentTimeMillis()), utcDateTimePattern);
-	}
+    public String getCurrentResponseTime() {
+        return DateUtils.formatDate(new Date(System.currentTimeMillis()), utcDateTimePattern);
+    }
 
-	public Date getDateFromString(String date) {
-		log.info("sessionId", "idType", "id", "In getDateFromString method of pre-registration service util ");
-		try {
-			return new SimpleDateFormat(utcDateTimePattern).parse(date);
-		} catch (java.text.ParseException ex) {
-			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
-			log.error("sessionId", "idType", "id",
-					"In getDateFromString method of pre-registration service- " + ex.getCause());
-			throw new DateParseException(ErrorCodes.PRG_PAM_APP_011.getCode(),
-					ErrorMessages.UNSUPPORTED_DATE_FORMAT.getMessage(), ex.getCause());
-		}
-	}
+    public Date getDateFromString(String date) {
+        log.info("sessionId", "idType", "id", "In getDateFromString method of pre-registration service util ");
+        try {
+            return new SimpleDateFormat(utcDateTimePattern).parse(date);
+        } catch (java.text.ParseException ex) {
+            log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
+            log.error("sessionId", "idType", "id",
+                    "In getDateFromString method of pre-registration service- " + ex.getCause());
+            throw new DateParseException(ErrorCodes.PRG_PAM_APP_011.getCode(),
+                    ErrorMessages.UNSUPPORTED_DATE_FORMAT.getMessage(), ex.getCause());
+        }
+    }
 
-	public String getLocalDateString(LocalDateTime date) {
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(utcDateTimePattern);
-		return date.format(dateTimeFormatter);
-	}
+    public String getLocalDateString(LocalDateTime date) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(utcDateTimePattern);
+        return date.format(dateTimeFormatter);
+    }
 
-	public boolean isStatusValid(String status) {
-		for (StatusCodes choice : StatusCodes.values())
-			if (choice.getCode().equals(status))
-				return true;
-		return false;
-	}
+    public boolean isStatusValid(String status) {
+        for (StatusCodes choice : StatusCodes.values())
+            if (choice.getCode().equals(status))
+                return true;
+        return false;
+    }
 
-	/**
-	 * This method will return the MainResponseDTO with id and version
-	 * 
-	 * @param mainRequestDto
-	 * @return MainResponseDTO<?>
-	 */
-	public MainResponseDTO<?> getMainResponseDto(MainRequestDTO<?> mainRequestDto) {
-		log.info("sessionId", "idType", "id", "In getMainResponseDTO method of Login Common Util");
-		MainResponseDTO<?> response = new MainResponseDTO<>();
-		response.setId(mainRequestDto.getId());
-		response.setVersion(mainRequestDto.getVersion());
+    /**
+     * This method will return the MainResponseDTO with id and version
+     *
+     * @param mainRequestDto
+     * @return MainResponseDTO<?>
+     */
+    public MainResponseDTO<?> getMainResponseDto(MainRequestDTO<?> mainRequestDto) {
+        log.info("sessionId", "idType", "id", "In getMainResponseDTO method of Login Common Util");
+        MainResponseDTO<?> response = new MainResponseDTO<>();
+        response.setId(mainRequestDto.getId());
+        response.setVersion(mainRequestDto.getVersion());
 
-		return response;
-	}
+        return response;
+    }
 
-	public static Integer parsePageIndex(String text) {
-		try {
-			return Integer.parseInt(text);
-		} catch (NumberFormatException e) {
-			throw new SystemIllegalArgumentException(ErrorCodes.PRG_PAM_APP_019.getCode(),
-					ErrorMessages.INVALID_PAGE_INDEX_VALUE.getMessage());
-		}
-	}
+    public static Integer parsePageIndex(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            throw new SystemIllegalArgumentException(ErrorCodes.PRG_PAM_APP_019.getCode(),
+                    ErrorMessages.INVALID_PAGE_INDEX_VALUE.getMessage());
+        }
+    }
 
-	public static Integer parsePageSize(String text) {
-		try {
-			return Integer.parseInt(text);
-		} catch (IllegalArgumentException e) {
-			throw new SystemIllegalArgumentException(ErrorCodes.PRG_PAM_APP_015.getCode(),
-					ErrorMessages.PAGE_SIZE_MUST_BE_GREATER_THAN_ZERO.getMessage());
-		}
-	}
+    public static Integer parsePageSize(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (IllegalArgumentException e) {
+            throw new SystemIllegalArgumentException(ErrorCodes.PRG_PAM_APP_015.getCode(),
+                    ErrorMessages.PAGE_SIZE_MUST_BE_GREATER_THAN_ZERO.getMessage());
+        }
+    }
 
-	/**
-	 * This method is used for config rest call
-	 * 
-	 * @param filname
-	 * @return
-	 */
-	public String getJson(String filename) {
-		try {
-			String configServerUri = env.getProperty("spring.cloud.config.uri");
-			String configLabel = env.getProperty("spring.cloud.config.label");
-			String configProfile = env.getProperty("spring.profiles.active");
-			String configAppName = env.getProperty("spring.cloud.config.name");
-			StringBuilder uriBuilder = new StringBuilder();
-			uriBuilder.append(configServerUri + "/").append(configAppName + "/").append(configProfile + "/")
-					.append(configLabel + "/").append(filename);
-			// uriBuilder.append(
-			// "http://104.211.212.28:51000/preregistration/dev/master/PreRegistrationIdentitiyMapping.json");
-			log.info("sessionId", "idType", "id", " URL in demographic service util of getJson " + uriBuilder);
-			return restTemplate.getForObject(uriBuilder.toString(), String.class);
-		} catch (Exception ex) {
-			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
-			log.error("sessionId", "idType", "id",
-					"In pre-registration service util of getPreregistrationIdentityJson- " + ex.getMessage());
-			throw new SystemFileIOException(ErrorCodes.PRG_PAM_APP_018.getCode(),
-					ErrorMessages.UBALE_TO_READ_IDENTITY_JSON.getMessage(), null);
-		}
-	}
+    /**
+     * This method is used for config rest call
+     *
+     * @param filname
+     * @return
+     */
+    public String getJson(String filename) {
+        try {
+            String configServerUri = env.getProperty("spring.cloud.config.uri");
+            String configLabel = env.getProperty("spring.cloud.config.label");
+            String configProfile = env.getProperty("spring.profiles.active");
+            String configAppName = env.getProperty("spring.cloud.config.name");
+            StringBuilder uriBuilder = new StringBuilder();
+            uriBuilder.append(configServerUri + "/").append(configAppName + "/").append(configProfile + "/")
+                    .append(configLabel + "/").append(filename);
+            // uriBuilder.append(
+            // "http://104.211.212.28:51000/preregistration/dev/master/PreRegistrationIdentitiyMapping.json");
+            log.info("sessionId", "idType", "id", " URL in demographic service util of getJson " + uriBuilder);
+            return restTemplate.getForObject(uriBuilder.toString(), String.class);
+        } catch (Exception ex) {
+            log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
+            log.error("sessionId", "idType", "id",
+                    "In pre-registration service util of getPreregistrationIdentityJson- " + ex.getMessage());
+            throw new SystemFileIOException(ErrorCodes.PRG_PAM_APP_018.getCode(),
+                    ErrorMessages.UBALE_TO_READ_IDENTITY_JSON.getMessage(), null);
+        }
+    }
 
-	public String generateId() {
-		String prid = null;
-		try {
-			UriComponentsBuilder regbuilder = UriComponentsBuilder.fromHttpUrl(pridURl);
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-			HttpEntity<RequestWrapper<RegistrationCenterResponseDto>> entity = new HttpEntity<>(headers);
-			String uriBuilder = regbuilder.build().encode().toUriString();
-			log.info("sessionId", "idType", "id",
-					"In callRegCenterDateRestService method of Booking Service URL- " + uriBuilder);
-			ResponseEntity<ResponseWrapper<PridFetchResponseDto>> responseEntity = restTemplate.exchange(uriBuilder,
-					HttpMethod.GET, entity, new ParameterizedTypeReference<ResponseWrapper<PridFetchResponseDto>>() {
-					});
-			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
-				throw new RestCallException(responseEntity.getBody().getErrors().get(0).getErrorCode(),
-						responseEntity.getBody().getErrors().get(0).getMessage());
-			}
-			prid = responseEntity.getBody().getResponse().getPrid();
-			if (prid == null || prid.isEmpty()) {
-				throw new RestCallException(ErrorCodes.PRG_PAM_APP_020.getCode(),
-						ErrorMessages.PRID_RESTCALL_FAIL.getMessage());
-			}
+    public String generateId() {
+        String prid = null;
+        try {
+            UriComponentsBuilder regbuilder = UriComponentsBuilder.fromHttpUrl(pridURl);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+            HttpEntity<RequestWrapper<RegistrationCenterResponseDto>> entity = new HttpEntity<>(headers);
+            String uriBuilder = regbuilder.build().encode().toUriString();
+            log.info("sessionId", "idType", "id",
+                    "In callRegCenterDateRestService method of Booking Service URL- " + uriBuilder);
+            ResponseEntity<ResponseWrapper<PridFetchResponseDto>> responseEntity = restTemplate.exchange(uriBuilder,
+                    HttpMethod.GET, entity, new ParameterizedTypeReference<ResponseWrapper<PridFetchResponseDto>>() {
+                    });
+            if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
+                throw new RestCallException(responseEntity.getBody().getErrors().get(0).getErrorCode(),
+                        responseEntity.getBody().getErrors().get(0).getMessage());
+            }
+            prid = responseEntity.getBody().getResponse().getPrid();
+            if (prid == null || prid.isEmpty()) {
+                throw new RestCallException(ErrorCodes.PRG_PAM_APP_020.getCode(),
+                        ErrorMessages.PRID_RESTCALL_FAIL.getMessage());
+            }
 
-		} catch (RestClientException ex) {
-			log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
-			log.error("sessionId", "idType", "id",
-					"In callRegCenterDateRestService method of Booking Service Util for HttpClientErrorException- "
-							+ ex.getMessage());
-			throw new RestCallException(ErrorCodes.PRG_PAM_APP_020.getCode(),
-					ErrorMessages.PRID_RESTCALL_FAIL.getMessage());
-		}
-		return prid;
+        } catch (RestClientException ex) {
+            log.debug("sessionId", "idType", "id", ExceptionUtils.getStackTrace(ex));
+            log.error("sessionId", "idType", "id",
+                    "In callRegCenterDateRestService method of Booking Service Util for HttpClientErrorException- "
+                            + ex.getMessage());
+            throw new RestCallException(ErrorCodes.PRG_PAM_APP_020.getCode(),
+                    ErrorMessages.PRID_RESTCALL_FAIL.getMessage());
+        }
+        return prid;
 
-	}
+    }
 
-	public String getSchema() {
-		String response = null;
-		try {
-			UriComponentsBuilder regbuilder = UriComponentsBuilder.fromHttpUrl(idSchemaConfig);
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-			headers.set("Cookie", getAuthToken());
-			HttpEntity<RequestWrapper<RegistrationCenterResponseDto>> entity = new HttpEntity<>(headers);
-			String uriBuilder = regbuilder.build().encode().toUriString();
+    public String getSchema() {
+        String response = null;
+        try {
+            UriComponentsBuilder regbuilder = UriComponentsBuilder.fromHttpUrl(idSchemaConfig);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+            headers.set("Cookie", getAuthToken());
+            HttpEntity<RequestWrapper<RegistrationCenterResponseDto>> entity = new HttpEntity<>(headers);
+            String uriBuilder = regbuilder.build().encode().toUriString();
 
-			ResponseEntity<ResponseWrapper<IdSchemaDto>> responseEntity = getRestTemplate().exchange(uriBuilder,
-					HttpMethod.GET, entity, new ParameterizedTypeReference<ResponseWrapper<IdSchemaDto>>() {
-					});
-			if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
-				throw new RestCallException(responseEntity.getBody().getErrors().get(0).getErrorCode(),
-						responseEntity.getBody().getErrors().get(0).getMessage());
-			}
+            ResponseEntity<ResponseWrapper<IdSchemaDto>> responseEntity = getRestTemplate().exchange(uriBuilder,
+                    HttpMethod.GET, entity, new ParameterizedTypeReference<ResponseWrapper<IdSchemaDto>>() {
+                    });
+            if (responseEntity.getBody().getErrors() != null && !responseEntity.getBody().getErrors().isEmpty()) {
+                throw new RestCallException(responseEntity.getBody().getErrors().get(0).getErrorCode(),
+                        responseEntity.getBody().getErrors().get(0).getMessage());
+            }
 
-			response = responseEntity.getBody().getResponse().getSchemaJson();
+            response = responseEntity.getBody().getResponse().getSchemaJson();
 
-			if (response == null || response.isEmpty()) {
-				throw new RestCallException(ErrorCodes.PRG_PAM_APP_020.getCode(),
-						ErrorMessages.ID_SCHEMA_FETCH_FAILED.getMessage());
-			}
+            if (response == null || response.isEmpty()) {
+                throw new RestCallException(ErrorCodes.PRG_PAM_APP_020.getCode(),
+                        ErrorMessages.ID_SCHEMA_FETCH_FAILED.getMessage());
+            }
 
-		} catch (RestClientException | KeyManagementException | NoSuchAlgorithmException | KeyStoreException ex) {
+        } catch (RestClientException | KeyManagementException | NoSuchAlgorithmException | KeyStoreException ex) {
 
-			throw new RestCallException(ErrorCodes.PRG_PAM_APP_020.getCode(),
-					ErrorMessages.ID_SCHEMA_FETCH_FAILED.getMessage());
-		}
-		return response;
+            throw new RestCallException(ErrorCodes.PRG_PAM_APP_020.getCode(),
+                    ErrorMessages.ID_SCHEMA_FETCH_FAILED.getMessage());
+        }
+        return response;
 
-	}
+    }
 
-	private String getAuthToken() {
-		String tokenUrl = sendOtpResourceUrl + "/authenticate/clientidsecretkey";
-		ClientSecretDTO clientSecretDto = new ClientSecretDTO(clientId, secretKey, appId);
-		RequestWrapper<ClientSecretDTO> requestKernel = new RequestWrapper<>();
-		requestKernel.setRequest(clientSecretDto);
-		requestKernel.setRequesttime(LocalDateTime.now());
-		ResponseEntity<ResponseWrapper<AuthNResponse>> response = (ResponseEntity<ResponseWrapper<AuthNResponse>>) callAuthService(
-				tokenUrl, HttpMethod.POST, MediaType.APPLICATION_JSON, requestKernel, null, ResponseWrapper.class);
-		if (!(response.getBody().getErrors() == null || response.getBody().getErrors().isEmpty())) {
-			throw new RestCallException(ErrorCodes.PRG_PAM_APP_020.getCode(),
-					ErrorMessages.PRID_RESTCALL_FAIL.getMessage());
-		}
-		return response.getHeaders().get("Set-Cookie").get(0);
-	}
+    private String getAuthToken() {
+        String tokenUrl = sendOtpResourceUrl + "/authenticate/clientidsecretkey";
+        ClientSecretDTO clientSecretDto = new ClientSecretDTO(clientId, secretKey, appId);
+        RequestWrapper<ClientSecretDTO> requestKernel = new RequestWrapper<>();
+        requestKernel.setRequest(clientSecretDto);
+        requestKernel.setRequesttime(LocalDateTime.now());
+        ResponseEntity<ResponseWrapper<AuthNResponse>> response = (ResponseEntity<ResponseWrapper<AuthNResponse>>) callAuthService(
+                tokenUrl, HttpMethod.POST, MediaType.APPLICATION_JSON, requestKernel, null, ResponseWrapper.class);
+        if (!(response.getBody().getErrors() == null || response.getBody().getErrors().isEmpty())) {
+            throw new RestCallException(ErrorCodes.PRG_PAM_APP_020.getCode(),
+                    ErrorMessages.PRID_RESTCALL_FAIL.getMessage());
+        }
+        return response.getHeaders().get("Set-Cookie").get(0);
+    }
 
-	public ResponseEntity<?> callAuthService(String url, HttpMethod httpMethodType, MediaType mediaType, Object body,
-			Map<String, String> headersMap, Class<?> responseClass) {
-		ResponseEntity<?> response = null;
-		try {
-			log.info("sessionId", "idType", "id", "In getResponseEntity method of Login Common Util");
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(mediaType);
-			HttpEntity<?> request = null;
-			if (headersMap != null) {
-				headersMap.forEach((k, v) -> headers.add(k, v));
-			}
-			if (body != null) {
-				request = new HttpEntity<>(body, headers);
-			} else {
-				request = new HttpEntity<>(headers);
-			}
-			log.info("sessionId", "idType", "id", "In call to kernel rest service :" + url);
-			response = getRestTemplate().exchange(url, httpMethodType, request, responseClass);
-		} catch (RestClientException | KeyManagementException | NoSuchAlgorithmException | KeyStoreException ex) {
-			log.debug("sessionId", "idType", "id", "Kernel rest call exception " + ExceptionUtils.getStackTrace(ex));
-			throw new RestClientException("rest call failed");
-		}
-		return response;
+    public ResponseEntity<?> callAuthService(String url, HttpMethod httpMethodType, MediaType mediaType, Object body,
+                                             Map<String, String> headersMap, Class<?> responseClass) {
+        ResponseEntity<?> response = null;
+        try {
+            log.info("sessionId", "idType", "id", "In getResponseEntity method of Login Common Util");
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(mediaType);
+            HttpEntity<?> request = null;
+            if (headersMap != null) {
+                headersMap.forEach((k, v) -> headers.add(k, v));
+            }
+            if (body != null) {
+                request = new HttpEntity<>(body, headers);
+            } else {
+                request = new HttpEntity<>(headers);
+            }
+            log.info("sessionId", "idType", "id", "In call to kernel rest service :" + url);
+            response = getRestTemplate().exchange(url, httpMethodType, request, responseClass);
+        } catch (RestClientException | KeyManagementException | NoSuchAlgorithmException | KeyStoreException ex) {
+            log.debug("sessionId", "idType", "id", "Kernel rest call exception " + ExceptionUtils.getStackTrace(ex));
+            throw new RestClientException("rest call failed");
+        }
+        return response;
 
-	}
+    }
 
-	public RestTemplate getRestTemplate() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+    public RestTemplate getRestTemplate() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 
-		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
-		SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy)
-				.build();
+        SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy)
+                .build();
 
-		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
 
-		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
-		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
 
-		requestFactory.setHttpClient(httpClient);
-		return new RestTemplate(requestFactory);
-	}
+        requestFactory.setHttpClient(httpClient);
+        return new RestTemplate(requestFactory);
+    }
 }

@@ -16,33 +16,33 @@ import io.mosip.preregistration.core.exception.InvalidRequestParameterException;
 
 public final class DataValidationUtil {
 
-	/**
-	 * Instantiates a new data validation util.
-	 */
-	private DataValidationUtil() {
-	}
-	
+    /**
+     * Instantiates a new data validation util.
+     */
+    private DataValidationUtil() {
+    }
 
-	/**
-	 * Get list of errors from error object and build and throw {@code InvalidRequestParameterException}.
-	 *
-	 * @param errors the errors
-	 * @throws InvalidRequestParameterException the InvalidRequestParameterException
-	 */
-	public static void validate(Errors errors, String operation) {
-		MainResponseDTO<?> response= new MainResponseDTO<>();
-		List<ExceptionJSONInfoDTO> errorList = new ArrayList<>();
-		
-		if (errors.hasErrors()) {
-			errors.getAllErrors().stream()
-					.forEach(error ->{
-						ExceptionJSONInfoDTO ex= new ExceptionJSONInfoDTO();
-						ex.setErrorCode(error.getCode());
-						ex.setMessage(error.getDefaultMessage());
-						errorList.add(ex);
-					} );
-			throw new InvalidRequestParameterException(errorList, operation,response);
-		}
-	}
+
+    /**
+     * Get list of errors from error object and build and throw {@code InvalidRequestParameterException}.
+     *
+     * @param errors the errors
+     * @throws InvalidRequestParameterException the InvalidRequestParameterException
+     */
+    public static void validate(Errors errors, String operation) {
+        MainResponseDTO<?> response = new MainResponseDTO<>();
+        List<ExceptionJSONInfoDTO> errorList = new ArrayList<>();
+
+        if (errors.hasErrors()) {
+            errors.getAllErrors().stream()
+                    .forEach(error -> {
+                        ExceptionJSONInfoDTO ex = new ExceptionJSONInfoDTO();
+                        ex.setErrorCode(error.getCode());
+                        ex.setMessage(error.getDefaultMessage());
+                        errorList.add(ex);
+                    });
+            throw new InvalidRequestParameterException(errorList, operation, response);
+        }
+    }
 
 }

@@ -34,10 +34,10 @@ public class ContactUsController {
     ) {
         log.info("Request data received from forms");
 
-        return  ResponseEntity
+        return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(
-                                this.helperService.contactUsValidatorAndMailSender(request)
+                        this.helperService.contactUsValidatorAndMailSender(request)
                 );
     }
 
@@ -52,14 +52,13 @@ public class ContactUsController {
         MainResponseDTO<RecaptchaResponse> mainResponseDTO = new MainResponseDTO<>();
 
 
-            mainResponseDTO.setId(UUID.randomUUID().toString());
-            mainResponseDTO.setResponsetime(new Date().toInstant().toString());
-            mainResponseDTO.setVersion("V1");
-            mainResponseDTO.setResponse(null);
-            mainResponseDTO.setResponse(captchaService.verify(token));
+        mainResponseDTO.setId(UUID.randomUUID().toString());
+        mainResponseDTO.setResponsetime(new Date().toInstant().toString());
+        mainResponseDTO.setVersion("V1");
+        mainResponseDTO.setResponse(null);
+        mainResponseDTO.setResponse(captchaService.verify(token));
 
 
-
-      return  new ResponseEntity<>(mainResponseDTO, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(mainResponseDTO, HttpStatus.ACCEPTED);
     }
 }

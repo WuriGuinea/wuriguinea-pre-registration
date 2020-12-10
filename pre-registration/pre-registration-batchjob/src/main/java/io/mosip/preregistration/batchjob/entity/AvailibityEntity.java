@@ -1,7 +1,7 @@
 
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.batchjob.entity;
 
@@ -28,12 +28,11 @@ import lombok.ToString;
 
 /**
  * This entity class defines the database table details for Booking application.
- * 
+ *
  * @author Kishan Rathore
  * @author Jagadishwari
  * @author Ravi C. Balaji
  * @since 1.0.0
- *
  */
 @Component
 @Entity
@@ -45,54 +44,78 @@ import lombok.ToString;
 @IdClass(AvailabilityPK.class)
 @NamedQuery(name = "AvailibityEntity.findDate", query = "SELECT DISTINCT regDate FROM AvailibityEntity where regcntrId=:regcntrId and regDate>=:fromDate and regDate<=:toDate order by regDate ASC")
 public class AvailibityEntity implements Serializable {
-	
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
 
-	/** Registration center Id. */
-	@Id
-	@AttributeOverrides({ @AttributeOverride(name = "regcntrId", column = @Column(name = "regcntr_id")),
-			@AttributeOverride(name = "regDate", column = @Column(name = "availability_date")),
-			@AttributeOverride(name = "fromTime", column = @Column(name = "slot_from_time")) })
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
 
-	private String regcntrId;
-	
-	/** Registration date. */
-	private LocalDate regDate;
-	
-	/** From date. */
-	private LocalTime fromTime;
+    /**
+     * Registration center Id.
+     */
+    @Id
+    @AttributeOverrides({@AttributeOverride(name = "regcntrId", column = @Column(name = "regcntr_id")),
+            @AttributeOverride(name = "regDate", column = @Column(name = "availability_date")),
+            @AttributeOverride(name = "fromTime", column = @Column(name = "slot_from_time"))})
 
-	/** Slot to time. */
-	@Column(name = "slot_to_time")
-	private LocalTime toTime;
+    private String regcntrId;
 
-	/** Available Kiosks. */
-	@Column(name = "available_kiosks")
-	private int availableKiosks;
+    /**
+     * Registration date.
+     */
+    private LocalDate regDate;
 
-	/** Created by. */
-	@Column(name = "cr_by")
-	private String crBy;
+    /**
+     * From date.
+     */
+    private LocalTime fromTime;
 
-	/** Created date time. */
-	@Column(name = "cr_dtimes")
-	private LocalDateTime crDate;
+    /**
+     * Slot to time.
+     */
+    @Column(name = "slot_to_time")
+    private LocalTime toTime;
 
-	/** Updated by. */
-	@Column(name = "upd_by")
-	private String upBy;
+    /**
+     * Available Kiosks.
+     */
+    @Column(name = "available_kiosks")
+    private int availableKiosks;
 
-	/** Updated date time. */
-	@Column(name = "upd_dtimes")
-	private LocalDateTime updDate;
+    /**
+     * Created by.
+     */
+    @Column(name = "cr_by")
+    private String crBy;
 
-	/** Is deleted. */
-	@Column(name = "is_deleted")
-	private boolean isDeleted;
+    /**
+     * Created date time.
+     */
+    @Column(name = "cr_dtimes")
+    private LocalDateTime crDate;
 
-	/** Delete date time. */
-	@Column(name = "del_dtimes")
-	private LocalDateTime delTime;
+    /**
+     * Updated by.
+     */
+    @Column(name = "upd_by")
+    private String upBy;
+
+    /**
+     * Updated date time.
+     */
+    @Column(name = "upd_dtimes")
+    private LocalDateTime updDate;
+
+    /**
+     * Is deleted.
+     */
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+
+    /**
+     * Delete date time.
+     */
+    @Column(name = "del_dtimes")
+    private LocalDateTime delTime;
 
 }

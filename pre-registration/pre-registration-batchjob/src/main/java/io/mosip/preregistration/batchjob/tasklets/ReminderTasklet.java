@@ -26,35 +26,35 @@ import io.mosip.preregistration.core.util.AuthTokenUtil;
 @Component
 public class ReminderTasklet implements Tasklet {
 
-	@Autowired
-	private ReminderUtil reminderUtil;
-	@Autowired
-	private AuthTokenUtil tokenUtil;
+    @Autowired
+    private ReminderUtil reminderUtil;
+    @Autowired
+    private AuthTokenUtil tokenUtil;
 
-	@Value("${version}")
-	String version;
+    @Value("${version}")
+    String version;
 
-	private Logger log = LoggerConfiguration.logConfig(ReminderTasklet.class);
+    private Logger log = LoggerConfiguration.logConfig(ReminderTasklet.class);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.
-	 * springframework.batch.core.StepContribution,
-	 * org.springframework.batch.core.scope.context.ChunkContext)
-	 */
-	@Override
-	public RepeatStatus execute(StepContribution contribution, ChunkContext arg1) throws Exception {
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.
+     * springframework.batch.core.StepContribution,
+     * org.springframework.batch.core.scope.context.ChunkContext)
+     */
+    @Override
+    public RepeatStatus execute(StepContribution contribution, ChunkContext arg1) throws Exception {
 
-		try {
-			HttpHeaders headers = tokenUtil.getTokenHeader();
-			reminderUtil.processApplicantToRemind(headers);
-		} catch (Exception e) {
-			log.error("Reminder  ", " Tasklet ", " encountered exception ", e.getMessage());
-			contribution.setExitStatus(new ExitStatus(e.getMessage()));
-			e.printStackTrace();
-		}
-		return RepeatStatus.FINISHED;
-	}
+        try {
+            HttpHeaders headers = tokenUtil.getTokenHeader();
+            reminderUtil.processApplicantToRemind(headers);
+        } catch (Exception e) {
+            log.error("Reminder  ", " Tasklet ", " encountered exception ", e.getMessage());
+            contribution.setExitStatus(new ExitStatus(e.getMessage()));
+            e.printStackTrace();
+        }
+        return RepeatStatus.FINISHED;
+    }
 
 }

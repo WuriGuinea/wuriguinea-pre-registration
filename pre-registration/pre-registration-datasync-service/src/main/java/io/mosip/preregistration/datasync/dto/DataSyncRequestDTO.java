@@ -12,7 +12,6 @@ import lombok.ToString;
 
 /**
  * @author M1043226
- *
  */
 @Getter
 @Setter
@@ -20,22 +19,30 @@ import lombok.ToString;
 @ToString
 public class DataSyncRequestDTO implements Serializable {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
 
-	/** The Registration-client-Id. */
-	@JsonProperty("registrationCenterId")
-	@ApiModelProperty(value = "Registration client id", position = 1)
-	private String registrationCenterId;
+    /**
+     * The Registration-client-Id.
+     */
+    @JsonProperty("registrationCenterId")
+    @ApiModelProperty(value = "Registration client id", position = 1)
+    private String registrationCenterId;
 
-	/** The from-date. */
-	@JsonProperty("fromDate")
-	@ApiModelProperty(value = "From date", position = 2)
-	private String fromDate;
+    /**
+     * The from-date.
+     */
+    @JsonProperty("fromDate")
+    @ApiModelProperty(value = "From date", position = 2)
+    private String fromDate;
 
-	/** The To-date. */
-	@JsonProperty("toDate")
-	@ApiModelProperty(value = "To date", position = 3)
-	private String toDate;
+    /**
+     * The To-date.
+     */
+    @JsonProperty("toDate")
+    @ApiModelProperty(value = "To date", position = 3)
+    private String toDate;
 
 }

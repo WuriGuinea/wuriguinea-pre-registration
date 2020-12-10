@@ -20,7 +20,7 @@ jobs:
           webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
           show-on-exit: true
 
-          
+
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
@@ -33,7 +33,7 @@ jobs:
       - name: Setup branch name
         run: |
           echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
-     
+
       - uses: actions/cache@v1
         with:
           path: ~/.m2/repository

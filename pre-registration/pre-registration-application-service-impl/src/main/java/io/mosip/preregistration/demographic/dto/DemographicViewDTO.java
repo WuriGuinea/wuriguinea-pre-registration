@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.demographic.dto;
 
@@ -16,7 +16,7 @@ import lombok.ToString;
 
 /**
  * View registration response DTO
- * 
+ *
  * @author Rupika
  * @since 1.0.0
  */
@@ -26,26 +26,28 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class DemographicViewDTO implements Serializable {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -2770204280374548395L;
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = -2770204280374548395L;
 
-	/**
-	 * PreRegistration Id
-	 */
-	private String preRegistrationId;
+    /**
+     * PreRegistration Id
+     */
+    private String preRegistrationId;
 
-	/**
-	 * Status code
-	 */
-	private String statusCode;
-	/**
-	 * BookingRegistrationDTO object
-	 */
-	private BookingRegistrationDTO bookingMetadata;
+    /**
+     * Status code
+     */
+    private String statusCode;
+    /**
+     * BookingRegistrationDTO object
+     */
+    private BookingRegistrationDTO bookingMetadata;
 
-	/**
-	 * Document response DTO
-	 */
-	private JSONObject demographicMetadata;
+    /**
+     * Document response DTO
+     */
+    private JSONObject demographicMetadata;
 
 }

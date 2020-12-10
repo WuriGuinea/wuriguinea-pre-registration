@@ -18,55 +18,53 @@ import io.mosip.preregistration.core.config.LoggerConfiguration;
 
 /**
  * The util class.
- * 
+ *
  * @author Sanober Noor
  * @since 1.0.0
- *
  */
 @Component
 public class NotificationServiceUtil {
 
-	@Value("${mosip.utc-datetime-pattern}")
-	private String utcDateTimePattern;
+    @Value("${mosip.utc-datetime-pattern}")
+    private String utcDateTimePattern;
 
-	private Logger log = LoggerConfiguration.logConfig(NotificationServiceUtil.class);
+    private Logger log = LoggerConfiguration.logConfig(NotificationServiceUtil.class);
 
-	/**
-	 * Autowired reference for {@link #RestTemplateBuilder}
-	 */
+    /**
+     * Autowired reference for {@link #RestTemplateBuilder}
+     */
 
-	/**
-	 * 
-	 * @param jsonString
-	 * @return
-	 * @throws JsonParseException
-	 * @throws JsonMappingException
-	 * @throws io.mosip.kernel.core.exception.IOException
-	 * @throws JSONException
-	 * @throws ParseException
-	 */
+    /**
+     * @param jsonString
+     * @return
+     * @throws JsonParseException
+     * @throws JsonMappingException
+     * @throws io.mosip.kernel.core.exception.IOException
+     * @throws JSONException
+     * @throws ParseException
+     */
 
-	public MainRequestDTO<NotificationDTO> createNotificationDetails(String jsonString) throws JsonParseException,
-			JsonMappingException, io.mosip.kernel.core.exception.IOException, JSONException, ParseException {
+    public MainRequestDTO<NotificationDTO> createNotificationDetails(String jsonString) throws JsonParseException,
+            JsonMappingException, io.mosip.kernel.core.exception.IOException, JSONException, ParseException {
 
-		log.info("sessionId", "idType", "id",
-				"In createUploadDto method of notification service util with body " + jsonString);
-		MainRequestDTO<NotificationDTO> notificationReqDto = new MainRequestDTO<>();
-		JSONObject notificationData = new JSONObject(jsonString);
-		JSONObject notificationDtoData = (JSONObject) notificationData.get("request");
-		NotificationDTO notificationDTO = (NotificationDTO) JsonUtils.jsonStringToJavaObject(NotificationDTO.class,
-				notificationDtoData.toString());
-		notificationReqDto.setId(notificationData.get("id").toString());
-		notificationReqDto.setVersion(notificationData.get("version").toString());
-		if (!(notificationData.get("requesttime") == null
-				|| notificationData.get("requesttime").toString().isEmpty())) {
-			notificationReqDto.setRequesttime(
-					new SimpleDateFormat(utcDateTimePattern).parse(notificationData.get("requesttime").toString()));
-		} else {
-			notificationReqDto.setRequesttime(null);
-		}
-		notificationReqDto.setRequest(notificationDTO);
-		return notificationReqDto;
+        log.info("sessionId", "idType", "id",
+                "In createUploadDto method of notification service util with body " + jsonString);
+        MainRequestDTO<NotificationDTO> notificationReqDto = new MainRequestDTO<>();
+        JSONObject notificationData = new JSONObject(jsonString);
+        JSONObject notificationDtoData = (JSONObject) notificationData.get("request");
+        NotificationDTO notificationDTO = (NotificationDTO) JsonUtils.jsonStringToJavaObject(NotificationDTO.class,
+                notificationDtoData.toString());
+        notificationReqDto.setId(notificationData.get("id").toString());
+        notificationReqDto.setVersion(notificationData.get("version").toString());
+        if (!(notificationData.get("requesttime") == null
+                || notificationData.get("requesttime").toString().isEmpty())) {
+            notificationReqDto.setRequesttime(
+                    new SimpleDateFormat(utcDateTimePattern).parse(notificationData.get("requesttime").toString()));
+        } else {
+            notificationReqDto.setRequesttime(null);
+        }
+        notificationReqDto.setRequest(notificationDTO);
+        return notificationReqDto;
 
-	}
+    }
 }

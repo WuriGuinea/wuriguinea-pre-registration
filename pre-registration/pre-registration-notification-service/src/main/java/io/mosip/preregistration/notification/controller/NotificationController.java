@@ -1,5 +1,6 @@
 package io.mosip.preregistration.notification.controller;
 
+import io.mosip.preregistration.notification.dto.JsonString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * Controller class for notification triggering.
- * 
+ *
  * @author Sanober Noor
  * @author Tapaswini Behera
  * @since 1.0.0
@@ -30,12 +31,12 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin("*")
 public class NotificationController {
 
-	/**
-	 * Reference to {@link NotificationService}.
-	 */
-	@Autowired
-	private NotificationService notificationService;
-	
+    /**
+     * Reference to {@link NotificationService}.
+     */
+    @Autowired
+    private NotificationService notificationService;
+
 //	@Autowired
 //	private RequestValidator requestValidator;
 //	
@@ -48,44 +49,60 @@ public class NotificationController {
 //	public void initBinder(WebDataBinder binder) {
 //		binder.addValidators(requestValidator);
 //	}
-	
-	private Logger log = LoggerConfiguration.logConfig(NotificationController.class);
 
-	/**
-	 * Api to Trigger notification service.
-	 * 
-	 * @param jsonbObject
-	 *            the json string.
-	 * @param langCode
-	 *            the language code.
-	 * @param file
-	 *            the file to send.
-	 * @return the response entity.
-	 */ //prereg-notification-service/preregistration/v1/notification/notify
-	@PreAuthorize("hasAnyRole('INDIVIDUAL','PRE_REGISTRATION_ADMIN')")
-	@PostMapping(path = "/notify", consumes = {
-			"multipart/form-data" })
-	@ApiOperation(value = "Trigger notification")
-	public ResponseEntity<MainResponseDTO<ResponseDTO>> sendNotification(
-			@RequestPart(value = "NotificationRequestDTO", required = true) String jsonbObject,
-			@RequestPart(value = "langCode", required = true) String langCode,
-			@RequestPart(value = "attachment", required = false) MultipartFile file) {
-		log.info("sessionId", "idType", "id",
-				"In notification controller for send notification with request notification dto  " + jsonbObject);
-		MainResponseDTO<ResponseDTO> response = notificationService.sendNotification(jsonbObject, langCode, file);
+    private Logger log = LoggerConfiguration.logConfig(NotificationController.class);
 
-		log.info("YAYA", "SORY", "id", response.toString());
-		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    /**
+     * Api to Trigger notification service.
+     *
+     * @param jsonbObject the json string.
+     * @param langCode    the language code.
+     * @param file        the file to send.
+     * @return the response entity.
+     */ //prereg-notification-service/preregistration/v1/notification/notify
+    @PreAuthorize("hasAnyRole('INDIVIDUAL','PRE_REGISTRATION_ADMIN')")
+    @PostMapping(path = "/notify", consumes = {
+            "multipart/form-data"})
+    @ApiOperation(value = "Trigger notification")
+    public ResponseEntity<MainResponseDTO<ResponseDTO>> sendNotification(
+            @RequestPart(value = "NotificationRequestDTO", required = true) String jsonbObject,
+            @RequestPart(value = "langCode", required = true) String langCode,
+            @RequestPart(value = "attachment", required = false) MultipartFile file) {
+        log.info("sessionId", "idType", "id",
+                "In notification controller for send notification with request notification dto  " + jsonbObject);
+        MainResponseDTO<ResponseDTO> response = notificationService.sendNotification(jsonbObject, langCode, file);
 
-	}
+        log.info("YAYA", "SORY", "id", response.toString());
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+
+    }
+
+    @PreAuthorize("hasAnyRole('INDIVIDUAL','PRE_REGISTRATION_ADMIN')")
+    @PostMapping(
+            value = "/notify/rest",
+            consumes = {"application/json"}
+            )
+    @ApiOperation(value = "Trigger notification")
+    public ResponseEntity<MainResponseDTO<ResponseDTO>> sendNotificationAsJson(
+            @RequestPart(value = "NotificationRequestDTO", required = true) JsonString jsonbObject,
+            @RequestPart(value = "langCode", required = true) String langCode
+    ) {
+        log.info("sessionId", "idType", "id",
+                "------ CUSTO notification controller for send notification with request notification dto  " + jsonbObject);
+        MainResponseDTO<ResponseDTO> response = notificationService.sendNotification(jsonbObject.getValue(), langCode, null);
+
+        log.info("YAYA", "SORY", "id", response.toString());
+        System.out.println(response.toString());
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+
+    }
 
 
-	@PostMapping(path = "/test")
-	public ResponseEntity<String> test() {
-		return new ResponseEntity<>("HEY SORRY", HttpStatus.ACCEPTED);
-	}
+    @PostMapping(path = "/test")
+    public ResponseEntity<String> test() {
+        return new ResponseEntity<>("HEY SORRY", HttpStatus.ACCEPTED);
+    }
 
-	
-	
+
 }
 

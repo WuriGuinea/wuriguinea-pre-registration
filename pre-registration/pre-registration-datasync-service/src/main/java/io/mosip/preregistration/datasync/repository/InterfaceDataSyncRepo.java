@@ -9,10 +9,9 @@ import io.mosip.preregistration.datasync.entity.InterfaceDataSyncEntity;
 
 /**
  * @author M1046129
- *
  */
 @Repository("dataSyncRepository")
 @Transactional
 public interface InterfaceDataSyncRepo extends BaseRepository<InterfaceDataSyncEntity, String> {
-	
+
 }

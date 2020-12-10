@@ -32,11 +32,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * This class provides different api to perform operation for datasync 
- * 
+ * This class provides different api to perform operation for datasync
+ *
  * @author M1046129 - Jagadishwari
  * @since 1.0.0
- *
  */
 @RestController
 @RequestMapping("/")
@@ -44,65 +43,65 @@ import io.swagger.annotations.ApiResponses;
 @CrossOrigin("*")
 public class DataSyncController {
 
-	@Autowired
-	private DataSyncService dataSyncService;
+    @Autowired
+    private DataSyncService dataSyncService;
 
-	private Logger log = LoggerConfiguration.logConfig(DataSyncController.class);
+    private Logger log = LoggerConfiguration.logConfig(DataSyncController.class);
 
-	/**
-	 * This POST api use to retrieve all PreRegistrationIds 
-	 * based on registration center id, from date and to date
-	 * 
-	 * @param DataSyncDTO
-	 * @return responseDto
-	 */
-	@PreAuthorize("hasAnyRole('REGISTRATION_OFFICER','REGISTRATION_SUPERVISOR','REGISTRATION_ ADMIN')")
-	@ResponseFilter
-	@PostMapping(path = "/sync", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "All PreRegistrationIds fetched successfully") })
-	@ApiOperation(value = "Fetch all PreRegistrationIds")
-	public ResponseEntity<MainResponseDTO<PreRegistrationIdsDTO>> retrieveAllPreRegids(
-			@RequestBody(required = true) MainRequestDTO<DataSyncRequestDTO> dataSyncDto) {
-		log.info("sessionId", "idType", "id",
-				"In Datasync controller for retreiving all the pre-registrations for object  " + dataSyncDto);
-		return ResponseEntity.status(HttpStatus.OK).body(dataSyncService.retrieveAllPreRegIds(dataSyncDto));
-	}
+    /**
+     * This POST api use to retrieve all PreRegistrationIds
+     * based on registration center id, from date and to date
+     *
+     * @param DataSyncDTO
+     * @return responseDto
+     */
+    @PreAuthorize("hasAnyRole('REGISTRATION_OFFICER','REGISTRATION_SUPERVISOR','REGISTRATION_ ADMIN')")
+    @ResponseFilter
+    @PostMapping(path = "/sync", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "All PreRegistrationIds fetched successfully")})
+    @ApiOperation(value = "Fetch all PreRegistrationIds")
+    public ResponseEntity<MainResponseDTO<PreRegistrationIdsDTO>> retrieveAllPreRegids(
+            @RequestBody(required = true) MainRequestDTO<DataSyncRequestDTO> dataSyncDto) {
+        log.info("sessionId", "idType", "id",
+                "In Datasync controller for retreiving all the pre-registrations for object  " + dataSyncDto);
+        return ResponseEntity.status(HttpStatus.OK).body(dataSyncService.retrieveAllPreRegIds(dataSyncDto));
+    }
 
-	/**
-	 * This Get api use to retrieve the details for an PreRegistrationId
-	 * 
-	 * @param preRegistrationId
-	 * @return zip file to download
-	 */
-	@PreAuthorize("hasAnyRole('REGISTRATION_OFFICER','REGISTRATION_SUPERVISOR','REGISTRATION_ ADMIN')")
-	@ResponseFilter
-	@GetMapping(path = "/sync/{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "Retrieve Pre-Registrations")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Data Sync records fetched") })
-	public ResponseEntity<MainResponseDTO<PreRegArchiveDTO>> retrievePreRegistrations(
-			@PathVariable(required = true, value = "preRegistrationId") String preRegistrationId) {
-		log.info("sessionId", "idType", "id",
-				"In Datasync controller for retreiving pre-registration data with preRegId " + preRegistrationId);
-		return ResponseEntity.status(HttpStatus.OK).body(dataSyncService.getPreRegistrationData(preRegistrationId));
-	}
+    /**
+     * This Get api use to retrieve the details for an PreRegistrationId
+     *
+     * @param preRegistrationId
+     * @return zip file to download
+     */
+    @PreAuthorize("hasAnyRole('REGISTRATION_OFFICER','REGISTRATION_SUPERVISOR','REGISTRATION_ ADMIN')")
+    @ResponseFilter
+    @GetMapping(path = "/sync/{preRegistrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Retrieve Pre-Registrations")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Data Sync records fetched")})
+    public ResponseEntity<MainResponseDTO<PreRegArchiveDTO>> retrievePreRegistrations(
+            @PathVariable(required = true, value = "preRegistrationId") String preRegistrationId) {
+        log.info("sessionId", "idType", "id",
+                "In Datasync controller for retreiving pre-registration data with preRegId " + preRegistrationId);
+        return ResponseEntity.status(HttpStatus.OK).body(dataSyncService.getPreRegistrationData(preRegistrationId));
+    }
 
-	/**
-	 * This POST api is used to retrieve all processed pre-registration ids 
-	 * and store in pre-registration database 
-	 * 
-	 * @param consumedData
-	 * @return response object
-	 */
-	@PreAuthorize("hasAnyRole('REGISTRATION_OFFICER','REGISTRATION_SUPERVISOR','REGISTRATION_ ADMIN','REGISTRATION_PROCESSOR')")
-	@ResponseFilter
-	@PostMapping(path = "/sync/consumedPreRegIds", consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "Store consumed Pre-Registrations")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Consumed Pre-Registrations saved") })
-	public ResponseEntity<MainResponseDTO<ReverseDatasyncReponseDTO>> storeConsumedPreRegistrationsIds(
-			@NotNull @RequestBody(required = true) MainRequestDTO<ReverseDataSyncRequestDTO> consumedData) {
-		log.info("sessionId", "idType", "id",
-				"In Datasync controller for storing the consumed preregistration with object" + consumedData);
-		return ResponseEntity.status(HttpStatus.OK).body(dataSyncService.storeConsumedPreRegistrations(consumedData));
-	}
+    /**
+     * This POST api is used to retrieve all processed pre-registration ids
+     * and store in pre-registration database
+     *
+     * @param consumedData
+     * @return response object
+     */
+    @PreAuthorize("hasAnyRole('REGISTRATION_OFFICER','REGISTRATION_SUPERVISOR','REGISTRATION_ ADMIN','REGISTRATION_PROCESSOR')")
+    @ResponseFilter
+    @PostMapping(path = "/sync/consumedPreRegIds", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Store consumed Pre-Registrations")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Consumed Pre-Registrations saved")})
+    public ResponseEntity<MainResponseDTO<ReverseDatasyncReponseDTO>> storeConsumedPreRegistrationsIds(
+            @NotNull @RequestBody(required = true) MainRequestDTO<ReverseDataSyncRequestDTO> consumedData) {
+        log.info("sessionId", "idType", "id",
+                "In Datasync controller for storing the consumed preregistration with object" + consumedData);
+        return ResponseEntity.status(HttpStatus.OK).body(dataSyncService.storeConsumedPreRegistrations(consumedData));
+    }
 
 }

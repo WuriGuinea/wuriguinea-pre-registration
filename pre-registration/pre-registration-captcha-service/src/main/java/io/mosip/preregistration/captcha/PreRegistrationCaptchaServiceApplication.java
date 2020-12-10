@@ -7,11 +7,11 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages="io.mosip.*")
+@ComponentScan(basePackages = "io.mosip.*")
 public class PreRegistrationCaptchaServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PreRegistrationCaptchaServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PreRegistrationCaptchaServiceApplication.class, args);
+    }
 
 }

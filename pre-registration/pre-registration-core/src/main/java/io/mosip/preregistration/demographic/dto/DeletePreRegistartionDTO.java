@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.demographic.dto;
 
@@ -14,7 +14,7 @@ import lombok.ToString;
 /**
  * This DTO class is used to define the values for request parameters when
  * performing deletion operarion.
- * 
+ *
  * @author Kishan Rathore
  * @since 1.0.0
  */
@@ -22,27 +22,35 @@ import lombok.ToString;
 @Getter
 @ToString
 public class DeletePreRegistartionDTO implements Serializable {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 6705845720255847210L;
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 6705845720255847210L;
 
-	/** The pre-registration-Id. */
-	private String preRegistrationId;
+    /**
+     * The pre-registration-Id.
+     */
+    private String preRegistrationId;
 
-	/** The created by. */
-	private String deletedBy;
+    /**
+     * The created by.
+     */
+    private String deletedBy;
 
-	/** The create date time. */
-	private Date deletedDateTime;
-	
-	public void setPreRegistrationId(String preRegistrationId) {
-		this.preRegistrationId = preRegistrationId;
-	}
+    /**
+     * The create date time.
+     */
+    private Date deletedDateTime;
 
-	public void setDeletedBy(String deletedBy) {
-		this.deletedBy = deletedBy;
-	}
+    public void setPreRegistrationId(String preRegistrationId) {
+        this.preRegistrationId = preRegistrationId;
+    }
 
-	public void setDeletedDateTime(Date deletedDateTime) {
-		this.deletedDateTime =deletedDateTime !=null ? new Date(deletedDateTime.getTime()) : null;
-	}
+    public void setDeletedBy(String deletedBy) {
+        this.deletedBy = deletedBy;
+    }
+
+    public void setDeletedDateTime(Date deletedDateTime) {
+        this.deletedDateTime = deletedDateTime != null ? new Date(deletedDateTime.getTime()) : null;
+    }
 }

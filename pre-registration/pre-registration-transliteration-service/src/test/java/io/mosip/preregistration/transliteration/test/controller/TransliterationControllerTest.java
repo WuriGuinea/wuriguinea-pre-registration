@@ -33,86 +33,80 @@ import io.mosip.preregistration.transliteration.service.TransliterationService;
 
 
 /**
- * 
  * Test class to test the pre-registration transliteration Controller methods
- * 
+ *
  * @author Kishan rathore
  * @since 1.0.0
- *
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest(TransliterationControllerTest.class)
 public class TransliterationControllerTest {
 
-	/**
-	 * Autowired reference for {@link #MockMvc}
-	 */
-	@Autowired
-	private MockMvc mockMvc;
-	
-	@Mock
-	private RequestValidator requestValidator;
+    /**
+     * Autowired reference for {@link #MockMvc}
+     */
+    @Autowired
+    private MockMvc mockMvc;
 
-	/**
-	 * Creating Mock Bean for transliteration Service
-	 */
-	@MockBean
-	private TransliterationService serviceImpl;
+    @Mock
+    private RequestValidator requestValidator;
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    /**
+     * Creating Mock Bean for transliteration Service
+     */
+    @MockBean
+    private TransliterationService serviceImpl;
 
-	private Object jsonObject, failObject = null;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	/**
-	 * @throws FileNotFoundException
-	 *             when file not found
-	 * @throws IOException
-	 *             on input error
-	 * @throws ParseException
-	 *             on json parsing error
-	 */
-	@Before
-	public void setup() throws FileNotFoundException, IOException, ParseException {
-		ClassLoader classLoader = getClass().getClassLoader();
-		JSONParser parser = new JSONParser();
-		File file = new File(classLoader.getResource("transliteration-application.json").getFile());
-		jsonObject = parser.parse(new FileReader(file));
+    private Object jsonObject, failObject = null;
 
-		File failFile = new File(classLoader.getResource("transliteration-application.json").getFile());
-		failObject = parser.parse(new FileReader(failFile));
-	}
+    /**
+     * @throws FileNotFoundException when file not found
+     * @throws IOException           on input error
+     * @throws ParseException        on json parsing error
+     */
+    @Before
+    public void setup() throws FileNotFoundException, IOException, ParseException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        JSONParser parser = new JSONParser();
+        File file = new File(classLoader.getResource("transliteration-application.json").getFile());
+        jsonObject = parser.parse(new FileReader(file));
 
-	/**
-	 * @throws Exception on error
-	 */
-	@Test
-	public void successTest() throws Exception {
+        File failFile = new File(classLoader.getResource("transliteration-application.json").getFile());
+        failObject = parser.parse(new FileReader(failFile));
+    }
 
-		logger.info("----------Successful transliteration controller operation-------");
-		MainResponseDTO<TransliterationResponseDTO> response = new MainResponseDTO<>();
+    /**
+     * @throws Exception on error
+     */
+    @Test
+    public void successTest() throws Exception {
+
+        logger.info("----------Successful transliteration controller operation-------");
+        MainResponseDTO<TransliterationResponseDTO> response = new MainResponseDTO<>();
 //		TransliterationResponseDTO dto = new TransliterationResponseDTO();
 //		//response.setResponse(dto);
-		Mockito.when(serviceImpl.translitratorService(Mockito.any())).thenReturn(response);
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/transliterate")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).characterEncoding("UTF-8")
-				.accept(MediaType.APPLICATION_JSON_VALUE).content(jsonObject.toString());
-		logger.info("Resonse " + response);
-		
-		mockMvc.perform(requestBuilder).andExpect(status().isOk());
-	}
+        Mockito.when(serviceImpl.translitratorService(Mockito.any())).thenReturn(response);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/transliterate")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON_VALUE).content(jsonObject.toString());
+        logger.info("Resonse " + response);
 
-	/**
-	 * @throws Exception
-	 *             on error
-	 */
-	//@Test
-	public void failureTest() throws Exception {
-		logger.info("----------Unsuccessful transliteration controller operation-------");
-		Mockito.doThrow(new IllegalParamException("ex",null)).when(serviceImpl).translitratorService(Mockito.any());
+        mockMvc.perform(requestBuilder).andExpect(status().isOk());
+    }
 
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/transliterate")
-				.contentType(MediaType.APPLICATION_JSON_VALUE).characterEncoding("UTF-8")
-				.accept(MediaType.APPLICATION_JSON_VALUE).content(failObject.toString());
-		mockMvc.perform(requestBuilder).andExpect(status().isOk());
-	}
+    /**
+     * @throws Exception on error
+     */
+    //@Test
+    public void failureTest() throws Exception {
+        logger.info("----------Unsuccessful transliteration controller operation-------");
+        Mockito.doThrow(new IllegalParamException("ex", null)).when(serviceImpl).translitratorService(Mockito.any());
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/transliterate")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON_VALUE).content(failObject.toString());
+        mockMvc.perform(requestBuilder).andExpect(status().isOk());
+    }
 }

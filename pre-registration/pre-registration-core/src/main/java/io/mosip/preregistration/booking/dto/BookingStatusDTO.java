@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingStatusDTO {
-	
-	private String bookingMessage;
+
+    private String bookingMessage;
 }

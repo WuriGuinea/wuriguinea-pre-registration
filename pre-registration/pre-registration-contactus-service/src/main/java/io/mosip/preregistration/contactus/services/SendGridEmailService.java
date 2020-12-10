@@ -30,7 +30,7 @@ public class SendGridEmailService {
         String apiKey = this.cf.getApiKey();
 
         if (apiKey.length() == 0) {
-          apiKey = System.getenv("SENDRIG_API_KEY");
+            apiKey = System.getenv("SENDRIG_API_KEY");
         }
         SendGrid sg = new SendGrid(apiKey);
         Request request = new Request();
@@ -41,7 +41,7 @@ public class SendGridEmailService {
             Response response = sg.api(request);
 
             if (response.getStatusCode() != 202) {
-               return ContactUsReponseModel.builder()
+                return ContactUsReponseModel.builder()
                         .errorCode(response.getStatusCode())
                         .description(response.getBody())
                         .build();
@@ -51,8 +51,7 @@ public class SendGridEmailService {
                     .errorCode(201)
                     .description("Email succesfully sent to " + email)
                     .build();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
             return ContactUsReponseModel.builder()
                     .errorCode(500)

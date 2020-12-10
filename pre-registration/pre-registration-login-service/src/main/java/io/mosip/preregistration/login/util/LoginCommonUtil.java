@@ -54,293 +54,292 @@ import io.mosip.preregistration.login.errorcodes.ErrorCodes;
 import io.mosip.preregistration.login.errorcodes.ErrorMessages;
 
 /**
- * 
  * @author Akshay Jain
  * @since 1.0.0
  */
 @Component
 public class LoginCommonUtil {
 
-	/**
-	 * Environment instance
-	 */
-	@Autowired
-	private Environment env;
+    /**
+     * Environment instance
+     */
+    @Autowired
+    private Environment env;
 
-	@Autowired
-	@Qualifier("restTemplateConfig")
-	private RestTemplate restTemplate;
-	
-	@Autowired
-	private ValidationUtil validationUtil;
+    @Autowired
+    @Qualifier("restTemplateConfig")
+    private RestTemplate restTemplate;
 
-	/**
-	 * Logger instance
-	 */
-	private Logger log = LoggerConfiguration.logConfig(LoginCommonUtil.class);
+    @Autowired
+    private ValidationUtil validationUtil;
 
-	@Autowired
-	private ObjectMapper objectMapper;
+    /**
+     * Logger instance
+     */
+    private Logger log = LoggerConfiguration.logConfig(LoginCommonUtil.class);
 
-	@Value("${otpChannel.mobile}")
-	private String mobileChannel;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-	@Value("${otpChannel.email}")
-	private String emailChannel;
+    @Value("${otpChannel.mobile}")
+    private String mobileChannel;
 
-	@Value("${sendOtp.resource.url}")
-	private String sendOtpResourceUrl;
+    @Value("${otpChannel.email}")
+    private String emailChannel;
 
-	/**
-	 * This method will return the MainResponseDTO with id and version
-	 * 
-	 * @param mainRequestDto
-	 * @return MainResponseDTO<?>
-	 */
-	public MainResponseDTO<?> getMainResponseDto(MainRequestDTO<?> mainRequestDto) {
-		log.info("sessionId", "idType", "id", "In getMainResponseDTO method of Login Common Util");
-		MainResponseDTO<?> response = new MainResponseDTO<>();
-		response.setId(mainRequestDto.getId());
-		response.setVersion(mainRequestDto.getVersion());
+    @Value("${sendOtp.resource.url}")
+    private String sendOtpResourceUrl;
 
-		return response;
-	}
+    /**
+     * This method will return the MainResponseDTO with id and version
+     *
+     * @param mainRequestDto
+     * @return MainResponseDTO<?>
+     */
+    public MainResponseDTO<?> getMainResponseDto(MainRequestDTO<?> mainRequestDto) {
+        log.info("sessionId", "idType", "id", "In getMainResponseDTO method of Login Common Util");
+        MainResponseDTO<?> response = new MainResponseDTO<>();
+        response.setId(mainRequestDto.getId());
+        response.setVersion(mainRequestDto.getVersion());
 
-	/**
-	 * This method return ResponseEntity for the rest call made to the designated
-	 * url
-	 * 
-	 * @param url
-	 * @param mediaType
-	 * @param body
-	 * @param responseClass
-	 * @return ResponseEntity<?>
-	 * @throws KeyStoreException
-	 * @throws NoSuchAlgorithmException
-	 * @throws KeyManagementException
-	 * @throws RestClientException
-	 */
+        return response;
+    }
 
-	public ResponseEntity<?> callAuthService(String url, HttpMethod httpMethodType, MediaType mediaType, Object body,
-			Map<String, String> headersMap, Class<?> responseClass) {
-		ResponseEntity<?> response = null;
-		try {
-			log.info("sessionId", "idType", "id", "In getResponseEntity method of Login Common Util");
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(mediaType);
-			HttpEntity<?> request = null;
-			if (headersMap != null) {
-				headersMap.forEach((k, v) -> headers.add(k, v));
-			}
-			if (body != null) {
-				request = new HttpEntity<>(body, headers);
-			} else {
-				request = new HttpEntity<>(headers);
-			}
-			log.info("sessionId", "idType", "id", "In call to kernel rest service :" + url);
-			response = getRestTemplate().exchange(url, httpMethodType, request, responseClass);
-		} catch (RestClientException | KeyManagementException | NoSuchAlgorithmException | KeyStoreException ex) {
-			log.debug("sessionId", "idType", "id", "Kernel rest call exception "+ExceptionUtils.getStackTrace(ex));
-			throw new RestClientException("rest call failed");
-		}
-		return response;
+    /**
+     * This method return ResponseEntity for the rest call made to the designated
+     * url
+     *
+     * @param url
+     * @param mediaType
+     * @param body
+     * @param responseClass
+     * @return ResponseEntity<?>
+     * @throws KeyStoreException
+     * @throws NoSuchAlgorithmException
+     * @throws KeyManagementException
+     * @throws RestClientException
+     */
 
-	}
+    public ResponseEntity<?> callAuthService(String url, HttpMethod httpMethodType, MediaType mediaType, Object body,
+                                             Map<String, String> headersMap, Class<?> responseClass) {
+        ResponseEntity<?> response = null;
+        try {
+            log.info("sessionId", "idType", "id", "In getResponseEntity method of Login Common Util");
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(mediaType);
+            HttpEntity<?> request = null;
+            if (headersMap != null) {
+                headersMap.forEach((k, v) -> headers.add(k, v));
+            }
+            if (body != null) {
+                request = new HttpEntity<>(body, headers);
+            } else {
+                request = new HttpEntity<>(headers);
+            }
+            log.info("sessionId", "idType", "id", "In call to kernel rest service :" + url);
+            response = getRestTemplate().exchange(url, httpMethodType, request, responseClass);
+        } catch (RestClientException | KeyManagementException | NoSuchAlgorithmException | KeyStoreException ex) {
+            log.debug("sessionId", "idType", "id", "Kernel rest call exception " + ExceptionUtils.getStackTrace(ex));
+            throw new RestClientException("rest call failed");
+        }
+        return response;
 
-	/**
-	 * This method provides validation of the userid and returns the otpChannel list
-	 * 
-	 * @param userId
-	 * @param langCode
-	 * @return List<String>
-	 */
-	public List<String> validateUserId(String userId) {
-		log.info("sessionId", "idType", "id", "In validateUserIdandLangCode method of Login Common Util");
-		List<String> list = new ArrayList<>();
-		if (userId == null || userId.isEmpty()) {
-			throw new InvalidRequestException(ErrorCodes.PRG_AUTH_008.getCode(),
-					ErrorMessages.INVALID_REQUEST_USERID.getMessage(), null);
-		}
-		if (validationUtil.phoneValidator(userId)) {
-			list.add(mobileChannel);
-			return list;
-		} else if (validationUtil.emailValidator(userId)) {
-			list.add(emailChannel);
-			return list;
-		}
+    }
 
-		throw new InvalidRequestException(ErrorCodes.PRG_AUTH_008.getCode(),
-				ErrorMessages.INVALID_REQUEST_USERID.getMessage(), null);
-	}
+    /**
+     * This method provides validation of the userid and returns the otpChannel list
+     *
+     * @param userId
+     * @param langCode
+     * @return List<String>
+     */
+    public List<String> validateUserId(String userId) {
+        log.info("sessionId", "idType", "id", "In validateUserIdandLangCode method of Login Common Util");
+        List<String> list = new ArrayList<>();
+        if (userId == null || userId.isEmpty()) {
+            throw new InvalidRequestException(ErrorCodes.PRG_AUTH_008.getCode(),
+                    ErrorMessages.INVALID_REQUEST_USERID.getMessage(), null);
+        }
+        if (validationUtil.phoneValidator(userId)) {
+            list.add(mobileChannel);
+            return list;
+        } else if (validationUtil.emailValidator(userId)) {
+            list.add(emailChannel);
+            return list;
+        }
+
+        throw new InvalidRequestException(ErrorCodes.PRG_AUTH_008.getCode(),
+                ErrorMessages.INVALID_REQUEST_USERID.getMessage(), null);
+    }
 
 
-	/**
-	 * This method will validate the otp and userid for null values
-	 * 
-	 * @param user
-	 */
-	public void validateOtpAndUserid(User user) {
-		log.info("sessionId", "idType", "id", "In validateOtpAndUserid method of Login Common Util");
-		if (user.getUserId() == null) {
-			throw new InvalidRequestException(ErrorCodes.PRG_AUTH_008.getCode(),
-					ErrorMessages.INVALID_REQUEST_USERID.getMessage(), null);
-		} else if (user.getOtp() == null) {
-			throw new InvalidRequestException(ErrorCodes.PRG_AUTH_010.getCode(),
-					ErrorMessages.INVALID_REQUEST_OTP.getMessage(), null);
-		}
-	}
+    /**
+     * This method will validate the otp and userid for null values
+     *
+     * @param user
+     */
+    public void validateOtpAndUserid(User user) {
+        log.info("sessionId", "idType", "id", "In validateOtpAndUserid method of Login Common Util");
+        if (user.getUserId() == null) {
+            throw new InvalidRequestException(ErrorCodes.PRG_AUTH_008.getCode(),
+                    ErrorMessages.INVALID_REQUEST_USERID.getMessage(), null);
+        } else if (user.getOtp() == null) {
+            throw new InvalidRequestException(ErrorCodes.PRG_AUTH_010.getCode(),
+                    ErrorMessages.INVALID_REQUEST_OTP.getMessage(), null);
+        }
+    }
 
-	/**
-	 * This method will read value from response body and covert it into requested
-	 * class object
-	 * 
-	 * @param serviceResponseBody
-	 * @return
-	 */
-	public ResponseWrapper<?> requestBodyExchange(String serviceResponseBody) throws ParseResponseException {
-		try {
-			return objectMapper.readValue(serviceResponseBody, ResponseWrapper.class);
-		} catch (IOException e) {
-			throw new ParseResponseException(ErrorCodes.PRG_AUTH_011.getCode(),
-					ErrorMessages.ERROR_WHILE_PARSING.getMessage(), null);
+    /**
+     * This method will read value from response body and covert it into requested
+     * class object
+     *
+     * @param serviceResponseBody
+     * @return
+     */
+    public ResponseWrapper<?> requestBodyExchange(String serviceResponseBody) throws ParseResponseException {
+        try {
+            return objectMapper.readValue(serviceResponseBody, ResponseWrapper.class);
+        } catch (IOException e) {
+            throw new ParseResponseException(ErrorCodes.PRG_AUTH_011.getCode(),
+                    ErrorMessages.ERROR_WHILE_PARSING.getMessage(), null);
 
-		}
-	}
+        }
+    }
 
-	/**
-	 * This method is used to parse string to required object
-	 * 
-	 * @param serviceResponseBody
-	 * @param responseClass
-	 * @return
-	 * @throws ParseResponseException
-	 */
-	public Object requestBodyExchangeObject(String serviceResponseBody, Class<?> responseClass)
-			throws ParseResponseException {
-		try {
-			objectMapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			return objectMapper.readValue(serviceResponseBody, responseClass);
-		} catch (IOException e) {
-			throw new ParseResponseException(ErrorCodes.PRG_AUTH_011.getCode(),
-					ErrorMessages.ERROR_WHILE_PARSING.getMessage(), null);
+    /**
+     * This method is used to parse string to required object
+     *
+     * @param serviceResponseBody
+     * @param responseClass
+     * @return
+     * @throws ParseResponseException
+     */
+    public Object requestBodyExchangeObject(String serviceResponseBody, Class<?> responseClass)
+            throws ParseResponseException {
+        try {
+            objectMapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            return objectMapper.readValue(serviceResponseBody, responseClass);
+        } catch (IOException e) {
+            throw new ParseResponseException(ErrorCodes.PRG_AUTH_011.getCode(),
+                    ErrorMessages.ERROR_WHILE_PARSING.getMessage(), null);
 
-		}
-	}
+        }
+    }
 
-	/**
-	 * This method is used for parse object to string
-	 * 
-	 * @param response
-	 * @return
-	 */
-	public String responseToString(Object response) {
-		try {
-			return objectMapper.writeValueAsString(response);
-		} catch (JsonProcessingException e) {
+    /**
+     * This method is used for parse object to string
+     *
+     * @param response
+     * @return
+     */
+    public String responseToString(Object response) {
+        try {
+            return objectMapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
 
-			throw new ParseResponseException("", "", null);
-		}
-	}
+            throw new ParseResponseException("", "", null);
+        }
+    }
 
-	/**
-	 * This method is used for parsing string to properties
-	 * 
-	 * @param s
-	 * @return
-	 * @throws IOException
-	 */
-	public Properties parsePropertiesString(String s) throws IOException {
-		final Properties p = new Properties();
-		p.load(new StringReader(s));
-		return p;
-	}
+    /**
+     * This method is used for parsing string to properties
+     *
+     * @param s
+     * @return
+     * @throws IOException
+     */
+    public Properties parsePropertiesString(String s) throws IOException {
+        final Properties p = new Properties();
+        p.load(new StringReader(s));
+        return p;
+    }
 
-	/**
-	 * This method is used config rest call
-	 * 
-	 * @param filname
-	 * @return
-	 */
-	public String getConfig(String filname) {
-		String configServerUri = env.getProperty("spring.cloud.config.uri");
-		String configLabel = env.getProperty("spring.cloud.config.label");
-		String configProfile = env.getProperty("spring.profiles.active");
-		String configAppName = env.getProperty("spring.cloud.config.name");
-		StringBuilder uriBuilder = new StringBuilder();
+    /**
+     * This method is used config rest call
+     *
+     * @param filname
+     * @return
+     */
+    public String getConfig(String filname) {
+        String configServerUri = env.getProperty("spring.cloud.config.uri");
+        String configLabel = env.getProperty("spring.cloud.config.label");
+        String configProfile = env.getProperty("spring.profiles.active");
+        String configAppName = env.getProperty("spring.cloud.config.name");
+        StringBuilder uriBuilder = new StringBuilder();
 
-		uriBuilder.append(configServerUri + "/").append(configAppName + "/").append(configProfile + "/")
-				.append(configLabel + "/").append(filname);
-		log.info("sessionId", "idType", "id", " URL in login service util of configRestCall" + uriBuilder);
-		return restTemplate.getForObject(uriBuilder.toString(), String.class);
+        uriBuilder.append(configServerUri + "/").append(configAppName + "/").append(configProfile + "/")
+                .append(configLabel + "/").append(filname);
+        log.info("sessionId", "idType", "id", " URL in login service util of configRestCall" + uriBuilder);
+        return restTemplate.getForObject(uriBuilder.toString(), String.class);
 
-	}
+    }
 
-	/**
-	 * This method is used for create key value pair from congif file
-	 * 
-	 * @param prop
-	 * @param configParamMap
-	 * @param reqParams
-	 */
-	public void getConfigParams(Properties prop, Map<String, String> configParamMap, List<String> reqParams) {
-		for (Entry<Object, Object> e : prop.entrySet()) {
-			if (reqParams.contains(String.valueOf(e.getKey()))) {
-				configParamMap.put(String.valueOf(e.getKey()), e.getValue().toString());
-			}
+    /**
+     * This method is used for create key value pair from congif file
+     *
+     * @param prop
+     * @param configParamMap
+     * @param reqParams
+     */
+    public void getConfigParams(Properties prop, Map<String, String> configParamMap, List<String> reqParams) {
+        for (Entry<Object, Object> e : prop.entrySet()) {
+            if (reqParams.contains(String.valueOf(e.getKey()))) {
+                configParamMap.put(String.valueOf(e.getKey()), e.getValue().toString());
+            }
 
-		}
-	}
+        }
+    }
 
-	/**
-	 * This method is used for create request map
-	 * 
-	 * @param requestDto
-	 * @return
-	 */
-	public Map<String, String> createRequestMap(MainRequestDTO<?> requestDto) {
-		log.info("sessionId", "idType", "id", "In prepareRequestMap method of Login Service Util");
-		Map<String, String> requestMap = new HashMap<>();
-		requestMap.put("id", requestDto.getId());
-		requestMap.put("version", requestDto.getVersion());
-		if (!(requestDto.getRequesttime() == null || requestDto.getRequesttime().toString().isEmpty())) {
-			LocalDate date = requestDto.getRequesttime().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
-			requestMap.put("requesttime", date.toString());
-		} else {
-			requestMap.put("requesttime", null);
-		}
-		requestMap.put("request", requestDto.getRequest().toString());
-		return requestMap;
-	}
+    /**
+     * This method is used for create request map
+     *
+     * @param requestDto
+     * @return
+     */
+    public Map<String, String> createRequestMap(MainRequestDTO<?> requestDto) {
+        log.info("sessionId", "idType", "id", "In prepareRequestMap method of Login Service Util");
+        Map<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", requestDto.getId());
+        requestMap.put("version", requestDto.getVersion());
+        if (!(requestDto.getRequesttime() == null || requestDto.getRequesttime().toString().isEmpty())) {
+            LocalDate date = requestDto.getRequesttime().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
+            requestMap.put("requesttime", date.toString());
+        } else {
+            requestMap.put("requesttime", null);
+        }
+        requestMap.put("request", requestDto.getRequest().toString());
+        return requestMap;
+    }
 
-	public String getUserDetailsFromToken(Map<String, String> authHeader) {
-		String url = sendOtpResourceUrl + "/authorize/validateToken";
-		ResponseEntity<String> response = (ResponseEntity<String>) callAuthService(url, HttpMethod.POST,
-				MediaType.APPLICATION_JSON, null, authHeader, String.class);
-		ResponseWrapper<?> responseKernel = requestBodyExchange(response.getBody());
-		if (!(responseKernel.getErrors() == null)) {
-			log.error("sessionId", "idType", "id", "Invalid Token");
-			return null;
-		}
-		MosipUserDTO userDetailsDto = (MosipUserDTO) requestBodyExchangeObject(
-				responseToString(responseKernel.getResponse()), MosipUserDTO.class);
+    public String getUserDetailsFromToken(Map<String, String> authHeader) {
+        String url = sendOtpResourceUrl + "/authorize/validateToken";
+        ResponseEntity<String> response = (ResponseEntity<String>) callAuthService(url, HttpMethod.POST,
+                MediaType.APPLICATION_JSON, null, authHeader, String.class);
+        ResponseWrapper<?> responseKernel = requestBodyExchange(response.getBody());
+        if (!(responseKernel.getErrors() == null)) {
+            log.error("sessionId", "idType", "id", "Invalid Token");
+            return null;
+        }
+        MosipUserDTO userDetailsDto = (MosipUserDTO) requestBodyExchangeObject(
+                responseToString(responseKernel.getResponse()), MosipUserDTO.class);
 
-		return userDetailsDto.getUserId();
-	}
+        return userDetailsDto.getUserId();
+    }
 
-	public RestTemplate getRestTemplate() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+    public RestTemplate getRestTemplate() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 
-		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
-		SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy)
-				.build();
+        SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy)
+                .build();
 
-		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
 
-		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
-		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
 
-		requestFactory.setHttpClient(httpClient);
-		return new RestTemplate(requestFactory);
-	}
+        requestFactory.setHttpClient(httpClient);
+        return new RestTemplate(requestFactory);
+    }
 
 }

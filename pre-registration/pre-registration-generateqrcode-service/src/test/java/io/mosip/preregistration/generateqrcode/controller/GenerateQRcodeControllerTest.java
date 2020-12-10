@@ -29,70 +29,71 @@ import io.mosip.preregistration.generateqrcode.dto.QRCodeResponseDTO;
 import io.mosip.preregistration.generateqrcode.service.GenerateQRcodeService;
 
 
-@SpringBootTest(classes = { GenerateQRcodeApplicationTests.class })
+@SpringBootTest(classes = {GenerateQRcodeApplicationTests.class})
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 public class GenerateQRcodeControllerTest {
 
 
-	/**
-	 * Autowired reference for {@link #MockMvc}
-	 */
-	@Autowired
-	private MockMvc mockMvc;
+    /**
+     * Autowired reference for {@link #MockMvc}
+     */
+    @Autowired
+    private MockMvc mockMvc;
 
-	@Autowired
-	private ObjectMapper mapper;
+    @Autowired
+    private ObjectMapper mapper;
 
-	/**
-	 * /** Creating Mock Bean for NotificationService
-	 */
-	@MockBean
-	private GenerateQRcodeService service;
+    /**
+     * /** Creating Mock Bean for NotificationService
+     */
+    @MockBean
+    private GenerateQRcodeService service;
 
-	@MockBean
-	private ValidationUtil serviceUtil;
-	
-	@Mock
-	private RequestValidator requestValidator;
-	
+    @MockBean
+    private ValidationUtil serviceUtil;
 
-	private NotificationDTO notificationDTO;
+    @Mock
+    private RequestValidator requestValidator;
 
-	MainResponseDTO<NotificationDTO> responseDTO = new MainResponseDTO<>();
-	MainRequestDTO<String> requestdata=new MainRequestDTO<>();
 
-	@Before
-	public void setUp() {
-		notificationDTO = new NotificationDTO();
-		notificationDTO.setName("sanober Noor");
-		notificationDTO.setPreRegistrationId("1234567890");
-		notificationDTO.setMobNum("1234567890");
-		notificationDTO.setEmailID("sanober,noor2@mindtree.com");
-		notificationDTO.setAppointmentDate("2019-01-22");
-		notificationDTO.setAppointmentTime("22:57");
+    private NotificationDTO notificationDTO;
 
-		responseDTO.setResponse(notificationDTO);
-		responseDTO.setResponsetime(serviceUtil.getCurrentResponseTime());
-		
-	}
-	
-	/**
-	 * This test method is for success qrCodeGeneration 
-	 * @throws Exception
-	 */
-	@WithUserDetails("INDIVIDUAL")
-	@Test
-	public void qrCodeGenerationTest() throws Exception {
-		
-		
-		MainResponseDTO<QRCodeResponseDTO> response = new MainResponseDTO<>();
+    MainResponseDTO<NotificationDTO> responseDTO = new MainResponseDTO<>();
+    MainRequestDTO<String> requestdata = new MainRequestDTO<>();
 
-		String stringjson = mapper.writeValueAsString(notificationDTO);
-		Mockito.when(service.generateQRCode(requestdata)).thenReturn(response);
-		mockMvc.perform(post("/generate").contentType(MediaType.APPLICATION_JSON)
-				.content(stringjson)).andExpect(status().isOk());
-		
+    @Before
+    public void setUp() {
+        notificationDTO = new NotificationDTO();
+        notificationDTO.setName("sanober Noor");
+        notificationDTO.setPreRegistrationId("1234567890");
+        notificationDTO.setMobNum("1234567890");
+        notificationDTO.setEmailID("sanober,noor2@mindtree.com");
+        notificationDTO.setAppointmentDate("2019-01-22");
+        notificationDTO.setAppointmentTime("22:57");
 
-	}
+        responseDTO.setResponse(notificationDTO);
+        responseDTO.setResponsetime(serviceUtil.getCurrentResponseTime());
+
+    }
+
+    /**
+     * This test method is for success qrCodeGeneration
+     *
+     * @throws Exception
+     */
+    @WithUserDetails("INDIVIDUAL")
+    @Test
+    public void qrCodeGenerationTest() throws Exception {
+
+
+        MainResponseDTO<QRCodeResponseDTO> response = new MainResponseDTO<>();
+
+        String stringjson = mapper.writeValueAsString(notificationDTO);
+        Mockito.when(service.generateQRCode(requestdata)).thenReturn(response);
+        mockMvc.perform(post("/generate").contentType(MediaType.APPLICATION_JSON)
+                .content(stringjson)).andExpect(status().isOk());
+
+
+    }
 }

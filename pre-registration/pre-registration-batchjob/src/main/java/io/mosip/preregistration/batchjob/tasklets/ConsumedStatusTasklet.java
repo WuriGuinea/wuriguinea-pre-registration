@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.batchjob.tasklets;
 
@@ -19,38 +19,37 @@ import io.mosip.preregistration.core.config.LoggerConfiguration;
 
 /**
  * This class is a tasklet of batch job to call update status service in batch service.
- * 
+ *
  * @author Kishan Rathore
  * @since 1.0.0
- *
  */
 @Component
 public class ConsumedStatusTasklet implements Tasklet {
 
-	@Autowired
-	private ConsumedStatusUtil consumeJob;
+    @Autowired
+    private ConsumedStatusUtil consumeJob;
 
-	@Value("${version}")
-	String version;
+    @Value("${version}")
+    String version;
 
-	private Logger log = LoggerConfiguration.logConfig(ConsumedStatusTasklet.class);
+    private Logger log = LoggerConfiguration.logConfig(ConsumedStatusTasklet.class);
 
-	/* (non-Javadoc)
-	 * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.springframework.batch.core.StepContribution, org.springframework.batch.core.scope.context.ChunkContext)
-	 */
-	@Override
-	public RepeatStatus execute(StepContribution contribution, ChunkContext arg1) throws Exception {
+    /* (non-Javadoc)
+     * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.springframework.batch.core.StepContribution, org.springframework.batch.core.scope.context.ChunkContext)
+     */
+    @Override
+    public RepeatStatus execute(StepContribution contribution, ChunkContext arg1) throws Exception {
 
-		try {
-			
-			consumeJob.demographicConsumedStatus();
+        try {
 
-		} catch (Exception e) {
-			log.error("Update Consumed Status ", " Tasklet ", " encountered exception ", e.getMessage());
-			contribution.setExitStatus(new ExitStatus(e.getMessage()));
-		}
+            consumeJob.demographicConsumedStatus();
 
-		return RepeatStatus.FINISHED;
-	}
+        } catch (Exception e) {
+            log.error("Update Consumed Status ", " Tasklet ", " encountered exception ", e.getMessage());
+            contribution.setExitStatus(new ExitStatus(e.getMessage()));
+        }
+
+        return RepeatStatus.FINISHED;
+    }
 
 }

@@ -12,20 +12,20 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class DocumentMetaDataDTO implements Serializable {
-	/**
-	 * constant serial Version UID
-	 */
-	private static final long serialVersionUID = 3603793077592157890L;
-	/**
-	 * format of the document
-	 */
-	private String format;
-	/**
-	 * type of the document
-	 */
-	private String type;
-	/**
-	 * document name
-	 */
-	private String value;
+    /**
+     * constant serial Version UID
+     */
+    private static final long serialVersionUID = 3603793077592157890L;
+    /**
+     * format of the document
+     */
+    private String format;
+    /**
+     * type of the document
+     */
+    private String type;
+    /**
+     * document name
+     */
+    private String value;
 }

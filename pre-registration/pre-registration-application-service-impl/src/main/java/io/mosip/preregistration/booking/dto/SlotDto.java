@@ -13,9 +13,9 @@ import lombok.ToString;
 @ToString
 public class SlotDto {
 
-	private LocalTime fromTime;
-	
-	private LocalTime toTime;
-	
-	private int availability;
+    private LocalTime fromTime;
+
+    private LocalTime toTime;
+
+    private int availability;
 }

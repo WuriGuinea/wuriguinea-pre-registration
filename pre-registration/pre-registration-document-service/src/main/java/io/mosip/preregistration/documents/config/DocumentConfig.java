@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.documents.config;
 
@@ -25,119 +25,120 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * This class is used for Swagger configuration, also to configure Host and
  * Port.
- * 
+ *
  * @author Rajath KR
  * @since 1.0.0
- *
  */
 @Configuration
 @EnableSwagger2
 @ConfigurationProperties("mosip.preregistration.document")
 public class DocumentConfig {
-	
 
-	/** The id. */
-	private Map<String, String> id;
-	
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the id
-	 */
-	public void setId(Map<String, String> id) {
-		this.id = id;
-	}
-	
 
-	/**
-	 * Id.
-	 *
-	 * @return the map
-	 */
-	@Bean
-	public Map<String, String> ic() {
-		return Collections.unmodifiableMap(id);
-	}
+    /**
+     * The id.
+     */
+    private Map<String, String> id;
 
-	/**
-	 * Reference for ${application.env.local:false} from property file.
-	 */
-	@Value("${application.env.local:false}")
-	private Boolean localEnv;
+    /**
+     * Sets the id.
+     *
+     * @param id the id
+     */
+    public void setId(Map<String, String> id) {
+        this.id = id;
+    }
 
-	/**
-	 * Reference for ${swagger.base-url:#{null}} from property file.
-	 */
-	@Value("${swagger.base-url:#{null}}")
-	private String swaggerBaseUrl;
 
-	/**
-	 * Reference for ${server.port:9092} from property file.
-	 */
-	@Value("${server.port:9093}")
-	private int serverPort;
+    /**
+     * Id.
+     *
+     * @return the map
+     */
+    @Bean
+    public Map<String, String> ic() {
+        return Collections.unmodifiableMap(id);
+    }
 
-	/**
-	 * To define Protocol
-	 */
-	String proto = "http";
+    /**
+     * Reference for ${application.env.local:false} from property file.
+     */
+    @Value("${application.env.local:false}")
+    private Boolean localEnv;
 
-	/**
-	 * To define Host
-	 */
-	String host = "localhost";
+    /**
+     * Reference for ${swagger.base-url:#{null}} from property file.
+     */
+    @Value("${swagger.base-url:#{null}}")
+    private String swaggerBaseUrl;
 
-	/**
-	 * To define port
-	 */
-	int port = -1;
+    /**
+     * Reference for ${server.port:9092} from property file.
+     */
+    @Value("${server.port:9093}")
+    private int serverPort;
 
-	/**
-	 * To define host along with the port
-	 */
-	String hostWithPort = "localhost:9093";
+    /**
+     * To define Protocol
+     */
+    String proto = "http";
 
-	/**
-	 * To configure Host and port along with docket.
-	 * 
-	 * @return docket object
-	 */
-	@Bean
-	public Docket api() {
-		boolean swaggerBaseUrlSet = false;
-		if (!localEnv && swaggerBaseUrl != null && !swaggerBaseUrl.isEmpty()) {
-			try {
-				proto = new URL(swaggerBaseUrl).getProtocol();
-				host = new URL(swaggerBaseUrl).getHost();
-				port = new URL(swaggerBaseUrl).getPort();
-				if (port == -1) {
-					hostWithPort = host;
-				} else {
-					hostWithPort = host + ":" + port;
-				}
-				swaggerBaseUrlSet = true;
-			} catch (MalformedURLException e) {
-				System.err.println("SwaggerUrlException: " + e);
-			}
-		}
+    /**
+     * To define Host
+     */
+    String host = "localhost";
 
-		Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName("Pre-Registration-Document").select()
-				.apis(RequestHandlerSelectors.any()).paths(PathSelectors.regex("(?!/(error).*).*")).build();
+    /**
+     * To define port
+     */
+    int port = -1;
 
-		if (swaggerBaseUrlSet) {
-			docket.protocols(protocols()).host(hostWithPort);
-			System.out.println("\nSwagger Base URL: " + proto + "://" + hostWithPort + "\n");
-		}
-		return docket;
-	}
+    /**
+     * To define host along with the port
+     */
+    String hostWithPort = "localhost:9093";
 
-	/**
-	 * @return set or protocols
-	 */
-	private Set<String> protocols() {
-		Set<String> protocols = new HashSet<>();
-		protocols.add(proto);
-		return protocols;
-	}
+    /**
+     * To configure Host and port along with docket.
+     *
+     * @return docket object
+     */
+    @Bean
+    public Docket api() {
+        boolean swaggerBaseUrlSet = false;
+        if (!localEnv && swaggerBaseUrl != null && !swaggerBaseUrl.isEmpty()) {
+            try {
+                proto = new URL(swaggerBaseUrl).getProtocol();
+                host = new URL(swaggerBaseUrl).getHost();
+                port = new URL(swaggerBaseUrl).getPort();
+                if (port == -1) {
+                    hostWithPort = host;
+                } else {
+                    hostWithPort = host + ":" + port;
+                }
+                swaggerBaseUrlSet = true;
+            } catch (MalformedURLException e) {
+                System.err.println("SwaggerUrlException: " + e);
+            }
+        }
+
+        Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName("Pre-Registration-Document").select()
+                .apis(RequestHandlerSelectors.any()).paths(PathSelectors.regex("(?!/(error).*).*")).build();
+
+        if (swaggerBaseUrlSet) {
+            docket.protocols(protocols()).host(hostWithPort);
+            System.out.println("\nSwagger Base URL: " + proto + "://" + hostWithPort + "\n");
+        }
+        return docket;
+    }
+
+    /**
+     * @return set or protocols
+     */
+    private Set<String> protocols() {
+        Set<String> protocols = new HashSet<>();
+        protocols.add(proto);
+        return protocols;
+    }
 
 }

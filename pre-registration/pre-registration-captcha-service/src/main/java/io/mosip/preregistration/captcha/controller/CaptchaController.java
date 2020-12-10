@@ -26,30 +26,30 @@ import springfox.documentation.annotations.ApiIgnore;
 @CrossOrigin("*")
 public class CaptchaController {
 
-	private static final String VALIDATE = "validate";
+    private static final String VALIDATE = "validate";
 
-	private Logger log = LoggerConfiguration.logConfig(CaptchaController.class);
-	
-	@Autowired
-	private RequestValidator requestValidator;
-	
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		binder.addValidators(requestValidator);
-	}
-	
-	@Autowired
-	private CaptchaService captchaService;
+    private Logger log = LoggerConfiguration.logConfig(CaptchaController.class);
 
-	@PostMapping(path = "/validatecaptcha" , consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> validateCaptcha(
-		@Validated	@RequestBody MainRequestDTO<CaptchaRequestDTO> captchaRequest, @ApiIgnore Errors errors) {
-		log.info("sessionId", "idType", "id",
-				"In pre-registration captcha controller to validate the recaptcha token" + captchaRequest);
-		System.out.println("In pre-registration captcha controller to validate the recaptcha token" + "  "+captchaRequest);
-		requestValidator.validateId(VALIDATE, captchaRequest.getId(), errors);
-		DataValidationUtil.validate(errors, VALIDATE);
-		return new ResponseEntity<>(this.captchaService.validateCaptcha(captchaRequest.getRequest()), HttpStatus.OK);
-	}
+    @Autowired
+    private RequestValidator requestValidator;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.addValidators(requestValidator);
+    }
+
+    @Autowired
+    private CaptchaService captchaService;
+
+    @PostMapping(path = "/validatecaptcha", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> validateCaptcha(
+            @Validated @RequestBody MainRequestDTO<CaptchaRequestDTO> captchaRequest, @ApiIgnore Errors errors) {
+        log.info("sessionId", "idType", "id",
+                "In pre-registration captcha controller to validate the recaptcha token" + captchaRequest);
+        System.out.println("In pre-registration captcha controller to validate the recaptcha token" + "  " + captchaRequest);
+        requestValidator.validateId(VALIDATE, captchaRequest.getId(), errors);
+        DataValidationUtil.validate(errors, VALIDATE);
+        return new ResponseEntity<>(this.captchaService.validateCaptcha(captchaRequest.getRequest()), HttpStatus.OK);
+    }
 
 }

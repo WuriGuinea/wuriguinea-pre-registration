@@ -39,87 +39,87 @@ import io.mosip.preregistration.notification.service.util.NotificationServiceUti
  * @author Sanober Noor
  * @since 1.0.0
  */
-@SpringBootTest(classes = { NotificationApplicationTest.class })
+@SpringBootTest(classes = {NotificationApplicationTest.class})
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 public class NotificationControllerTest {
 
-	/**
-	 * Autowired reference for {@link #MockMvc}
-	 */
-	@Autowired
-	private MockMvc mockMvc;
+    /**
+     * Autowired reference for {@link #MockMvc}
+     */
+    @Autowired
+    private MockMvc mockMvc;
 
-	@Autowired
-	private ObjectMapper mapper;
+    @Autowired
+    private ObjectMapper mapper;
 
-	@Mock
-	private RequestValidator requestValidator;
+    @Mock
+    private RequestValidator requestValidator;
 
-	@MockBean
-	private ValidationUtil validationUtil;
+    @MockBean
+    private ValidationUtil validationUtil;
 
-	@MockBean
-	private DemographicServiceIntf preRegistrationService;
+    @MockBean
+    private DemographicServiceIntf preRegistrationService;
 
-	/**
-	 * Creating Mock Bean for DocumentUploadService
-	 */
-	@MockBean
-	private DocumentServiceIntf demoservice;
+    /**
+     * Creating Mock Bean for DocumentUploadService
+     */
+    @MockBean
+    private DocumentServiceIntf demoservice;
 
-	@MockBean
-	private BookingServiceIntf bookingServiceIntf;
-	/**
-	 * /** Creating Mock Bean for NotificationService
-	 */
-	@MockBean
-	private NotificationService service;
+    @MockBean
+    private BookingServiceIntf bookingServiceIntf;
+    /**
+     * /** Creating Mock Bean for NotificationService
+     */
+    @MockBean
+    private NotificationService service;
 
-	@MockBean
-	private NotificationServiceUtil serviceUtil;
+    @MockBean
+    private NotificationServiceUtil serviceUtil;
 
-	private NotificationDTO notificationDTO;
+    private NotificationDTO notificationDTO;
 
-	MainResponseDTO<ResponseDTO> responseDTO = new MainResponseDTO<>();
+    MainResponseDTO<ResponseDTO> responseDTO = new MainResponseDTO<>();
 
-	MainResponseDTO<Map<String, String>> configRes = new MainResponseDTO<>();
-	ResponseDTO respDTO = new ResponseDTO();
+    MainResponseDTO<Map<String, String>> configRes = new MainResponseDTO<>();
+    ResponseDTO respDTO = new ResponseDTO();
 
-	@Before
-	public void setUp() {
-		notificationDTO = new NotificationDTO();
-		notificationDTO.setName("sanober Noor");
-		notificationDTO.setPreRegistrationId("1234567890");
-		notificationDTO.setMobNum("1234567890");
-		notificationDTO.setEmailID("sanober,noor2@mindtree.com");
-		notificationDTO.setAppointmentDate("2019-01-22");
-		notificationDTO.setAppointmentTime("22:57");
-		respDTO.setMessage("Email and sms request successfully submitted");
-		responseDTO.setResponse(respDTO);
-		responseDTO.setResponsetime(validationUtil.getCurrentResponseTime());
+    @Before
+    public void setUp() {
+        notificationDTO = new NotificationDTO();
+        notificationDTO.setName("sanober Noor");
+        notificationDTO.setPreRegistrationId("1234567890");
+        notificationDTO.setMobNum("1234567890");
+        notificationDTO.setEmailID("sanober,noor2@mindtree.com");
+        notificationDTO.setAppointmentDate("2019-01-22");
+        notificationDTO.setAppointmentTime("22:57");
+        respDTO.setMessage("Email and sms request successfully submitted");
+        responseDTO.setResponse(respDTO);
+        responseDTO.setResponsetime(validationUtil.getCurrentResponseTime());
 
-	}
+    }
 
-	/**
-	 * This test method is for success sendNotification method
-	 * 
-	 * @throws Exception
-	 */
-	//
-	@WithUserDetails("INDIVIDUAL")
-	@Test
-	public void sendNotificationTest() throws Exception {
-		String stringjson = mapper.writeValueAsString(notificationDTO);
-		String langCode = "eng";
-		Mockito.when(service.sendNotification(stringjson, "eng", null)).thenReturn(responseDTO);
+    /**
+     * This test method is for success sendNotification method
+     *
+     * @throws Exception
+     */
+    //
+    @WithUserDetails("INDIVIDUAL")
+    @Test
+    public void sendNotificationTest() throws Exception {
+        String stringjson = mapper.writeValueAsString(notificationDTO);
+        String langCode = "eng";
+        Mockito.when(service.sendNotification(stringjson, "eng", null)).thenReturn(responseDTO);
 
-		mockMvc.perform(MockMvcRequestBuilders.multipart("/notify")
-				.file(new MockMultipartFile("NotificationRequestDTO", stringjson, "application/json",
-						stringjson.getBytes(Charset.forName("UTF-8"))))
-				.file(new MockMultipartFile("langCode", langCode, "application/json",
-						langCode.getBytes(Charset.forName("UTF-8")))))
-				.andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/notify")
+                .file(new MockMultipartFile("NotificationRequestDTO", stringjson, "application/json",
+                        stringjson.getBytes(Charset.forName("UTF-8"))))
+                .file(new MockMultipartFile("langCode", langCode, "application/json",
+                        langCode.getBytes(Charset.forName("UTF-8")))))
+                .andExpect(status().isOk());
 
-	}
+    }
 }

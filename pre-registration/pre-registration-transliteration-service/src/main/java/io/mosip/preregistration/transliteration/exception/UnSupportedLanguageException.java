@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.transliteration.exception;
 
@@ -10,43 +10,44 @@ import lombok.Getter;
 
 /**
  * This class defines the UnSupportedLanguageException
- * 
+ *
  * @author Kishan Rathore
  * @since 1.0.0
- * 
  */
 
 @Getter
 public class UnSupportedLanguageException extends BaseUncheckedException {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-	
-	private MainResponseDTO<?> mainResponseDTO;
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param msg
-	 */
-	public UnSupportedLanguageException(String msg,MainResponseDTO<?> response) {
-		super("", msg);
-		this.mainResponseDTO=response;
-	}
+    private MainResponseDTO<?> mainResponseDTO;
 
-	/**
-	 * @param errCode
-	 * @param msg
-	 */
-	public UnSupportedLanguageException(String errCode, String msg,MainResponseDTO<?> response) {
-		super(errCode, msg);
-		this.mainResponseDTO=response;
-	}
+    /**
+     * @param msg
+     */
+    public UnSupportedLanguageException(String msg, MainResponseDTO<?> response) {
+        super("", msg);
+        this.mainResponseDTO = response;
+    }
 
-	/**
-	 * @param errCode
-	 * @param msg
-	 * @param cause
-	 */
-	public UnSupportedLanguageException(String errCode, String msg, Throwable cause,MainResponseDTO<?> response) {
-		super(errCode, msg, cause);
-		this.mainResponseDTO=response;
-	}
+    /**
+     * @param errCode
+     * @param msg
+     */
+    public UnSupportedLanguageException(String errCode, String msg, MainResponseDTO<?> response) {
+        super(errCode, msg);
+        this.mainResponseDTO = response;
+    }
+
+    /**
+     * @param errCode
+     * @param msg
+     * @param cause
+     */
+    public UnSupportedLanguageException(String errCode, String msg, Throwable cause, MainResponseDTO<?> response) {
+        super(errCode, msg, cause);
+        this.mainResponseDTO = response;
+    }
 }

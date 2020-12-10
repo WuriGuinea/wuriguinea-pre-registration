@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.batchjob.entity;
 
@@ -27,10 +27,9 @@ import lombok.Setter;
 
 /**
  * This entity class defines the database table details for PreRegistration.
- * 
+ *
  * @author Kishan Rathore
  * @since 1.0.0
- *
  */
 @Component
 @Entity
@@ -39,63 +38,83 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DemographicEntityConsumed implements Serializable {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 6705845720255847210L;
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 6705845720255847210L;
 
-	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL, mappedBy = "demographicEntity")
-	private List<DocumentEntity> documentEntity;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demographicEntity")
+    private List<DocumentEntity> documentEntity;
 
-	@OneToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL, mappedBy = "demographicEntity")
-	private RegistrationBookingEntity registrationBookingEntity;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demographicEntity")
+    private RegistrationBookingEntity registrationBookingEntity;
 
-	/** The pre registration id. */
-	@Column(name = "prereg_id", nullable = false)
-	@Id
-	private String preRegistrationId;
+    /**
+     * The pre registration id.
+     */
+    @Column(name = "prereg_id", nullable = false)
+    @Id
+    private String preRegistrationId;
 
-	/** The JSON */
-	@Column(name = "demog_detail")
-	@Setter(AccessLevel.NONE)
-	private byte[] applicantDetailJson;
-	
-	public void setApplicantDetailJson(byte[] applicantDetailJson) {
-		this.applicantDetailJson =applicantDetailJson !=null ? applicantDetailJson.clone():null;
-	}
+    /**
+     * The JSON
+     */
+    @Column(name = "demog_detail")
+    @Setter(AccessLevel.NONE)
+    private byte[] applicantDetailJson;
 
-	/** The status_code */
-	@Column(name = "status_code", nullable = false)
-	private String statusCode;
+    public void setApplicantDetailJson(byte[] applicantDetailJson) {
+        this.applicantDetailJson = applicantDetailJson != null ? applicantDetailJson.clone() : null;
+    }
 
-	/** The lang_code */
-	@Column(name = "lang_code", nullable = false)
-	private String langCode;
+    /**
+     * The status_code
+     */
+    @Column(name = "status_code", nullable = false)
+    private String statusCode;
 
-	/** The created by. */
-	@Column(name = "cr_by")
-	private String createdBy;
+    /**
+     * The lang_code
+     */
+    @Column(name = "lang_code", nullable = false)
+    private String langCode;
 
-	/** The created appuser by. */
-	@Column(name = "cr_appuser_id")
-	private String crAppuserId;
+    /**
+     * The created by.
+     */
+    @Column(name = "cr_by")
+    private String createdBy;
 
-	/** The create date time. */
-	@Column(name = "cr_dtimes")
-	private LocalDateTime createDateTime;
+    /**
+     * The created appuser by.
+     */
+    @Column(name = "cr_appuser_id")
+    private String crAppuserId;
 
-	/** The updated by. */
-	@Column(name = "upd_by")
-	private String updatedBy;
+    /**
+     * The create date time.
+     */
+    @Column(name = "cr_dtimes")
+    private LocalDateTime createDateTime;
 
-	/** The update date time. */
-	@Column(name = "upd_dtimes")
-	private LocalDateTime updateDateTime;
+    /**
+     * The updated by.
+     */
+    @Column(name = "upd_by")
+    private String updatedBy;
 
-	/**
-	 * Encrypted Date Time
-	 */
-	@Column(name = "encrypted_dtimes")
-	private LocalDateTime encryptedDateTime;
+    /**
+     * The update date time.
+     */
+    @Column(name = "upd_dtimes")
+    private LocalDateTime updateDateTime;
 
-	@Column(name = "demog_detail_hash")
-	private String demogDetailHash;
+    /**
+     * Encrypted Date Time
+     */
+    @Column(name = "encrypted_dtimes")
+    private LocalDateTime encryptedDateTime;
+
+    @Column(name = "demog_detail_hash")
+    private String demogDetailHash;
 }

@@ -12,10 +12,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class AvailabilityDto {
-	
-	private String regCenterId;
-	
-	private List<DateTimeDto> centerDetails;
-	
+
+    private String regCenterId;
+
+    private List<DateTimeDto> centerDetails;
+
 
 }

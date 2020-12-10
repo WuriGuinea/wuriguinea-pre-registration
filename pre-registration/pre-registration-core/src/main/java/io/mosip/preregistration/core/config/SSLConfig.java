@@ -18,32 +18,31 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * Configuration class for Pre-registration
- * 
- * @author Tapaswini Behera
  *
+ * @author Tapaswini Behera
  * @since 1.0.0
  */
 @Configuration
 public class SSLConfig {
 
-	@Bean
-	public RestTemplate restTemplateConfig()
-			throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+    @Bean
+    public RestTemplate restTemplateConfig()
+            throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 
-		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
-		SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy)
-				.build();
+        SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy)
+                .build();
 
-		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
 
-		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
 
-		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
 
-		requestFactory.setHttpClient(httpClient);
-		return new RestTemplate(requestFactory);
+        requestFactory.setHttpClient(httpClient);
+        return new RestTemplate(requestFactory);
 
-	}
+    }
 
 }

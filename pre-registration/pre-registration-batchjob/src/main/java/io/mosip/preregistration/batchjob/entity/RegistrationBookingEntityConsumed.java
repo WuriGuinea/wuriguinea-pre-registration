@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.batchjob.entity;
 
@@ -19,63 +19,86 @@ import lombok.Setter;
 
 /**
  * This entity class defines the database table details for Booking application.
- * 
+ *
  * @author Kishan Rathore
  * @since 1.0.0
- *
  */
 @Setter
 @Entity
 @Table(name = "reg_appointment_consumed", schema = "prereg")
 public class RegistrationBookingEntityConsumed implements Serializable {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -7698541520991836493L;
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = -7698541520991836493L;
 
-	/** Id. */
-	@Id
-	@Column(name = "id")
-	private String id;
-	
-	/** Booking primary Key. */
-	@Embedded
-	private RegistrationBookingPKConsumed bookingPK;
+    /**
+     * Id.
+     */
+    @Id
+    @Column(name = "id")
+    private String id;
 
-	/** Registration center id. */
-	@Column(name = "regcntr_id")
-	private String registrationCenterId;
+    /**
+     * Booking primary Key.
+     */
+    @Embedded
+    private RegistrationBookingPKConsumed bookingPK;
 
-	/** Slot from time. */
-	@Column(name = "slot_from_time")
-	private LocalTime slotFromTime;
+    /**
+     * Registration center id.
+     */
+    @Column(name = "regcntr_id")
+    private String registrationCenterId;
 
-	/** Slot to time. */
-	@Column(name = "slot_to_time")
-	private LocalTime slotToTime;
+    /**
+     * Slot from time.
+     */
+    @Column(name = "slot_from_time")
+    private LocalTime slotFromTime;
 
-	/** Appointment date. */
-	@Column(name = "appointment_date")
-	private LocalDate regDate;
+    /**
+     * Slot to time.
+     */
+    @Column(name = "slot_to_time")
+    private LocalTime slotToTime;
 
-	/** Language code. */
-	@Column(name = "lang_code")
-	private String langCode;
+    /**
+     * Appointment date.
+     */
+    @Column(name = "appointment_date")
+    private LocalDate regDate;
 
-	/** Created by. */
-	@Column(name = "cr_by")
-	private String crBy;
+    /**
+     * Language code.
+     */
+    @Column(name = "lang_code")
+    private String langCode;
 
-	/** Created date time. */
-	@Column(name = "cr_dtimes")
-	private LocalDateTime crDate;
+    /**
+     * Created by.
+     */
+    @Column(name = "cr_by")
+    private String crBy;
 
-	/** Created by. */
-	@Column(name = "upd_by")
-	private String upBy;
+    /**
+     * Created date time.
+     */
+    @Column(name = "cr_dtimes")
+    private LocalDateTime crDate;
 
-	/** Updated date time. */
-	@Column(name = "upd_dtimes")
-	private LocalDateTime updDate;
+    /**
+     * Created by.
+     */
+    @Column(name = "upd_by")
+    private String upBy;
+
+    /**
+     * Updated date time.
+     */
+    @Column(name = "upd_dtimes")
+    private LocalDateTime updDate;
 
 
 }

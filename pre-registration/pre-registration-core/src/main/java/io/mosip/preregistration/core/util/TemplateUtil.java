@@ -42,130 +42,131 @@ import io.mosip.preregistration.core.config.LoggerConfiguration;
 @Component
 public class TemplateUtil {
 
-	private Logger log = LoggerConfiguration.logConfig(TemplateUtil.class);
-	/**
-	 * Reference for ${resource.template.url} from property file
-	 */
+    private Logger log = LoggerConfiguration.logConfig(TemplateUtil.class);
+    /**
+     * Reference for ${resource.template.url} from property file
+     */
 
-	@Value("${resource.template.url}")
-	private String resourceUrl;
+    @Value("${resource.template.url}")
+    private String resourceUrl;
 
-	//@Value("${resource.template.provided.date.format}")
-	private String providedDateFormat="yyyy-MM-dd";
+    //@Value("${resource.template.provided.date.format}")
+    private String providedDateFormat = "yyyy-MM-dd";
 
-	//@Value("${resource.template.expected.date.format}")
-	private String expectedDateFormat="dd/MM/yyyy";
-	
-	private String providedTimeFormat="yyyy-MM-dd hh:mm aa";
-	
-	private String expectTimeFormat="hh:mm";
-	/**
-	 * Autowired reference for {@link #restTemplateBuilder}
-	 */
-	@Autowired
-	RestTemplate restTemplate;
+    //@Value("${resource.template.expected.date.format}")
+    private String expectedDateFormat = "dd/MM/yyyy";
 
-	@Autowired
-	private TemplateManager templateManager;
+    private String providedTimeFormat = "yyyy-MM-dd hh:mm aa";
 
-	/**
-	 * This method is used for getting template
-	 * 
-	 * @param langCode
-	 * @param templatetypecode
-	 * @return
-	 */
-	public String getTemplate(String langCode, String templatetypecode) {
-		String url = resourceUrl + "/" + langCode + "/" + templatetypecode;
-		HttpHeaders headers = new HttpHeaders();
-		HttpEntity<RequestWrapper<TemplateResponseListDTO>> httpEntity = new HttpEntity<>(headers);
-		log.info("sessionId", "idType", "id", "In getTemplate method of TemplateUtil service url: " + url);
-		ResponseEntity<ResponseWrapper<TemplateResponseListDTO>> respEntity = restTemplate.exchange(url, HttpMethod.GET,
-				httpEntity, new ParameterizedTypeReference<ResponseWrapper<TemplateResponseListDTO>>() {
-				});
+    private String expectTimeFormat = "hh:mm";
+    /**
+     * Autowired reference for {@link #restTemplateBuilder}
+     */
+    @Autowired
+    RestTemplate restTemplate;
 
-		List<TemplateResponseDTO> response = respEntity.getBody().getResponse().getTemplates();
+    @Autowired
+    private TemplateManager templateManager;
 
-		return response.get(0).getFileText().replaceAll("^\"|\"$", "");
+    /**
+     * This method is used for getting template
+     *
+     * @param langCode
+     * @param templatetypecode
+     * @return
+     */
+    public String getTemplate(String langCode, String templatetypecode) {
+        String url = resourceUrl + "/" + langCode + "/" + templatetypecode;
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<RequestWrapper<TemplateResponseListDTO>> httpEntity = new HttpEntity<>(headers);
+        log.info("sessionId", "idType", "id", "In getTemplate method of TemplateUtil service url: " + url);
+        ResponseEntity<ResponseWrapper<TemplateResponseListDTO>> respEntity = restTemplate.exchange(url, HttpMethod.GET,
+                httpEntity, new ParameterizedTypeReference<ResponseWrapper<TemplateResponseListDTO>>() {
+                });
 
-	}
+        List<TemplateResponseDTO> response = respEntity.getBody().getResponse().getTemplates();
 
-	/**
-	 * This method merging the template
-	 * 
-	 * @param fileText
-	 * @param acknowledgementDTO
-	 * @return
-	 * @throws IOException
-	 */
-	public String templateMerge(String fileText, NotificationDTO acknowledgementDTO) throws IOException {
-		log.info("sessionId", "idType", "id", "In templateMerge method of TemplateUtil service ");
-		String mergeTemplate = null;
-		Map<String, Object> map = mapSetting(acknowledgementDTO);
-		InputStream templateInputStream = new ByteArrayInputStream(fileText.getBytes(Charset.forName("UTF-8")));
+        return response.get(0).getFileText().replaceAll("^\"|\"$", "");
 
-		InputStream resultedTemplate = templateManager.merge(templateInputStream, map);
+    }
 
-		mergeTemplate = IOUtils.toString(resultedTemplate, StandardCharsets.UTF_8.name());
+    /**
+     * This method merging the template
+     *
+     * @param fileText
+     * @param acknowledgementDTO
+     * @return
+     * @throws IOException
+     */
+    public String templateMerge(String fileText, NotificationDTO acknowledgementDTO) throws IOException {
+        log.info("sessionId", "idType", "id", "In templateMerge method of TemplateUtil service ");
+        String mergeTemplate = null;
+        Map<String, Object> map = mapSetting(acknowledgementDTO);
+        InputStream templateInputStream = new ByteArrayInputStream(fileText.getBytes(Charset.forName("UTF-8")));
 
-		return mergeTemplate;
-	}
+        InputStream resultedTemplate = templateManager.merge(templateInputStream, map);
 
-	/**
-	 * This method will set the user detail for the template merger
-	 * 
-	 * @param acknowledgementDTO
-	 * @return
-	 */
-	public Map<String, Object> mapSetting(NotificationDTO acknowledgementDTO) {
-		Map<String, Object> responseMap = new HashMap<>();
-		log.info("sessionId", "idType", "id", "In mapSetting method of TemplateUtil service ");
-		DateTimeFormatter dateFormate = DateTimeFormatter.ofPattern("dd MMM yyyy");
-		DateTimeFormatter timeFormate = DateTimeFormatter.ofPattern("HH:mm");
+        mergeTemplate = IOUtils.toString(resultedTemplate, StandardCharsets.UTF_8.name());
 
-		LocalDateTime now = LocalDateTime.now();
-		LocalTime localTime = LocalTime.now();
+        return mergeTemplate;
+    }
 
-		responseMap.put("name", acknowledgementDTO.getName());
-		responseMap.put("PRID", acknowledgementDTO.getPreRegistrationId());
-		responseMap.put("Date", dateFormate.format(now));
-		responseMap.put("Time", timeFormate.format(localTime));
-		responseMap.put("Appointmentdate", formatAppointmentDate(acknowledgementDTO.getAppointmentDate()));
-		responseMap.put("Appointmenttime", formatAppointmentTime(acknowledgementDTO.getAppointmentDate(), acknowledgementDTO.getAppointmentTime()));
-		return responseMap;
-	}
+    /**
+     * This method will set the user detail for the template merger
+     *
+     * @param acknowledgementDTO
+     * @return
+     */
+    public Map<String, Object> mapSetting(NotificationDTO acknowledgementDTO) {
+        Map<String, Object> responseMap = new HashMap<>();
+        log.info("sessionId", "idType", "id", "In mapSetting method of TemplateUtil service ");
+        DateTimeFormatter dateFormate = DateTimeFormatter.ofPattern("dd MMM yyyy");
+        DateTimeFormatter timeFormate = DateTimeFormatter.ofPattern("HH:mm");
 
-	public String formatAppointmentDate(String appointmentDate) {
-		String formatted = appointmentDate;
+        LocalDateTime now = LocalDateTime.now();
+        LocalTime localTime = LocalTime.now();
 
-		try {
-			SimpleDateFormat provided = new SimpleDateFormat(providedDateFormat);
-			SimpleDateFormat expected = new SimpleDateFormat(expectedDateFormat,Locale.FRENCH);
+        responseMap.put("name", acknowledgementDTO.getName());
+        responseMap.put("PRID", acknowledgementDTO.getPreRegistrationId());
+        responseMap.put("Date", dateFormate.format(now));
+        responseMap.put("Time", timeFormate.format(localTime));
+        responseMap.put("Appointmentdate", formatAppointmentDate(acknowledgementDTO.getAppointmentDate()));
+        responseMap.put("Appointmenttime", formatAppointmentTime(acknowledgementDTO.getAppointmentDate(), acknowledgementDTO.getAppointmentTime()));
+        return responseMap;
+    }
 
-			Date date = provided.parse(appointmentDate);
-			formatted = expected.format(date);
+    public String formatAppointmentDate(String appointmentDate) {
+        String formatted = appointmentDate;
 
-		} catch (Exception e) {
-			log.error("sessionId", "idType", "Unable to format date", formatted);
-		}
+        try {
+            SimpleDateFormat provided = new SimpleDateFormat(providedDateFormat);
+            SimpleDateFormat expected = new SimpleDateFormat(expectedDateFormat, Locale.FRENCH);
 
-		return formatted;
-	}
-	public String formatAppointmentTime(String appointementDate,String appointmentTime) {
-		String formatted = appointmentTime;
+            Date date = provided.parse(appointmentDate);
+            formatted = expected.format(date);
 
-		try {
-			
-			SimpleDateFormat provided = new SimpleDateFormat(providedTimeFormat);
-			SimpleDateFormat expected = new SimpleDateFormat(expectTimeFormat,Locale.FRENCH);
+        } catch (Exception e) {
+            log.error("sessionId", "idType", "Unable to format date", formatted);
+        }
 
-			Date date = provided.parse(appointementDate+" "+appointmentTime);
-			formatted = expected.format(date);
+        return formatted;
+    }
 
-		} catch (Exception e) {
-			log.error("sessionId", "idType", "Unable to format date time", formatted);
-		}
+    public String formatAppointmentTime(String appointementDate, String appointmentTime) {
+        String formatted = appointmentTime;
 
-		return formatted;
-	}
+        try {
+
+            SimpleDateFormat provided = new SimpleDateFormat(providedTimeFormat);
+            SimpleDateFormat expected = new SimpleDateFormat(expectTimeFormat, Locale.FRENCH);
+
+            Date date = provided.parse(appointementDate + " " + appointmentTime);
+            formatted = expected.format(date);
+
+        } catch (Exception e) {
+            log.error("sessionId", "idType", "Unable to format date time", formatted);
+        }
+
+        return formatted;
+    }
 }

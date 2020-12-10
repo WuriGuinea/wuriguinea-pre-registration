@@ -9,23 +9,23 @@ import io.mosip.preregistration.core.common.dto.ExceptionJSONInfoDTO;
 import lombok.Data;
 
 @Data
-public class GoogleCaptchaDTO implements Serializable{
+public class GoogleCaptchaDTO implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@JsonProperty("success")
-	private boolean success;
+    @JsonProperty("success")
+    private boolean success;
 
-	@JsonProperty("challenge_ts")
-	private String challengeTs;
+    @JsonProperty("challenge_ts")
+    private String challengeTs;
 
-	@JsonProperty("hostname")
-	private String hostname;
-	
+    @JsonProperty("hostname")
+    private String hostname;
+
     @JsonProperty("errorCodes")
-	private List<ExceptionJSONInfoDTO> errorCodes;
+    private List<ExceptionJSONInfoDTO> errorCodes;
 
 }

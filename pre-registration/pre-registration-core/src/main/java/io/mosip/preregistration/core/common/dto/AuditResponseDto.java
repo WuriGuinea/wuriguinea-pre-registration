@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package io.mosip.preregistration.core.common.dto;
 
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * Class for Audit Response having status of audit
- * 
+ *
  * @author Jagadishwari S
  * @since 1.0.0
  *
@@ -19,9 +19,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuditResponseDto {
 
-	/**
-	 * The boolean audit status
-	 */
-	private boolean status;
+    /**
+     * The boolean audit status
+     */
+    private boolean status;
 
 }

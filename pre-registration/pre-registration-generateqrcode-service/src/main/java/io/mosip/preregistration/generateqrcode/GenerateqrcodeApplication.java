@@ -8,18 +8,18 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * This class is used to define the start of the QR code service 
- * 
+ * This class is used to define the start of the QR code service
+ *
  * @author Sanober Noor
  * @since 1.0.0
  */
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class }) 
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 @ComponentScan(basePackages = "io.mosip.*")
 public class GenerateqrcodeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(GenerateqrcodeApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GenerateqrcodeApplication.class, args);
+    }
 
 }

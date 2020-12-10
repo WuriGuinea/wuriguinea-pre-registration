@@ -14,5 +14,5 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class RegistrationCenterResponseDto {
-	private List<RegistrationCenterDto> registrationCenters;
+    private List<RegistrationCenterDto> registrationCenters;
 }

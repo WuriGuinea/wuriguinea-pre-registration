@@ -1,6 +1,6 @@
-/* 
+/*
  * Copyright
- * 
+ *
  */
 package io.mosip.preregistration.booking.exception;
 
@@ -10,52 +10,53 @@ import lombok.Getter;
 
 /**
  * This class defines the OperationNotAllowedException
- * 
+ *
  * @author Rajath KR
  * @since 1.0.0
- * 
  */
 
 @Getter
 public class OperationNotAllowedException extends BaseUncheckedException {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-	private MainResponseDTO<?> mainResponseDTO;
+    /**
+     * The Constant serialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
+    private MainResponseDTO<?> mainResponseDTO;
 
-	/**
-	 * @param errorMessage pass the error message
-	 */
-	public OperationNotAllowedException(String errorMessage) {
-		super("", errorMessage);
-	}
+    /**
+     * @param errorMessage pass the error message
+     */
+    public OperationNotAllowedException(String errorMessage) {
+        super("", errorMessage);
+    }
 
-	/**
-	 * @param errorCode pass the error code
-	 * @param errorMessage pass the error message
-	 */
-	public OperationNotAllowedException(String errorCode, String errorMessage) {
-		super(errorCode, errorMessage, null);
-	}
-	
-	public OperationNotAllowedException(String errorCode, String errorMessage,MainResponseDTO<?> response) {
-		super(errorCode, errorMessage, null);
-		this.mainResponseDTO=response;
-	}
+    /**
+     * @param errorCode    pass the error code
+     * @param errorMessage pass the error message
+     */
+    public OperationNotAllowedException(String errorCode, String errorMessage) {
+        super(errorCode, errorMessage, null);
+    }
 
-	/**
-	 * @param errorMessage pass the error message
-	 * @param rootCause pass the cause
-	 */
-	public OperationNotAllowedException(String errorMessage, Throwable rootCause) {
-		super("", errorMessage, rootCause);
-	}
+    public OperationNotAllowedException(String errorCode, String errorMessage, MainResponseDTO<?> response) {
+        super(errorCode, errorMessage, null);
+        this.mainResponseDTO = response;
+    }
 
-	/**
-	 * @param errorCode pass the error code
-	 * @param errorMessage pass the error message
-	 * @param rootCause pass the cause
-	 */
-	public OperationNotAllowedException(String errorCode, String errorMessage, Throwable rootCause) {
-		super(errorCode, errorMessage, rootCause);
-	}
+    /**
+     * @param errorMessage pass the error message
+     * @param rootCause    pass the cause
+     */
+    public OperationNotAllowedException(String errorMessage, Throwable rootCause) {
+        super("", errorMessage, rootCause);
+    }
+
+    /**
+     * @param errorCode    pass the error code
+     * @param errorMessage pass the error message
+     * @param rootCause    pass the cause
+     */
+    public OperationNotAllowedException(String errorCode, String errorMessage, Throwable rootCause) {
+        super(errorCode, errorMessage, rootCause);
+    }
 }

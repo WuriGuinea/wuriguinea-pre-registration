@@ -8,9 +8,8 @@ import java.lang.annotation.Target;
 
 /**
  * Used to process filter on request and response for a REST service.
- * 
- * @author Akshay Jain
  *
+ * @author Akshay Jain
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
