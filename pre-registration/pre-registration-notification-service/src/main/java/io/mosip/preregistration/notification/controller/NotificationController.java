@@ -1,5 +1,6 @@
 package io.mosip.preregistration.notification.controller;
 
+import io.mosip.preregistration.notification.dto.JsonString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -98,12 +99,33 @@ public class NotificationController {
 	}
 
 
+
+	@PreAuthorize("hasAnyRole('INDIVIDUAL','PRE_REGISTRATION_ADMIN')")
+	@PostMapping(
+			value = "/notify/rest",
+			consumes = {"application/json"}
+	)
+	@ApiOperation(value = "Trigger notification")
+	public ResponseEntity<MainResponseDTO<ResponseDTO>> sendNotificationAsJson(
+			@RequestPart(value = "NotificationRequestDTO", required = true) JsonString jsonbObject,
+			@RequestPart(value = "langCode", required = true) String langCode
+	) {
+		log.info("sessionId", "idType", "id",
+				"------ CUSTO notification controller for send notification with request notification dto  " + jsonbObject);
+		MainResponseDTO<ResponseDTO> response = notificationService.sendNotification(jsonbObject.getValue(), langCode, null);
+
+		log.info("YAYA", "SORY", "id", response.toString());
+		System.out.println(response.toString());
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+
+	}
+
+
 	@PostMapping(path = "/test")
 	public ResponseEntity<String> test() {
 		return new ResponseEntity<>("HEY SORRY", HttpStatus.ACCEPTED);
 	}
 
-	
 	
 }
 
