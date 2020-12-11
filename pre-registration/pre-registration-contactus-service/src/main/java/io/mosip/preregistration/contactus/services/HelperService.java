@@ -1,10 +1,7 @@
 package io.mosip.preregistration.contactus.services;
 
 
-import io.mosip.preregistration.contactus.models.ContactUsReponseModel;
-import io.mosip.preregistration.contactus.models.ContactUsRequestModel;
-import io.mosip.preregistration.contactus.models.MainResponseDTO;
-import io.mosip.preregistration.contactus.models.ExceptionJSONInfoDTO;
+import io.mosip.preregistration.contactus.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -39,7 +36,12 @@ public class HelperService {
 
         ContactUsReponseModel contactUsReponseModel = this.sendGridEmailService.sendEmailToUser(
                 request.getEmail(),
-                "Nous avons bien reçu votre demande, vous serez contacter bientôt."
+                EmailBody.builder()
+                        .object(request.getReason())
+                        .name(request.getName())
+                        .content(request.getMessage())
+                        .sign(request.getSign())
+                        .build()
         );
 
         if (contactUsReponseModel.getErrorCode() != 202) {
@@ -72,7 +74,7 @@ public class HelperService {
     }
 
     public ContactUsReponseModel responseBuilder(int status, String desc) {
-      return   ContactUsReponseModel
+        return   ContactUsReponseModel
                 .builder()
                 .errorCode(status)
                 .description(desc)
