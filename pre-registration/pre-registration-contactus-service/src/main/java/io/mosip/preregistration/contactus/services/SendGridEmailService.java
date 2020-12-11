@@ -10,6 +10,7 @@ import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import io.mosip.preregistration.contactus.configs.SendGridConfig;
 import io.mosip.preregistration.contactus.models.ContactUsReponseModel;
+import io.mosip.preregistration.contactus.models.EmailBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,14 @@ public class SendGridEmailService {
     @Autowired
     private SendGridConfig cf;
 
-    public ContactUsReponseModel sendEmailToUser(String email, String body) {
-        Email from = new Email("myaya.diallo@wuriguinee.com");
-        String subject = "WURI TEST CONTACT US";
+    public ContactUsReponseModel sendEmailToUser(String email, EmailBody body) {
+        Email from = new Email(System.getenv("SENDRIG_EMAIL_SENDER"));
+        String subject = body.getObject();
         Email to = new Email(email);
-        Content content = new Content("text/plain", body);
+        Content content = new Content();
+        content.setType("text/html");
+        content.setValue(body.getContent());
         Mail mail = new Mail(from, subject, to, content);
-
         String apiKey = this.cf.getApiKey();
 
         if (apiKey.length() == 0) {
